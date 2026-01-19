@@ -1,6 +1,13 @@
-﻿namespace AELP.ViewModels;
+﻿using AELP.Factories;
+
+namespace AELP.ViewModels;
 
 public partial class MainWindowViewModel : ViewModelBase
 {
-    public string Greeting { get; } = "Welcome to Avalonia!";
+    private PageFactory _pageFactory;
+    
+    public MainWindowViewModel(PageFactory pageFactory)
+    {
+        _pageFactory = pageFactory;
+    }
 }

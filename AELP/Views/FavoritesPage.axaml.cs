@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace AELP.Views;
 
-public partial class FavoritePage : UserControl
+public partial class FavoritesPage : UserControl
 {
-    public FavoritePage()
+    public FavoritesPage()
     {
         InitializeComponent();
     }

@@ -6,5 +6,7 @@ public enum ApplicationPageNames
     Favorites,
     Tests,
     Mistakes,
-    Settings
+    Settings,
+    Summary,
+    Detail
 }
