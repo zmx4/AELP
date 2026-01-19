@@ -1,0 +1,28 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:AELP.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1024" d:DesignHeight="600"
+        Width="1024" Height="600"
+        x:Class="AELP.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="AELP">
+
+    <Grid ColumnDefinitions="Auto,*">
+        <Border Padding="20">
+            <StackPanel>
+                
+                <Button HorizontalAlignment="Stretch" Content="b1"></Button>
+                <Button HorizontalAlignment="Stretch" Content="b2"></Button>
+                <Button HorizontalAlignment="Stretch" Content="b3"></Button>
+                <Button HorizontalAlignment="Stretch" Content="b4"></Button>
+                <Button HorizontalAlignment="Stretch" Content="b5"></Button>
+            </StackPanel>
+        </Border>
+    </Grid>
+
+    
+
+</Window>
