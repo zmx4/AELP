@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace AELP.Views;
 
-public partial class DictionaryPage : UserControl
+public partial class DictionaryPageView : UserControl
 {
-    public DictionaryPage()
+    public DictionaryPageView()
     {
         InitializeComponent();
     }

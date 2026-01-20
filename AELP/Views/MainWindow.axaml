@@ -13,14 +13,16 @@
     <Grid ColumnDefinitions="Auto,*">
         <Border Padding="20">
             <StackPanel>
-                
-                <Button HorizontalAlignment="Stretch" Content="b1"></Button>
-                <Button HorizontalAlignment="Stretch" Content="b2"></Button>
-                <Button HorizontalAlignment="Stretch" Content="b3"></Button>
-                <Button HorizontalAlignment="Stretch" Content="b4"></Button>
-                <Button HorizontalAlignment="Stretch" Content="b5"></Button>
+                <Button HorizontalAlignment="Stretch" Content="词典" Command="{Binding GoToDictionaryPageCommand}"></Button>
+                <Button HorizontalAlignment="Stretch" Content="收藏"></Button>
+                <Button HorizontalAlignment="Stretch" Content="测试"></Button>
+                <Button HorizontalAlignment="Stretch" Content="错题文"></Button>
+                <Button HorizontalAlignment="Stretch" Content="设置"></Button>
             </StackPanel>
         </Border>
+        <UserControl Grid.Column="1" Content="{Binding Content}">
+            
+        </UserControl>
     </Grid>
 
     
