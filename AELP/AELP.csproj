@@ -9,10 +9,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Folder Include="Assets\Database\" />
         <Folder Include="Assets\Fonts\" />
-        <Folder Include="Models\"/>
         <AvaloniaResource Include="Assets\**"/>
+        <Folder Include="Models\" />
     </ItemGroup>
 
     <ItemGroup>
@@ -26,6 +25,12 @@
             <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
         </PackageReference>
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.12" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.12">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.12" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.2" />
     </ItemGroup>
 </Project>

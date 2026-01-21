@@ -10,6 +10,9 @@ using Avalonia.Markup.Xaml;
 using AELP.ViewModels;
 using AELP.Views;
 using Microsoft.Extensions.DependencyInjection;
+using AELP.Services;
+using AELP.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AELP;
 
@@ -25,6 +28,9 @@ public partial class App : Application
     public override void OnFrameworkInitializationCompleted()
     {
         var collection = new ServiceCollection();
+        collection.AddDbContext<AppDbContext>(options =>
+            options.UseSqlite("Data Source=../../../Assets/Database/stardict.db"));
+        collection.AddTransient<IWordQueryService, WordQueryService>();
         collection.AddSingleton<PageFactory>();
         collection.AddSingleton<MainWindowViewModel>();
         collection.AddTransient<DictionaryPageViewModel>();

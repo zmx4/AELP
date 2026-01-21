@@ -13,6 +13,7 @@ public partial class MainWindowViewModel : ViewModelBase
     public MainWindowViewModel(PageFactory pageFactory)
     {
         _pageFactory = pageFactory;
+        
     }
 
     public ViewModelBase Content
