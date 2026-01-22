@@ -1,9 +1,11 @@
-﻿using AELP.Services;
+﻿using System.Collections.Generic;
+using AELP.Services;
 using AELP.Messages;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using System.Collections.ObjectModel;
+using AELP.Models;
 
 namespace AELP.ViewModels;
 
@@ -26,7 +28,7 @@ public partial class DictionaryPageViewModel : PageViewModel
     [ObservableProperty]
     private ObservableCollection<string> _searchResults = new();
     
-    
+    private List<dictionary> _rawSearchResults = new();
 
     public DictionaryPageViewModel(IWordQueryService wordQueryService)
     {
@@ -89,12 +91,12 @@ public partial class DictionaryPageViewModel : PageViewModel
         {
             return;
         }
-        
-        var words = _wordQueryService.QueryWords(SearchText);
+        _rawSearchResults.Clear();
+        _rawSearchResults = _wordQueryService.QueryWords(SearchText);
         SearchResults.Clear();
-        foreach (var word in words)
+        foreach (var word in _rawSearchResults)
         {
-            SearchResults.Add(word);
+            SearchResults.Add(word.word);
         }
     }
 
@@ -103,7 +105,8 @@ public partial class DictionaryPageViewModel : PageViewModel
     {
         if (string.IsNullOrEmpty(word)) return;
 
-        var wordInfo = _wordQueryService.QueryWordInfo(word);
+        // var wordInfo = _wordQueryService.QueryWordInfo(word);
+        var wordInfo = _rawSearchResults.Find(x => x.word == word);
         if (wordInfo != null)
         {
             WeakReferenceMessenger.Default.Send(new NavigationMessage(Data.ApplicationPageNames.Detail, wordInfo));
