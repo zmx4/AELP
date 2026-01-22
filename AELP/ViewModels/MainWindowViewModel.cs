@@ -1,7 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using AELP.Data;
 using AELP.Factories;
+using AELP.Messages;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace AELP.ViewModels;
 
@@ -18,6 +20,12 @@ public partial class MainWindowViewModel : ViewModelBase
         _pageFactory = pageFactory;
 
         _content = _pageFactory.GetPageViewModel(ApplicationPageNames.Dictionary);
+
+        WeakReferenceMessenger.Default.Register<NavigationMessage>(this, (r, m) =>
+        {
+            var page = _pageFactory.GetPageViewModel(m.Value.PageName, m.Value.Parameter);
+            PushContent(page);
+        });
     }
 
     public ViewModelBase Content

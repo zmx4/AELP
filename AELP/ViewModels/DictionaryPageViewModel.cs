@@ -1,6 +1,8 @@
 ﻿using AELP.Services;
+using AELP.Messages;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using System.Collections.ObjectModel;
 
 namespace AELP.ViewModels;
@@ -23,6 +25,8 @@ public partial class DictionaryPageViewModel : PageViewModel
     
     [ObservableProperty]
     private ObservableCollection<string> _searchResults = new();
+    
+    
 
     public DictionaryPageViewModel(IWordQueryService wordQueryService)
     {
@@ -91,6 +95,18 @@ public partial class DictionaryPageViewModel : PageViewModel
         foreach (var word in words)
         {
             SearchResults.Add(word);
+        }
+    }
+
+    [RelayCommand]
+    private void OpenDetail(string word)
+    {
+        if (string.IsNullOrEmpty(word)) return;
+
+        var wordInfo = _wordQueryService.QueryWordInfo(word);
+        if (wordInfo != null)
+        {
+            WeakReferenceMessenger.Default.Send(new NavigationMessage(Data.ApplicationPageNames.Detail, wordInfo));
         }
     }
 }

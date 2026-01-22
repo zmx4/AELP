@@ -61,7 +61,7 @@
                          BorderThickness="0">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Border BorderBrush="#E0E0E0" BorderThickness="0,0,0,1" Padding="10">
+                            <Border BorderBrush="#E0E0E0" BorderThickness="0,0,0,1" Padding="10" Background="Transparent" DoubleTapped="OnItemDoubleTapped">
                                 <TextBlock Text="{Binding}" FontSize="16" />
                             </Border>
                         </DataTemplate>
