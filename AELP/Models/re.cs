@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AELP.Models;
 
-public partial class re
+public partial class re : Word
 {
     public string word { get; set; } = null!;
 

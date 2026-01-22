@@ -29,4 +29,13 @@ public class WordQueryService : IWordQueryService
         var result = _context.dictionaries.FirstOrDefault(x => x.translation != null && x.translation.Contains(translation));
         return result?.word ?? string.Empty;
     }
+
+    public List<string> QueryWords(string translation)
+    {
+        var results = _context.dictionaries
+            .Where(x => x.translation != null && x.translation.Contains(translation))
+            .Select(x => x.word)
+            .ToList();  
+        return results;
+    }
 }

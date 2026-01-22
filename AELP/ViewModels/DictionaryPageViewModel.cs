@@ -20,6 +20,9 @@ public partial class DictionaryPageViewModel : PageViewModel
 
     [ObservableProperty]
     private double _contentBlurRadius = 0;
+    
+    [ObservableProperty]
+    private ObservableCollection<string> _searchResults = new();
 
     public DictionaryPageViewModel(IWordQueryService wordQueryService)
     {
@@ -72,6 +75,22 @@ public partial class DictionaryPageViewModel : PageViewModel
             // Let's assume the user wants to obscure the area.
             SearchResult = "未找到该单词"; 
             ExamTags.Clear();
+        }
+    }
+
+    [RelayCommand]
+    private void SearchWords()
+    {
+        if (string.IsNullOrWhiteSpace(SearchText))
+        {
+            return;
+        }
+        
+        var words = _wordQueryService.QueryWords(SearchText);
+        SearchResults.Clear();
+        foreach (var word in words)
+        {
+            SearchResults.Add(word);
         }
     }
 }
