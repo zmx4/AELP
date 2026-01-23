@@ -1,4 +1,6 @@
-﻿using AELP.Helper;
+﻿using System;
+using System.Linq;
+using AELP.Helper;
 using Microsoft.EntityFrameworkCore;
 
 namespace AELP.Data;
@@ -15,5 +17,19 @@ public class UserDbContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSqlite("Data Source=" + PathHelper.GetLocalFilePath(DbName));
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<FavoritesDataModel>()
+            .Property(f => f.WordId)
+            .ValueGeneratedNever();
+
+        modelBuilder.Entity<TestDataModel>()
+            .Property(e => e.Mistakes)
+            .HasConversion(
+                v => string.Join(',', v),
+                v => v.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList()
+            );
     }
 }
