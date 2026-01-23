@@ -3,3 +3,13 @@ obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
+.idea/.idea.AELP/.idea/avalonia.xml
+.idea/.idea.AELP/.idea/copilot.data.migration.agent.xml
+.idea/.idea.AELP/.idea/copilot.data.migration.ask.xml
+.idea/.idea.AELP/.idea/copilot.data.migration.ask2agent.xml
+.idea/.idea.AELP/.idea/copilot.data.migration.edit.xml
+.idea/.idea.AELP/.idea/encodings.xml
+.idea/.idea.AELP/.idea/indexLayout.xml
+.idea/.idea.AELP/.idea/vcs.xml
+AELP/Assets/Database/stardict.db
+AELP.sln.DotSettings.user
