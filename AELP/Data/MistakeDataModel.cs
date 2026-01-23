@@ -1,10 +1,13 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace AELP.Data;
 
 public class MistakeDataModel
 {
-    public WordDataModel _word { get; set; }
-    public DateTime _time { get; set; }
-    public int _count { get; set; }
+    [Key]
+    public int Id { get; set; }
+    public int WordId { get; set; }
+    public DateTime Time { get; set; }
+    public int Count { get; set; }
 }

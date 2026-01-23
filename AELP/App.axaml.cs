@@ -30,6 +30,7 @@ public partial class App : Application
         var collection = new ServiceCollection();
         collection.AddDbContext<AppDbContext>(options =>
             options.UseSqlite("Data Source=../../../Assets/Database/stardict.db"));
+        collection.AddDbContext<UserDbContext>();
         collection.AddTransient<IWordQueryService, WordQueryService>();
         collection.AddSingleton<PageFactory>();
         collection.AddSingleton<MainWindowViewModel>();

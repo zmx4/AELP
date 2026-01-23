@@ -1,11 +1,13 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace AELP.Data;
 
 public class FavoritesDataModel
 {
-    public WordDataModel Word { get; set; }
-
+    [Key]
+    public int WordId { get; set; }
+    
     public bool IsCet4 { get; set; }
 
     public bool IsCet6 { get; set; }
