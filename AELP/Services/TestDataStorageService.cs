@@ -1,20 +1,21 @@
-﻿using AELP.Data;
+﻿using System.Threading.Tasks;
+using AELP.Data;
 
 namespace AELP.Services;
 
 public class TestDataStorageService : ITestDataStorageService
 {
-    public void SaveTestData(TestDataModel[] testData)
+    public async Task SaveTestData(TestDataModel[] testData)
     {
         throw new System.NotImplementedException();
     }
 
-    public TestDataModel[] LoadTestData()
+    public async Task<TestDataModel[]> LoadTestData()
     {
         throw new System.NotImplementedException();
     }
 
-    public TestDataModel[] GetRecentTests(int count = 10)
+    public async Task<TestDataModel[]> GetRecentTests(int count = 10)
     {
         throw new System.NotImplementedException();
     }

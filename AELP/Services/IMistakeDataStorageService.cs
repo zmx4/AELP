@@ -1,9 +1,10 @@
-﻿using AELP.Data;
+﻿using System.Threading.Tasks;
+using AELP.Data;
 
 namespace AELP.Services;
 
 public interface IMistakeDataStorageService
 {
-    public void SaveMistakeData(MistakeDataModel[] mistakeData);
-    public MistakeDataModel[] LoadTestData();
+    public Task SaveMistakeData(MistakeDataModel[] mistakeData);
+    public Task<MistakeDataModel[]> LoadTestData();
 }

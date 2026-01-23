@@ -1,17 +1,21 @@
-﻿using AELP.Data;
+﻿using System;
+using System.Threading.Tasks;
+using AELP.Data;
 using AELP.Models;
 
 namespace AELP.Services;
 
 public class FavoritesDataStorageService : IFavoritesDataStorageService
 {
-    public void SaveFavorites(dictionary[] favorites)
+    public async Task SaveFavorites(dictionary[] favorites)
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 
-    public FavoritesDataModel[] LoadFavorites()
+    public async Task<FavoritesDataModel[]> LoadFavorites()
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
+
+    public event EventHandler? OnFavoritesChanged;
 }
