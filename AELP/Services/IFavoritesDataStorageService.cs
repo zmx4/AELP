@@ -7,6 +7,7 @@ namespace AELP.Services;
 
 public interface IFavoritesDataStorageService
 {
+    public Task AddToFavorites(dictionary favorite);
     public Task SaveFavorites(dictionary[] favorites);
     public Task<FavoritesDataModel[]> LoadFavorites();
     public event EventHandler OnFavoritesChanged;

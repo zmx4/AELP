@@ -12,6 +12,42 @@ public class FavoritesDataStorageService : IFavoritesDataStorageService
 {
     public event EventHandler? OnFavoritesChanged;
 
+    public async Task AddToFavorites(dictionary favorite)
+    {
+        await using var context = new UserDbContext();
+        await context.Database.EnsureCreatedAsync();
+        
+        var wordModel = await context.Words.FirstOrDefaultAsync(w => w.Word == favorite.word);
+        if (wordModel == null)
+        {
+            wordModel = new WordDataModel
+            {
+                Word = favorite.word,
+                Translation = favorite.translation ?? ""
+            };
+            await context.Words.AddAsync(wordModel);
+            await context.SaveChangesAsync();
+        }
+
+        var favModel = await context.Favorites.FindAsync(wordModel.Id);
+        if (favModel == null)
+        {
+            favModel = new FavoritesDataModel { WordId = wordModel.Id };
+            await context.Favorites.AddAsync(favModel);
+        }
+
+        favModel.IsFavorite = true;
+        favModel.IsCet4 = favorite.cet4.HasValue;
+        favModel.IsCet6 = favorite.cet6.HasValue;
+        favModel.IsHs = favorite.hs.HasValue;
+        favModel.IsPh = favorite.ph.HasValue;
+        favModel.IsTf = favorite.tf.HasValue;
+        favModel.IsYs = favorite.ys.HasValue;
+
+        await context.SaveChangesAsync();
+        OnFavoritesChanged?.Invoke(this, EventArgs.Empty);
+    }
+
     public async Task SaveFavorites(dictionary[] favorites)
     {
         using var context = new UserDbContext();

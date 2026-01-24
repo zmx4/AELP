@@ -1,17 +1,22 @@
 ﻿using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using AELP.Data;
 using AELP.Models;
+using AELP.Services;
+using CommunityToolkit.Mvvm.Input;
 
 namespace AELP.ViewModels;
 
-public class DetailPageViewModel : PageViewModel
+public partial class DetailPageViewModel : PageViewModel
 {
+    private IFavoritesDataStorageService _dataStorageService;
+    
     private dictionary? _word;
 
     public dictionary? Word
     {
         get => _word;
-        set
+        private set
         {
             if (SetProperty(ref _word, value))
             {
@@ -22,9 +27,10 @@ public class DetailPageViewModel : PageViewModel
 
     public ObservableCollection<string> Tags { get; } = new();
 
-    public DetailPageViewModel()
+    public DetailPageViewModel(IFavoritesDataStorageService dataStorageService)
     {
         PageNames = ApplicationPageNames.Detail;
+        _dataStorageService = dataStorageService;
     }
 
     public override void SetParameter(object parameter)
@@ -32,13 +38,14 @@ public class DetailPageViewModel : PageViewModel
         if (parameter is dictionary word)
         {
             Word = word;
+            word.translation = word.translation?.Replace("\\n", "\n");
         }
     }
 
     private void UpdateTags()
     {
         Tags.Clear();
-        if (Word == null) return;
+        if (Word is null) return;
 
         if (Word.cet4 > 0) Tags.Add("CET4");
         if (Word.cet6 > 0) Tags.Add("CET6");
@@ -46,5 +53,12 @@ public class DetailPageViewModel : PageViewModel
         if (Word.ph > 0) Tags.Add("小学");
         if (Word.tf > 0) Tags.Add("托福");
         if (Word.ys > 0) Tags.Add("雅思");
+    }
+    [RelayCommand]
+    private async Task AddToFavoritesAsync()
+    {
+        if (Word is null) return;
+
+        await _dataStorageService.AddToFavorites(Word);
     }
 }

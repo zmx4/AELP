@@ -6,7 +6,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="AELP.Views.DetailPageView"
              x:DataType="vm:DetailPageViewModel">
-    <Grid RowDefinitions="Auto, Auto, Auto, *">
+    <Grid RowDefinitions="Auto, Auto, Auto, *, Auto">
         <!-- Word -->
         <TextBlock Text="{Binding Word.word}" 
                    FontSize="32" 
@@ -38,5 +38,7 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
+        
+        <Button Grid.Row="4" Command="{Binding AddToFavoritesCommand}" Content="收藏" Width="60" Margin="0,0,0,20"></Button>
     </Grid>
 </UserControl>

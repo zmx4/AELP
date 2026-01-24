@@ -32,6 +32,9 @@ public partial class App : Application
             options.UseSqlite("Data Source=../../../Assets/Database/stardict.db"));
         collection.AddDbContext<UserDbContext>();
         collection.AddTransient<IWordQueryService, WordQueryService>();
+        collection.AddTransient<IFavoritesDataStorageService, FavoritesDataStorageService>();
+        collection.AddTransient<IMistakeDataStorageService, MistakeDataStorageService>();
+        collection.AddTransient<ITestDataStorageService, TestDataStorageService>();
         collection.AddSingleton<PageFactory>();
         collection.AddSingleton<MainWindowViewModel>();
         collection.AddTransient<DictionaryPageViewModel>();
