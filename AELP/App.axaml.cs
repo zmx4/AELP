@@ -4,6 +4,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core;
 using Avalonia.Data.Core.Plugins;
 using System.Linq;
+using System.Threading.Tasks;
 using AELP.Data;
 using AELP.Factories;
 using Avalonia.Markup.Xaml;
@@ -60,6 +61,21 @@ public partial class App : Application
         });
         
         var serviceProvider = collection.BuildServiceProvider();
+        
+        Task.Run(async () =>
+        {
+            try
+            {
+                using var scope = serviceProvider.CreateScope();
+                var db = scope.ServiceProvider.GetRequiredService<UserDbContext>();
+                await db.Database.EnsureCreatedAsync();
+                using var favoritesFromStorage =  scope.ServiceProvider.GetRequiredKeyedService<IFavoritesDataStorageService>(null).LoadFavorites();
+            }
+            catch
+            {
+                // ignore
+            }
+        });
         
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {

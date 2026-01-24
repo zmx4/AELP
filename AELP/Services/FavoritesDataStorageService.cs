@@ -10,12 +10,17 @@ namespace AELP.Services;
 
 public class FavoritesDataStorageService : IFavoritesDataStorageService
 {
+    private static bool _dbChecked = false;
     public event EventHandler? OnFavoritesChanged;
 
     public async Task AddToFavorites(dictionary favorite)
     {
         await using var context = new UserDbContext();
-        await context.Database.EnsureCreatedAsync();
+        if (!_dbChecked)
+        {
+            await context.Database.EnsureCreatedAsync();
+            _dbChecked = true;
+        }
         
         var wordModel = await context.Words.FirstOrDefaultAsync(w => w.Word == favorite.word);
         if (wordModel == null)
@@ -51,7 +56,11 @@ public class FavoritesDataStorageService : IFavoritesDataStorageService
     public async Task RemoveFromFavorites(dictionary favorite)
     {
         await using var context = new UserDbContext();
-        await context.Database.EnsureCreatedAsync();
+        if (!_dbChecked)
+        {
+            await context.Database.EnsureCreatedAsync();
+            _dbChecked = true;
+        }
         
         var wordModel = await context.Words.FirstOrDefaultAsync(w => w.Word == favorite.word);
         if (wordModel == null) return;
@@ -68,7 +77,11 @@ public class FavoritesDataStorageService : IFavoritesDataStorageService
     public async Task SaveFavorites(dictionary[] favorites)
     {
         using var context = new UserDbContext();
-        await context.Database.EnsureCreatedAsync();
+        if (!_dbChecked)
+        {
+            await context.Database.EnsureCreatedAsync();
+            _dbChecked = true;
+        }
 
         // 1. Get IDs of words in the new favorites list. Ensure they exist in WordDataModel.
         var dictWords = favorites.ToDictionary(d => d.word);
@@ -157,8 +170,12 @@ public class FavoritesDataStorageService : IFavoritesDataStorageService
 
     public async Task<FavoritesDataModel[]> LoadFavorites()
     {
-        using var context = new UserDbContext();
-        await context.Database.EnsureCreatedAsync();
+        await using var context = new UserDbContext();
+        if (!_dbChecked)
+        {
+            await context.Database.EnsureCreatedAsync();
+            _dbChecked = true;
+        }
         return await context.Favorites.Include(f => f.Word).Where(f => f.IsFavorite).ToArrayAsync();
     }
 }

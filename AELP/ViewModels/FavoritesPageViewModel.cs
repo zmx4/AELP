@@ -32,12 +32,15 @@ public partial class FavoritesPageViewModel : PageViewModel
 
     private async Task LoadFavorites()
     {
-        Favorites.Clear();
         var favoritesFromStorage = await _dataStorageService.LoadFavorites();
-        foreach (var item in favoritesFromStorage)
-        {
-            Favorites.Add(item);
-        }
+        // foreach (var item in favoritesFromStorage)
+        // {
+        //     if (item.Word is { Translation: not null })
+        //     {
+        //         item.Word.Translation = item.Word.Translation.Replace("\n", "\\n");
+        //     }
+        // }
+        Favorites = new ObservableCollection<FavoritesDataModel>(favoritesFromStorage);
     }
     
     [RelayCommand]
