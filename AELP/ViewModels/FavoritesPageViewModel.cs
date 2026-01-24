@@ -1,9 +1,89 @@
-﻿namespace AELP.ViewModels;
+﻿using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using AELP.Data;
+using AELP.Messages;
+using AELP.Models;
+using AELP.Services;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 
-public class FavoritesPageViewModel : PageViewModel
+namespace AELP.ViewModels;
+
+public partial class FavoritesPageViewModel : PageViewModel
 {
-    public FavoritesPageViewModel()
+    [ObservableProperty]
+    private ObservableCollection<FavoritesDataModel> _favorites;
+    
+    private readonly IFavoritesDataStorageService _dataStorageService;
+    private readonly IUserWordQueryService _wordQueryService;
+    public FavoritesPageViewModel(IFavoritesDataStorageService dataStorageService ,IUserWordQueryService wordQueryService)
     {
         PageNames = Data.ApplicationPageNames.Favorites;
+        
+        this._dataStorageService = dataStorageService;
+        
+        this._wordQueryService = wordQueryService;
+        
+        _favorites = new ObservableCollection<FavoritesDataModel>();
+        
+        LoadFavorites().ConfigureAwait(false);
+    }
+
+    private async Task LoadFavorites()
+    {
+        Favorites.Clear();
+        var favoritesFromStorage = await _dataStorageService.LoadFavorites();
+        foreach (var item in favoritesFromStorage)
+        {
+            Favorites.Add(item);
+        }
+    }
+    
+    [RelayCommand]
+    private async Task ShowFavoriteDetails(FavoritesDataModel favorite)
+    {
+        var wordInfo = await _wordQueryService.QueryUserWordInfoAsync(favorite.WordId);
+        if (wordInfo != null)
+        {
+            var temp = new dictionary();
+            temp.word = wordInfo.Word;
+            temp.translation = wordInfo.Translation;
+            temp.cet4 = (favorite.IsCet4) ? 1 : 0;
+            temp.cet6 = (favorite.IsCet6) ? 1 : 0;
+            temp.tf = (favorite.IsTf) ? 1 : 0;
+            temp.ys = (favorite.IsYs) ? 1 : 0;
+            temp.hs = (favorite.IsHs) ? 1 : 0;
+            temp.ph = (favorite.IsPh) ? 1 : 0;
+            
+            WeakReferenceMessenger.Default.Send(new NavigationMessage(Data.ApplicationPageNames.Detail, temp));
+        }
+    }
+
+    [RelayCommand]
+    private async Task RemoveFromFavorites(FavoritesDataModel favorite)
+    {
+        var wordInfo = await _wordQueryService.QueryUserWordInfoAsync(favorite.WordId);
+        if (wordInfo != null)
+        {
+            var temp = new dictionary();
+            temp.word = wordInfo.Word;
+            temp.translation = wordInfo.Translation;
+            temp.cet4 = (favorite.IsCet4) ? 1 : 0;
+            temp.cet6 = (favorite.IsCet6) ? 1 : 0;
+            temp.tf = (favorite.IsTf) ? 1 : 0;
+            temp.ys = (favorite.IsYs) ? 1 : 0;
+            temp.hs = (favorite.IsHs) ? 1 : 0;
+            temp.ph = (favorite.IsPh) ? 1 : 0;
+
+            await _dataStorageService.RemoveFromFavorites(temp);
+            Favorites.Remove(favorite);
+        }
+    }
+
+    [RelayCommand]
+    private async Task Refresh()
+    {
+        await LoadFavorites();
     }
 }

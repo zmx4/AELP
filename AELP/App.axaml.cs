@@ -35,6 +35,7 @@ public partial class App : Application
         collection.AddTransient<IFavoritesDataStorageService, FavoritesDataStorageService>();
         collection.AddTransient<IMistakeDataStorageService, MistakeDataStorageService>();
         collection.AddTransient<ITestDataStorageService, TestDataStorageService>();
+        collection.AddSingleton<IUserWordQueryService, UserWordQueryService>();
         collection.AddSingleton<PageFactory>();
         collection.AddSingleton<MainWindowViewModel>();
         collection.AddTransient<DictionaryPageViewModel>();

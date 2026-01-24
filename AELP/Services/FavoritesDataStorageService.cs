@@ -48,6 +48,23 @@ public class FavoritesDataStorageService : IFavoritesDataStorageService
         OnFavoritesChanged?.Invoke(this, EventArgs.Empty);
     }
 
+    public async Task RemoveFromFavorites(dictionary favorite)
+    {
+        await using var context = new UserDbContext();
+        await context.Database.EnsureCreatedAsync();
+        
+        var wordModel = await context.Words.FirstOrDefaultAsync(w => w.Word == favorite.word);
+        if (wordModel == null) return;
+
+        var favModel = await context.Favorites.FindAsync(wordModel.Id);
+        if (favModel != null)
+        {
+            favModel.IsFavorite = false;
+            await context.SaveChangesAsync();
+            OnFavoritesChanged?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
     public async Task SaveFavorites(dictionary[] favorites)
     {
         using var context = new UserDbContext();
@@ -142,6 +159,6 @@ public class FavoritesDataStorageService : IFavoritesDataStorageService
     {
         using var context = new UserDbContext();
         await context.Database.EnsureCreatedAsync();
-        return await context.Favorites.Where(f => f.IsFavorite).ToArrayAsync();
+        return await context.Favorites.Include(f => f.Word).Where(f => f.IsFavorite).ToArrayAsync();
     }
 }

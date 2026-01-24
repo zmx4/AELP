@@ -22,4 +22,6 @@ public class FavoritesDataModel
     
     public bool IsFavorite { get; set; }
     
+    [System.ComponentModel.DataAnnotations.Schema.ForeignKey("WordId")]
+    public virtual WordDataModel Word { get; set; }
 }

@@ -3,8 +3,147 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:AELP.ViewModels"
+             xmlns:data="clr-namespace:AELP.Data"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:DataType="vm:FavoritesPageViewModel"
              x:Class="AELP.Views.FavoritesPageView">
-    Welcome to Avalonia!
+    <Grid RowDefinitions="Auto,*">
+        <!-- 顶部工具栏 -->
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="10">
+            <TextBlock Grid.Column="0" 
+                       Text="我的收藏" 
+                       FontSize="24" 
+                       FontWeight="Bold" 
+                       VerticalAlignment="Center"/>
+            <Button Grid.Column="1" 
+                    Content="刷新" 
+                    Command="{Binding RefreshCommand}" 
+                    Margin="5,0,0,0"/>
+        </Grid>
+
+        <!-- 收藏列表 -->
+        <ScrollViewer Grid.Row="1" Margin="10" IsVisible="{Binding Favorites.Count}">
+            <ItemsControl ItemsSource="{Binding Favorites}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="data:FavoritesDataModel">
+                        <Border BorderBrush="#E0E0E0" 
+                                BorderThickness="1" 
+                                CornerRadius="8" 
+                                Padding="15" 
+                                Margin="0,5"
+                                Background="White">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="5" 
+                                                  OffsetY="2" 
+                                                  Opacity="0.1"/>
+                            </Border.Effect>
+                            
+                            <Grid ColumnDefinitions="*,Auto,Auto">
+                                <!-- 单词信息 -->
+                                <StackPanel Grid.Column="0" Spacing="8">
+                                    <TextBlock Text="{Binding Word.Word}" 
+                                               FontSize="20" 
+                                               FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding Word.Translation}" 
+                                               FontSize="14" 
+                                               Foreground="#666666"
+                                               TextWrapping="Wrap"/>
+                                    
+                                    <!-- 标签 -->
+                                    <ItemsControl>
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Horizontal" Spacing="5"/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.Items>
+                                            <Border Background="#660078D7" 
+                                                    CornerRadius="4" 
+                                                    Padding="6,3"
+                                                    IsVisible="{Binding IsCet4}">
+                                                <TextBlock Text="CET4" 
+                                                           Foreground="White" 
+                                                           FontSize="11"/>
+                                            </Border>
+                                            <Border Background="#660078D7" 
+                                                    CornerRadius="4" 
+                                                    Padding="6,3"
+                                                    IsVisible="{Binding IsCet6}">
+                                                <TextBlock Text="CET6" 
+                                                           Foreground="White" 
+                                                           FontSize="11"/>
+                                            </Border>
+                                            <Border Background="#6600BF00" 
+                                                    CornerRadius="4" 
+                                                    Padding="6,3"
+                                                    IsVisible="{Binding IsHs}">
+                                                <TextBlock Text="高中" 
+                                                           Foreground="White" 
+                                                           FontSize="11"/>
+                                            </Border>
+                                            <Border Background="#66FF6600" 
+                                                    CornerRadius="4" 
+                                                    Padding="6,3"
+                                                    IsVisible="{Binding IsPh}">
+                                                <TextBlock Text="小学" 
+                                                           Foreground="White" 
+                                                           FontSize="11"/>
+                                            </Border>
+                                            <Border Background="#66DC143C" 
+                                                    CornerRadius="4" 
+                                                    Padding="6,3"
+                                                    IsVisible="{Binding IsTf}">
+                                                <TextBlock Text="托福" 
+                                                           Foreground="White" 
+                                                           FontSize="11"/>
+                                            </Border>
+                                            <Border Background="#669932CC" 
+                                                    CornerRadius="4" 
+                                                    Padding="6,3"
+                                                    IsVisible="{Binding IsYs}">
+                                                <TextBlock Text="雅思" 
+                                                           Foreground="White" 
+                                                           FontSize="11"/>
+                                            </Border>
+                                        </ItemsControl.Items>
+                                    </ItemsControl>
+                                </StackPanel>
+                                
+                                <!-- 操作按钮 -->
+                                <Button Grid.Column="1" 
+                                        Content="查看详情" 
+                                        Command="{Binding $parent[ItemsControl].((vm:FavoritesPageViewModel)DataContext).ShowFavoriteDetailsCommand}"
+                                        CommandParameter="{Binding}"
+                                        Margin="10,0"/>
+                                <Button Grid.Column="2" 
+                                        Content="取消收藏" 
+                                        Command="{Binding $parent[ItemsControl].((vm:FavoritesPageViewModel)DataContext).RemoveFromFavoritesCommand}"
+                                        CommandParameter="{Binding}"
+                                        Background="#FFDDDDDD"/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <!-- 空状态提示 -->
+        <StackPanel Grid.Row="1" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center"
+                    Spacing="10"
+                    IsVisible="{Binding !Favorites.Count}">
+            <TextBlock Text="📚" 
+                       FontSize="48" 
+                       HorizontalAlignment="Center"/>
+            <TextBlock Text="还没有收藏任何单词" 
+                       FontSize="16" 
+                       Foreground="#999999"
+                       HorizontalAlignment="Center"/>
+            <TextBlock Text="在词典页面搜索单词并收藏吧" 
+                       FontSize="14" 
+                       Foreground="#CCCCCC"
+                       HorizontalAlignment="Center"/>
+        </StackPanel>
+    </Grid>
 </UserControl>

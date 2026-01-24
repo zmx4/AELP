@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using AELP.Models;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AELP.Services;
 
@@ -17,7 +18,12 @@ public class WordQueryService : IWordQueryService
     {
         return _context.dictionaries.FirstOrDefault(x => x.word == word);
     }
-    
+
+    public async Task<dictionary?> QueryWordInfoAsync(string word)
+    {
+        return await Task.Run(() => _context.dictionaries.FirstOrDefault(x => x.word == word));
+    }
+
     public string QueryWordTranslation(string word)
     {
         var result = _context.dictionaries.FirstOrDefault(x => x.word == word);
@@ -37,5 +43,14 @@ public class WordQueryService : IWordQueryService
             //.Select(x => x.word)
             .ToList();  
         return results;
+    }
+
+    public async Task<List<dictionary>> QueryWordsAsync(string translation)
+    {
+        return await Task.Run(() =>
+            _context.dictionaries
+                .Where(x => x.translation != null && x.translation.Contains(translation))
+                //.Select(x => x.word)
+                .ToList());
     }
 }
