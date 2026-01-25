@@ -17,32 +17,32 @@ public class TestWordGetter(AppDbContext context) : ITestWordGetter
         return testRange switch
         {
             TestRange.Cet4 => _dbContext.CET4s
-                .OrderBy(r => System.Guid.NewGuid())
+                .OrderBy(r => EF.Functions.Random())
                 .Take(count)
                 .ToListAsync()
                 .ContinueWith(t => t.Result.Cast<Word>().ToList()),
             TestRange.Cet6 => _dbContext.CET6s
-                .OrderBy(r => System.Guid.NewGuid())
+                .OrderBy(r => EF.Functions.Random())
                 .Take(count)
                 .ToListAsync()
                 .ContinueWith(t => t.Result.Cast<Word>().ToList()),
             TestRange.Senior => _dbContext.HighSchools
-                .OrderBy(r => System.Guid.NewGuid())
+                .OrderBy(r => EF.Functions.Random())
                 .Take(count)
                 .ToListAsync()
                 .ContinueWith(t => t.Result.Cast<Word>().ToList()),
             TestRange.Toefl => _dbContext.tfs
-                .OrderBy(r => System.Guid.NewGuid())
+                .OrderBy(r => EF.Functions.Random())
                 .Take(count)
                 .ToListAsync()
                 .ContinueWith(t => t.Result.Cast<Word>().ToList()),
             TestRange.Ielts => _dbContext.ys
-                .OrderBy(r => System.Guid.NewGuid())
+                .OrderBy(r => EF.Functions.Random())
                 .Take(count)
                 .ToListAsync()
                 .ContinueWith(t => t.Result.Cast<Word>().ToList()),
             TestRange.Primary => _dbContext.PrimarySchools
-                .OrderBy(r => System.Guid.NewGuid())
+                .OrderBy(r => EF.Functions.Random())
                 .Take(count)
                 .ToListAsync()
                 .ContinueWith(t => t.Result.Cast<Word>().ToList()),
