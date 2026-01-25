@@ -2,6 +2,26 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             x:Class="AELP.Views.SummaryPageView">
-    Welcome to Avalonia!
+             xmlns:vm="clr-namespace:AELP.ViewModels"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Avalonia;assembly=LiveChartsCore.SkiaSharpView.Avalonia"
+             mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="600"
+             x:Class="AELP.Views.SummaryPageView"
+             x:DataType="vm:SummaryPageViewModel">
+    <Grid RowDefinitions="Auto,*" ColumnDefinitions="*,*" Margin="20" ColumnSpacing="16" RowSpacing="16">
+        <TextBlock Text="测试总结" FontSize="24" FontWeight="Bold" Grid.ColumnSpan="2" />
+
+        <Border Grid.Row="1" Background="#0F000000" CornerRadius="8" Padding="12">
+            <StackPanel Spacing="8">
+                <TextBlock Text="单词耗时占比" FontSize="16" FontWeight="SemiBold" />
+                <lvc:PieChart Series="{Binding TimePieSeries}" LegendPosition="Right" />
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="1" Grid.Column="1" Background="#0F000000" CornerRadius="8" Padding="12">
+            <StackPanel Spacing="8">
+                <TextBlock Text="历次测试准确度" FontSize="16" FontWeight="SemiBold" />
+                <lvc:CartesianChart Series="{Binding AccuracyLineSeries}" XAxes="{Binding AccuracyXAxes}" YAxes="{Binding AccuracyYAxes}" />
+            </StackPanel>
+        </Border>
+    </Grid>
 </UserControl>

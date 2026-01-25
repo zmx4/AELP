@@ -17,55 +17,16 @@ namespace AELP.ViewModels;
 public partial class TestsPageViewModel : PageViewModel
 {
     private List<Word> _testWords = new();
-    private List<ProblemData> _problemDatas = new();
+    private readonly List<ProblemData> _problemDatas = new();
+    private readonly List<MistakeDataModel> _mistakeDatas = new();
+    private readonly Stopwatch _stopwatch = new();
+    private readonly Random _random = new();
+    private Word? _currentWord;
+    private string _missingPart = string.Empty;
     
     private readonly ITestDataStorageService _testDataStorageService;
     private readonly IMistakeDataStorageService _mistakeDataStorageService;
     private readonly ITestWordGetter _testWordGetter;
-    
-    private int _currentQuestionIndex;
-    private Stopwatch _questionStopwatch = new();
-    private Word? _currentWord;
-    private Random _random = new();
-
-    // 测试设置相关属性
-    [ObservableProperty] private bool _isSettingsVisible = true;
-    [ObservableProperty] private bool _isTestingVisible = false;
-    [ObservableProperty] private int _questionCount = 10;
-    [ObservableProperty] private TestRange _selectedTestRange = TestRange.Cet4;
-    
-    // 测试进行中相关属性
-    [ObservableProperty] private int _currentQuestionNumber;
-    [ObservableProperty] private int _totalQuestions;
-    [ObservableProperty] private string _currentWordDisplay = string.Empty;
-    [ObservableProperty] private string _currentTranslationDisplay = string.Empty;
-    [ObservableProperty] private string _questionTypeText = string.Empty;
-    
-    // 选择题相关
-    [ObservableProperty] private bool _isChoiceQuestion;
-    [ObservableProperty] private ObservableCollection<ChoiceOption> _choiceOptions = new();
-    
-    // 填空题相关
-    [ObservableProperty] private bool _isFillQuestion;
-    [ObservableProperty] private string _fillHint = string.Empty;
-    [ObservableProperty] private string _userInput = string.Empty;
-    [ObservableProperty] private bool _showFillResult;
-    [ObservableProperty] private bool _isFillCorrect;
-    [ObservableProperty] private string _correctAnswer = string.Empty;
-
-    // 可用的测试范围列表
-    public ObservableCollection<TestRangeItem> TestRanges { get; } = new()
-    {
-        new TestRangeItem { Range = TestRange.Primary, DisplayName = "小学词汇" },
-        new TestRangeItem { Range = TestRange.Senior, DisplayName = "高中词汇" },
-        new TestRangeItem { Range = TestRange.Cet4, DisplayName = "四级词汇" },
-        new TestRangeItem { Range = TestRange.Cet6, DisplayName = "六级词汇" },
-        new TestRangeItem { Range = TestRange.Toefl, DisplayName = "托福词汇" },
-        new TestRangeItem { Range = TestRange.Ielts, DisplayName = "雅思词汇" }
-    };
-
-    [ObservableProperty] private TestRangeItem? _selectedTestRangeItem;
-
     public TestsPageViewModel(ITestWordGetter testWordGetter,
                               ITestDataStorageService testDataStorageService,
                               IMistakeDataStorageService mistakeDataStorageService)
@@ -73,227 +34,234 @@ public partial class TestsPageViewModel : PageViewModel
         _testWordGetter = testWordGetter;
         _testDataStorageService = testDataStorageService;
         _mistakeDataStorageService = mistakeDataStorageService;
-        PageNames = ApplicationPageNames.Tests;
-        SelectedTestRangeItem = TestRanges[2]; // 默认CET4
+        PageNames = Data.ApplicationPageNames.Tests;
+
+        TestRanges = new ObservableCollection<TestRange>((TestRange[])Enum.GetValues(typeof(TestRange)));
+        QuestionCounts = new ObservableCollection<int> { 5, 10, 15, 20 };
+        SelectedTestRange = TestRange.Cet4;
+        QuestionCount = 10;
+        StatusText = string.Empty;
+    }
+
+    [ObservableProperty] private ObservableCollection<TestRange> _testRanges = new();
+    [ObservableProperty] private TestRange _selectedTestRange = TestRange.Cet4;
+    [ObservableProperty] private ObservableCollection<int> _questionCounts = new();
+    [ObservableProperty] private int _questionCount = 10;
+    [ObservableProperty] private bool _isTesting;
+    [ObservableProperty] private bool _isChoiceQuestion;
+    [ObservableProperty] private int _currentIndex;
+    [ObservableProperty] private string _currentWordText = string.Empty;
+    [ObservableProperty] private string _currentTranslation = string.Empty;
+    [ObservableProperty] private string _partialWord = string.Empty;
+    [ObservableProperty] private string _fillInput = string.Empty;
+    [ObservableProperty] private ObservableCollection<string> _options = new();
+    [ObservableProperty] private string _progressText = string.Empty;
+    [ObservableProperty] private string _statusText = string.Empty;
+
+    public bool IsNotTesting => !IsTesting;
+    public bool IsFillQuestion => IsTesting && !IsChoiceQuestion;
+
+    partial void OnIsTestingChanged(bool value)
+    {
+        OnPropertyChanged(nameof(IsNotTesting));
+        OnPropertyChanged(nameof(IsFillQuestion));
+    }
+
+    partial void OnIsChoiceQuestionChanged(bool value)
+    {
+        OnPropertyChanged(nameof(IsFillQuestion));
     }
 
     [RelayCommand]
     private async Task StartTestAsync()
     {
-        if (SelectedTestRangeItem == null) return;
-        
-        _testWords = await _testWordGetter.GetTestWords(QuestionCount * 2, SelectedTestRangeItem.Range);
-        if (_testWords.Count < 4)
+        StatusText = string.Empty;
+
+        if (QuestionCount <= 0)
         {
-            // 单词数量不足
+            StatusText = "题量必须大于 0";
             return;
         }
-        
+
+        _testWords = await _testWordGetter.GetTestWords(QuestionCount, SelectedTestRange);
+        if (_testWords.Count == 0)
+        {
+            StatusText = "未获取到测试单词";
+            return;
+        }
+
         _problemDatas.Clear();
-        _currentQuestionIndex = 0;
-        TotalQuestions = Math.Min(QuestionCount, _testWords.Count / 2);
-        
-        IsSettingsVisible = false;
-        IsTestingVisible = true;
-        
-        ShowNextQuestion();
+        _mistakeDatas.Clear();
+        CurrentIndex = 0;
+        IsTesting = true;
+        IsChoiceQuestion = true;
+
+        SetupQuestion();
     }
 
-    private void ShowNextQuestion()
+    [RelayCommand]
+    private async Task ChooseOptionAsync(string option)
     {
-        if (_currentQuestionIndex >= TotalQuestions)
+        if (!IsTesting || !IsChoiceQuestion || _currentWord is null) return;
+
+        _stopwatch.Stop();
+        var isRight = string.Equals(option, CurrentTranslation, StringComparison.OrdinalIgnoreCase);
+        RecordAnswer(isRight);
+        await AdvanceToNextQuestionAsync();
+    }
+
+    [RelayCommand]
+    private async Task SubmitFillAsync()
+    {
+        if (!IsTesting || IsChoiceQuestion || _currentWord is null) return;
+
+        _stopwatch.Stop();
+        var userInput = (FillInput ?? string.Empty).Trim();
+        var isRight = string.Equals(userInput, _missingPart, StringComparison.OrdinalIgnoreCase);
+        RecordAnswer(isRight);
+        await AdvanceToNextQuestionAsync();
+    }
+
+    private void SetupQuestion()
+    {
+        if (CurrentIndex < 0 || CurrentIndex >= _testWords.Count)
         {
-            EndTest();
             return;
         }
 
-        _currentWord = _testWords[_currentQuestionIndex];
-        CurrentQuestionNumber = _currentQuestionIndex + 1;
-        
-        // 随机决定题目类型: 0 = 选择正确翻译, 1 = 填空补全单词
-        var questionType = _random.Next(2);
-        
-        if (questionType == 0)
+        _currentWord = _testWords[CurrentIndex];
+        CurrentWordText = _currentWord.word;
+        CurrentTranslation = _currentWord.translation ?? "无翻译";
+
+        IsChoiceQuestion = CurrentIndex % 2 == 0;
+
+        if (IsChoiceQuestion)
         {
-            SetupChoiceQuestion();
+            BuildOptions();
         }
         else
         {
-            SetupFillQuestion();
+            BuildPartialWord();
         }
-        
-        _questionStopwatch.Restart();
+
+        FillInput = string.Empty;
+        ProgressText = $"{CurrentIndex + 1}/{_testWords.Count}";
+
+        _stopwatch.Reset();
+        _stopwatch.Start();
     }
 
-    private void SetupChoiceQuestion()
+    private void BuildOptions()
     {
-        IsChoiceQuestion = true;
-        IsFillQuestion = false;
-        QuestionTypeText = "选择正确的翻译";
-        CurrentWordDisplay = _currentWord?.word ?? "";
-        CurrentTranslationDisplay = "";
-        ShowFillResult = false;
-        UserInput = "";
-        
-        // 生成选项
-        ChoiceOptions.Clear();
-        var correctTranslation = _currentWord?.translation?.Replace("\\n", "\n") ?? "";
-        
-        // 获取3个错误选项
-        var wrongOptions = _testWords
-            .Where(w => w.word != _currentWord?.word)
+        Options.Clear();
+        var correct = CurrentTranslation;
+        var translations = _testWords
+            .Select(w => w.translation)
+            .Where(t => !string.IsNullOrWhiteSpace(t))
+            .Select(t => t!)
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToList();
+
+        var distractors = translations
+            .Where(t => !string.Equals(t, correct, StringComparison.OrdinalIgnoreCase))
             .OrderBy(_ => _random.Next())
             .Take(3)
-            .Select(w => w.translation?.Replace("\\n", "\n") ?? "")
             .ToList();
-        
-        // 合并并打乱
-        var allOptions = new List<string> { correctTranslation };
-        allOptions.AddRange(wrongOptions);
-        allOptions = allOptions.OrderBy(_ => _random.Next()).ToList();
-        
-        for (int i = 0; i < allOptions.Count; i++)
+
+        var options = new List<string> { correct };
+        options.AddRange(distractors);
+
+        foreach (var opt in options.Distinct(StringComparer.OrdinalIgnoreCase)
+                     .OrderBy(_ => _random.Next()))
         {
-            ChoiceOptions.Add(new ChoiceOption
+            Options.Add(opt);
+        }
+    }
+
+    private void BuildPartialWord()
+    {
+        if (_currentWord is null) return;
+
+        var word = _currentWord.word ?? string.Empty;
+        if (string.IsNullOrEmpty(word))
+        {
+            _missingPart = string.Empty;
+            PartialWord = string.Empty;
+            return;
+        }
+        var missingLength = Math.Max(1, word.Length / 2);
+        var prefix = word.Substring(0, word.Length - missingLength);
+        _missingPart = word.Substring(word.Length - missingLength);
+        PartialWord = prefix + new string('_', missingLength);
+    }
+
+    private void RecordAnswer(bool isRight)
+    {
+        if (_currentWord is null) return;
+
+        var elapsed = _stopwatch.ElapsedMilliseconds;
+        _problemDatas.Add(new ProblemData
+        {
+            Word = _currentWord.word,
+            Translation = CurrentTranslation,
+            CostTimeMs = elapsed,
+            IsRight = isRight
+        });
+
+        if (!isRight)
+        {
+            _mistakeDatas.Add(new MistakeDataModel
             {
-                Index = i,
-                Text = allOptions[i],
-                IsCorrect = allOptions[i] == correctTranslation
+                Word = _currentWord.word,
+                Time = DateTime.Now,
+                Count = 1
             });
         }
     }
 
-    private void SetupFillQuestion()
+    private async Task AdvanceToNextQuestionAsync()
     {
-        IsChoiceQuestion = false;
-        IsFillQuestion = true;
-        QuestionTypeText = "根据翻译补全单词";
-        CurrentTranslationDisplay = _currentWord?.translation?.Replace("\\n", "\n") ?? "";
-        ShowFillResult = false;
-        UserInput = "";
-        CorrectAnswer = _currentWord?.word ?? "";
-        
-        // 生成填空提示 (隐藏部分字母)
-        var word = _currentWord?.word ?? "";
-        if (word.Length <= 2)
+        CurrentIndex++;
+        if (CurrentIndex >= _testWords.Count)
         {
-            FillHint = new string('_', word.Length);
-            CurrentWordDisplay = FillHint;
+            await EndTestAsync();
+            return;
         }
-        else
-        {
-            var chars = word.ToCharArray();
-            var hideCount = Math.Max(1, word.Length / 2);
-            var indicesToHide = Enumerable.Range(0, word.Length)
-                .OrderBy(_ => _random.Next())
-                .Take(hideCount)
-                .ToList();
-            
-            foreach (var idx in indicesToHide)
-            {
-                chars[idx] = '_';
-            }
-            
-            FillHint = new string(chars);
-            CurrentWordDisplay = FillHint;
-        }
+
+        SetupQuestion();
     }
 
-    [RelayCommand]
-    private void SelectChoice(ChoiceOption option)
+    private async Task EndTestAsync()
     {
-        var elapsed = _questionStopwatch.ElapsedMilliseconds;
-        _questionStopwatch.Stop();
-        
-        _problemDatas.Add(new ProblemData
-        {
-            Word = _currentWord?.word ?? "",
-            Translation = _currentWord?.translation ?? "",
-            CostTimeMs = elapsed,
-            IsRight = option.IsCorrect
-        });
-        
-        _currentQuestionIndex++;
-        ShowNextQuestion();
-    }
+        IsTesting = false;
+        ProgressText = string.Empty;
 
-    [RelayCommand]
-    private void SubmitFillAnswer()
-    {
-        var elapsed = _questionStopwatch.ElapsedMilliseconds;
-        _questionStopwatch.Stop();
-        
-        var isCorrect = string.Equals(UserInput?.Trim(), _currentWord?.word, StringComparison.OrdinalIgnoreCase);
-        IsFillCorrect = isCorrect;
-        ShowFillResult = true;
-        
-        _problemDatas.Add(new ProblemData
-        {
-            Word = _currentWord?.word ?? "",
-            Translation = _currentWord?.translation ?? "",
-            CostTimeMs = elapsed,
-            IsRight = isCorrect
-        });
-    }
+        var rightCount = _problemDatas.Count(p => p.IsRight);
+        var accuracy = _problemDatas.Count == 0 ? 0 : (double)rightCount / _problemDatas.Count;
 
-    [RelayCommand]
-    private void NextQuestion()
-    {
-        _currentQuestionIndex++;
-        ShowFillResult = false;
-        ShowNextQuestion();
-    }
-
-    private async void EndTest()
-    {
-        IsTestingVisible = false;
-        
-        // 保存测试数据
         var testData = new TestDataModel
         {
             TestTime = DateTime.Now,
+            Accuracy = accuracy,
             TotalQuestions = _problemDatas.Count,
-            Accuracy = _problemDatas.Count > 0 
-                ? (double)_problemDatas.Count(p => p.IsRight) / _problemDatas.Count 
-                : 0,
             Mistakes = new List<int>()
         };
-        
-        await _testDataStorageService.SaveTestData(new[] { testData });
-        
-        // 导航到Summary页面
-        WeakReferenceMessenger.Default.Send(new NavigationMessage(ApplicationPageNames.Summary, _problemDatas.ToList()));
-        
-        // 重置设置界面
-        IsSettingsVisible = true;
-    }
 
-    [RelayCommand]
-    private void CancelTest()
-    {
-        IsTestingVisible = false;
-        IsSettingsVisible = true;
-        _problemDatas.Clear();
+        await _testDataStorageService.SaveTestData(new[] { testData });
+
+        if (_mistakeDatas.Count > 0)
+        {
+            await _mistakeDataStorageService.SaveMistakeData(_mistakeDatas.ToArray());
+        }
+
+        WeakReferenceMessenger.Default.Send(new NavigationMessage(Data.ApplicationPageNames.Summary, _problemDatas));
     }
 }
 
 public record ProblemData
 {
-    public string Word { get; init; } = "";
-    public string Translation { get; init; } = "";
+    public string Word { get; init; } = string.Empty;
+    public string Translation { get; init; } = string.Empty;
     public long CostTimeMs { get; init; }
     public bool IsRight { get; init; }
-}
-
-public class ChoiceOption
-{
-    public int Index { get; set; }
-    public string Text { get; set; } = "";
-    public bool IsCorrect { get; set; }
-}
-
-public class TestRangeItem
-{
-    public TestRange Range { get; set; }
-    public string DisplayName { get; set; } = "";
 }
