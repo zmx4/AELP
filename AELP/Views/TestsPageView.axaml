@@ -4,8 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:AELP.ViewModels"
              xmlns:data="clr-namespace:AELP.Data"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
              x:Class="AELP.Views.TestsPageView"
              x:DataType="vm:TestsPageViewModel">
-
 </UserControl>

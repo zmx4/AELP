@@ -44,7 +44,8 @@ public partial class App : Application
         collection.AddTransient<FavoritesPageViewModel>();
         collection.AddTransient<TestsPageViewModel>();
         collection.AddTransient<MistakePageViewModel>();
-        collection.AddTransient<SummaryPageViewModel>();
+        collection.AddTransient<SummaryPageViewModel>(sp => new SummaryPageViewModel(
+            sp.GetRequiredService<ITestDataStorageService>()));
         collection.AddTransient<DetailPageViewModel>();
         collection.AddTransient<SettingsPageViewModel>();
 
