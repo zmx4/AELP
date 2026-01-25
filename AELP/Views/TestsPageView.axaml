@@ -4,8 +4,205 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:AELP.ViewModels"
              xmlns:data="clr-namespace:AELP.Data"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
              x:Class="AELP.Views.TestsPageView"
              x:DataType="vm:TestsPageViewModel">
     
+    <Grid>
+        <!-- 测试设置面板 -->
+        <Border IsVisible="{Binding IsSettingsVisible}" 
+                Padding="30"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center">
+            <StackPanel Spacing="20" MinWidth="400">
+                <TextBlock Text="单词测试" 
+                           FontSize="28" 
+                           FontWeight="Bold" 
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,20"/>
+                
+                <!-- 测试范围选择 -->
+                <StackPanel Spacing="10">
+                    <TextBlock Text="选择测试范围:" FontSize="16" FontWeight="SemiBold"/>
+                    <ComboBox ItemsSource="{Binding TestRanges}" 
+                              SelectedItem="{Binding SelectedTestRangeItem}"
+                              HorizontalAlignment="Stretch"
+                              Padding="12">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate DataType="vm:TestRangeItem">
+                                <TextBlock Text="{Binding DisplayName}" FontSize="14"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+                
+                <!-- 题目数量 -->
+                <StackPanel Spacing="10">
+                    <TextBlock Text="题目数量:" FontSize="16" FontWeight="SemiBold"/>
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Slider Minimum="5" 
+                                Maximum="50" 
+                                Value="{Binding QuestionCount}"
+                                TickFrequency="5"
+                                IsSnapToTickEnabled="True"
+                                Grid.Column="0"/>
+                        <TextBlock Text="{Binding QuestionCount}" 
+                                   FontSize="16"
+                                   VerticalAlignment="Center"
+                                   Margin="15,0,0,0"
+                                   MinWidth="30"
+                                   Grid.Column="1"/>
+                    </Grid>
+                </StackPanel>
+                
+                <!-- 开始按钮 -->
+                <Button Content="开始测试" 
+                        Command="{Binding StartTestCommand}"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Center"
+                        Padding="15"
+                        FontSize="18"
+                        Margin="0,20,0,0"/>
+            </StackPanel>
+        </Border>
+        
+        <!-- 测试进行中面板 -->
+        <Grid IsVisible="{Binding IsTestingVisible}" RowDefinitions="Auto,*,Auto">
+            <!-- 进度条 -->
+            <Border Grid.Row="0" Padding="20" Background="#F5F5F5">
+                <Grid ColumnDefinitions="*,Auto">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <TextBlock Text="题目" VerticalAlignment="Center" FontSize="16"/>
+                        <TextBlock Text="{Binding CurrentQuestionNumber}" 
+                                   VerticalAlignment="Center" 
+                                   FontSize="18" 
+                                   FontWeight="Bold"/>
+                        <TextBlock Text="/" VerticalAlignment="Center" FontSize="16"/>
+                        <TextBlock Text="{Binding TotalQuestions}" 
+                                   VerticalAlignment="Center" 
+                                   FontSize="18"/>
+                    </StackPanel>
+                    <Button Content="退出测试" 
+                            Grid.Column="1"
+                            Command="{Binding CancelTestCommand}"/>
+                </Grid>
+            </Border>
+            
+            <!-- 题目区域 -->
+            <ScrollViewer Grid.Row="1" Padding="30">
+                <StackPanel Spacing="25" VerticalAlignment="Center">
+                    <!-- 题目类型提示 -->
+                    <TextBlock Text="{Binding QuestionTypeText}" 
+                               FontSize="16"
+                               Foreground="Gray"
+                               HorizontalAlignment="Center"/>
+                    
+                    <!-- 当前单词/提示显示 -->
+                    <Border Background="#E3F2FD" 
+                            CornerRadius="10" 
+                            Padding="30"
+                            HorizontalAlignment="Center">
+                        <StackPanel Spacing="15">
+                            <TextBlock Text="{Binding CurrentWordDisplay}" 
+                                       FontSize="32" 
+                                       FontWeight="Bold"
+                                       HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding CurrentTranslationDisplay}"
+                                       FontSize="18"
+                                       TextWrapping="Wrap"
+                                       HorizontalAlignment="Center"
+                                       IsVisible="{Binding IsFillQuestion}"
+                                       MaxWidth="500"/>
+                        </StackPanel>
+                    </Border>
+                    
+                    <!-- 选择题选项 -->
+                    <ItemsControl ItemsSource="{Binding ChoiceOptions}"
+                                  IsVisible="{Binding IsChoiceQuestion}"
+                                  HorizontalAlignment="Center">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Spacing="10"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="vm:ChoiceOption">
+                                <Button Command="{Binding $parent[UserControl].((vm:TestsPageViewModel)DataContext).SelectChoiceCommand}"
+                                        CommandParameter="{Binding}"
+                                        HorizontalAlignment="Stretch"
+                                        HorizontalContentAlignment="Left"
+                                        Padding="20,15"
+                                        MinWidth="400">
+                                    <TextBlock Text="{Binding Text}" 
+                                               TextWrapping="Wrap"
+                                               MaxWidth="360"
+                                               FontSize="14"/>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    
+                    <!-- 填空题输入 -->
+                    <StackPanel Spacing="15" 
+                                IsVisible="{Binding IsFillQuestion}"
+                                HorizontalAlignment="Center"
+                                MinWidth="400">
+                        <TextBox Text="{Binding UserInput}" 
+                                 Watermark="请输入完整单词"
+                                 FontSize="18"
+                                 Padding="15"
+                                 IsEnabled="{Binding !ShowFillResult}">
+                            <TextBox.KeyBindings>
+                                <KeyBinding Gesture="Enter" Command="{Binding SubmitFillAnswerCommand}"/>
+                            </TextBox.KeyBindings>
+                        </TextBox>
+                        
+                        <Button Content="提交答案"
+                                Command="{Binding SubmitFillAnswerCommand}"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Center"
+                                Padding="15"
+                                IsVisible="{Binding !ShowFillResult}"/>
+                        
+                        <!-- 结果显示 -->
+                        <Border IsVisible="{Binding ShowFillResult}"
+                                CornerRadius="8"
+                                Padding="20"
+                                Background="#E8F5E9">
+                            <StackPanel Spacing="10">
+                                <TextBlock Text="回答正确! ✓" 
+                                           FontSize="18" 
+                                           FontWeight="Bold" 
+                                           HorizontalAlignment="Center"
+                                           Foreground="Green"
+                                           IsVisible="{Binding IsFillCorrect}"/>
+                                <TextBlock Text="回答错误 ✗" 
+                                           FontSize="18" 
+                                           FontWeight="Bold" 
+                                           HorizontalAlignment="Center"
+                                           Foreground="Red"
+                                           IsVisible="{Binding !IsFillCorrect}"/>
+                                <StackPanel Orientation="Horizontal" 
+                                            HorizontalAlignment="Center"
+                                            Spacing="10"
+                                            IsVisible="{Binding !IsFillCorrect}">
+                                    <TextBlock Text="正确答案:" FontSize="16"/>
+                                    <TextBlock Text="{Binding CorrectAnswer}" 
+                                               FontSize="16" 
+                                               FontWeight="Bold"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                        
+                        <Button Content="下一题"
+                                Command="{Binding NextQuestionCommand}"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Center"
+                                Padding="15"
+                                IsVisible="{Binding ShowFillResult}"/>
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
 </UserControl>
