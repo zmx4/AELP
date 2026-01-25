@@ -14,6 +14,8 @@ using Microsoft.Extensions.DependencyInjection;
 using AELP.Services;
 using AELP.Models;
 using Microsoft.EntityFrameworkCore;
+using LiveChartsCore; 
+using LiveChartsCore.SkiaSharpView; 
 
 namespace AELP;
 
@@ -22,6 +24,13 @@ public partial class App : Application
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
+        
+        LiveCharts.Configure(config => 
+            config 
+                .AddSkiaSharp() 
+                .AddDefaultMappers() 
+                .AddLightTheme() 
+        );
     }
 
     // public static ServiceProvider ServiceProvider { get; private set; }

@@ -10,18 +10,18 @@
     <Grid RowDefinitions="Auto,*" ColumnDefinitions="*,*" Margin="20" ColumnSpacing="16" RowSpacing="16">
         <TextBlock Text="测试总结" FontSize="24" FontWeight="Bold" Grid.ColumnSpan="2" />
 
-        <Border Grid.Row="1" Background="#0F000000" CornerRadius="8" Padding="12">
-            <StackPanel Spacing="8">
+        <Border Grid.Row="1" Grid.Column="0" Background="#0F000000" CornerRadius="8" Padding="12">
+            <Grid RowDefinitions="Auto,*" RowSpacing="8" MinHeight="280">
                 <TextBlock Text="单词耗时占比" FontSize="16" FontWeight="SemiBold" />
-                <lvc:PieChart Series="{Binding TimePieSeries}" LegendPosition="Right" />
-            </StackPanel>
+                <lvc:PieChart Grid.Row="1" Series="{Binding TimePieSeries}" LegendPosition="Right" />
+            </Grid>
         </Border>
 
         <Border Grid.Row="1" Grid.Column="1" Background="#0F000000" CornerRadius="8" Padding="12">
-            <StackPanel Spacing="8">
+            <Grid RowDefinitions="Auto,*" RowSpacing="8" MinHeight="280">
                 <TextBlock Text="历次测试准确度" FontSize="16" FontWeight="SemiBold" />
-                <lvc:CartesianChart Series="{Binding AccuracyLineSeries}" XAxes="{Binding AccuracyXAxes}" YAxes="{Binding AccuracyYAxes}" />
-            </StackPanel>
+                <lvc:CartesianChart Grid.Row="1" Series="{Binding AccuracyLineSeries}" XAxes="{Binding AccuracyXAxes}" YAxes="{Binding AccuracyYAxes}" />
+            </Grid>
         </Border>
     </Grid>
 </UserControl>
