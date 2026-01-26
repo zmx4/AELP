@@ -53,6 +53,7 @@ public partial class App : Application
         collection.AddTransient<FavoritesPageViewModel>();
         collection.AddTransient<TestsPageViewModel>();
         collection.AddTransient<MistakePageViewModel>();
+        collection.AddTransient<MistakeReviewPageViewModel>();
         collection.AddTransient<SummaryPageViewModel>(sp => new SummaryPageViewModel(
             sp.GetRequiredService<ITestDataStorageService>()));
         collection.AddTransient<DetailPageViewModel>();
@@ -64,6 +65,7 @@ public partial class App : Application
             ApplicationPageNames.Favorites => x.GetRequiredService<FavoritesPageViewModel>(),
             ApplicationPageNames.Tests => x.GetRequiredService<TestsPageViewModel>(),
             ApplicationPageNames.Mistakes => x.GetRequiredService<MistakePageViewModel>(),
+            ApplicationPageNames.MistakeReview => x.GetRequiredService<MistakeReviewPageViewModel>(),
             ApplicationPageNames.Summary => x.GetRequiredService<SummaryPageViewModel>(),
             ApplicationPageNames.Detail => x.GetRequiredService<DetailPageViewModel>(),
             ApplicationPageNames.Settings => x.GetRequiredService<SettingsPageViewModel>(),

@@ -8,5 +8,6 @@ public enum ApplicationPageNames
     Mistakes,
     Settings,
     Summary,
-    Detail
+    Detail,
+    MistakeReview
 }
