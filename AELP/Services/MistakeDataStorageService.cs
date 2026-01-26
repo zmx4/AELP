@@ -8,6 +8,13 @@ namespace AELP.Services;
 
 public class MistakeDataStorageService : IMistakeDataStorageService
 {
+    private readonly IWordQueryService _wordQueryService;
+
+    public MistakeDataStorageService(IWordQueryService wordQueryService)
+    {
+        _wordQueryService = wordQueryService;
+    }
+
     public async Task SaveMistakeData(MistakeDataModel[] mistakeData)
     {
         await using var context = new UserDbContext();
@@ -77,36 +84,25 @@ public class MistakeDataStorageService : IMistakeDataStorageService
     {
         await using var context = new UserDbContext();
         await context.Database.EnsureCreatedAsync();
-        var mistakes = await context.Mistakes
-            .AsNoTracking()
-            .ToListAsync();
+        var mistakeData = await context.Mistakes
+            .Include(m => m.RawWord)
+            .ToArrayAsync();
 
-        var wordIds = mistakes
-            .Where(m => m.WordId != 0)
-            .Select(m => m.WordId)
-            .Distinct()
-            .ToList();
-
-        if (wordIds.Count > 0)
+        foreach (var item in mistakeData)
         {
-            var wordMap = await context.Words
-                .Where(w => wordIds.Contains(w.Id))
-                .ToDictionaryAsync(w => w.Id);
+            var wordText = item.RawWord?.Word ?? item.Word;
+            var translation = item.RawWord?.Translation;
 
-            foreach (var mistake in mistakes)
+            if (string.IsNullOrWhiteSpace(translation) && !string.IsNullOrWhiteSpace(wordText))
             {
-                if (mistake.WordId != 0 && wordMap.TryGetValue(mistake.WordId, out var word))
-                {
-                    mistake.Word = word.Word;
-                    mistake.Translation = word.Translation;
-                }
+                translation = _wordQueryService.QueryWordTranslation(wordText);
             }
+
+            item.Word = wordText;
+            item.Translation = translation;
         }
 
-        return mistakes
-            .OrderByDescending(m => m.Time)
-            .ThenByDescending(m => m.Count)
-            .ToArray();
+        return mistakeData;
     }
 
     public async Task UpdateMistakeData(MistakeDataModel[] mistakeData)

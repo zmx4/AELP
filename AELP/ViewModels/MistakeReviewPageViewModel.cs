@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AELP.Data;
+using AELP.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -10,8 +12,11 @@ namespace AELP.ViewModels;
 public partial class MistakeReviewPageViewModel : PageViewModel
 {
     private readonly List<MistakeDataModel> _mistakes = new();
+    private readonly Dictionary<int, int> _countDeltas = new();
     private string _currentWord = string.Empty;
     private int _rightCount;
+
+    private readonly IMistakeDataStorageService _mistakeDataStorageService;
     
     [ObservableProperty] private bool _isReviewing;
     [ObservableProperty] private int _currentIndex;
@@ -25,9 +30,10 @@ public partial class MistakeReviewPageViewModel : PageViewModel
     public bool IsNotReviewing => !IsReviewing;
     public bool IsEmpty => !HasMistakes;
 
-    public MistakeReviewPageViewModel()
+    public MistakeReviewPageViewModel(IMistakeDataStorageService mistakeDataStorageService)
     {
         PageNames = ApplicationPageNames.MistakeReview;
+        _mistakeDataStorageService = mistakeDataStorageService;
     }
 
     partial void OnIsReviewingChanged(bool value)
@@ -45,16 +51,9 @@ public partial class MistakeReviewPageViewModel : PageViewModel
         if (parameter is not MistakeDataModel[] mistakeDataModels) return;
 
         _mistakes.Clear();
-        foreach (var mistake in mistakeDataModels)
-        {
-            if (string.IsNullOrWhiteSpace(mistake.Word)) continue;
-            if (string.IsNullOrWhiteSpace(mistake.Translation))
-            {
-                mistake.Translation = "无翻译";
-            }
-            _mistakes.Add(mistake);
-        }
-
+        
+        _mistakes.AddRange(mistakeDataModels);
+        _countDeltas.Clear();
         TotalCount = _mistakes.Count;
         HasMistakes = TotalCount > 0;
         ResetReviewState();
@@ -86,23 +85,26 @@ public partial class MistakeReviewPageViewModel : PageViewModel
     }
 
     [RelayCommand]
-    private void SubmitAnswer()
+    private async Task SubmitAnswer()
     {
         if (!IsReviewing || CurrentIndex < 0 || CurrentIndex >= _mistakes.Count) return;
 
         var input = (UserInput ?? string.Empty).Trim();
         var isRight = string.Equals(input, _currentWord, StringComparison.OrdinalIgnoreCase);
+        var current = _mistakes[CurrentIndex];
         if (isRight)
         {
             _rightCount++;
             StatusText = "正确";
+            AdjustCount(current, -1);
         }
         else
         {
             StatusText = $"错误，正确答案: {_currentWord}";
+            AdjustCount(current, 1);
         }
 
-        AdvanceToNext();
+        await AdvanceToNext();
     }
 
     private void SetupQuestion()
@@ -111,28 +113,64 @@ public partial class MistakeReviewPageViewModel : PageViewModel
 
         var current = _mistakes[CurrentIndex];
         _currentWord = current.Word ?? string.Empty;
-        CurrentTranslation = current.Translation ?? "无翻译";
+        var translation = current.Translation ?? "无翻译";
+        CurrentTranslation = NormalizeTranslation(translation);
         UserInput = string.Empty;
         ProgressText = $"{CurrentIndex + 1}/{_mistakes.Count}";
     }
 
-    private void AdvanceToNext()
+    private static string NormalizeTranslation(string translation)
+    {
+        return translation
+            .Replace("\\r\\n", "\n", StringComparison.Ordinal)
+            .Replace("\\n", "\n", StringComparison.Ordinal);
+    }
+
+    private async Task AdvanceToNext()
     {
         CurrentIndex++;
         if (CurrentIndex >= _mistakes.Count)
         {
-            EndReview();
+            await EndReview();
             return;
         }
 
         SetupQuestion();
     }
 
-    private void EndReview()
+    private async Task EndReview()
     {
         IsReviewing = false;
         ProgressText = string.Empty;
         StatusText = $"复习完成：正确 {_rightCount}/{_mistakes.Count}";
+
+        if (_countDeltas.Count > 0)
+        {
+            var updates = _mistakes
+                .Where(m => m.Id != 0 && _countDeltas.ContainsKey(m.Id))
+                .ToArray();
+
+            if (updates.Length > 0)
+            {
+                await _mistakeDataStorageService.UpdateMistakeData(updates);
+            }
+        }
+    }
+
+    private void AdjustCount(MistakeDataModel current, int delta)
+    {
+        if (current.Id == 0) return;
+
+        if (_countDeltas.TryGetValue(current.Id, out var existing))
+        {
+            _countDeltas[current.Id] = existing + delta;
+        }
+        else
+        {
+            _countDeltas[current.Id] = delta;
+        }
+
+        current.Count = Math.Max(0, current.Count + delta);
     }
 
     private void ResetReviewState()

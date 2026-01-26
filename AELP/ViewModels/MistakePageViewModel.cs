@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using AELP.Data;
@@ -36,7 +37,20 @@ public partial class MistakePageViewModel : PageViewModel
     {
         if (Items.Count == 0) return;
 
+        var shuffledItems = Shuffle(Items.ToArray());
         WeakReferenceMessenger.Default.Send(
-            new NavigationMessage(ApplicationPageNames.MistakeReview, Items.ToArray()));
+            new NavigationMessage(ApplicationPageNames.MistakeReview, shuffledItems));
+    }
+
+    private static MistakeDataModel[] Shuffle(MistakeDataModel[] source)
+    {
+        var rng = Random.Shared;
+        for (var i = source.Length - 1; i > 0; i--)
+        {
+            var j = rng.Next(i + 1);
+            (source[i], source[j]) = (source[j], source[i]);
+        }
+
+        return source;
     }
 }

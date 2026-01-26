@@ -15,4 +15,6 @@ public class MistakeDataModel
     public int Count { get; set; }
     [NotMapped]
     public string? Translation { get; set; }
+    [ForeignKey("WordId")]
+    public virtual WordDataModel RawWord { get; set; }
 }

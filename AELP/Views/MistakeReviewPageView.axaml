@@ -31,7 +31,7 @@
                 <StackPanel IsVisible="{Binding IsReviewing}" Spacing="12">
                     <TextBlock Text="{Binding ProgressText}" HorizontalAlignment="Right" Foreground="#666" />
                     <TextBlock Text="翻译" FontSize="16" FontWeight="SemiBold" />
-                    <TextBlock Text="{Binding CurrentTranslation}" FontSize="22" FontWeight="Bold" />
+                    <TextBlock Text="{Binding CurrentTranslation}" FontSize="22" FontWeight="Bold" TextWrapping="Wrap" />
                     <StackPanel Orientation="Horizontal" Spacing="8">
                         <TextBox Width="260" Text="{Binding UserInput, UpdateSourceTrigger=PropertyChanged}" Watermark="输入单词" />
                         <Button Content="提交" Command="{Binding SubmitAnswerCommand}" />
