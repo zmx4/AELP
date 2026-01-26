@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AELP.Data;
 using AELP.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using LiveChartsCore;
@@ -22,15 +21,15 @@ public partial class SummaryPageViewModel : PageViewModel
         TimePieSeries = Array.Empty<ISeries>();
         AccuracyLineSeries = Array.Empty<ISeries>();
         AccuracyXAxes = Array.Empty<Axis>();
-        AccuracyYAxes = new[]
-        {
+        AccuracyYAxes =
+        [
             new Axis
             {
                 MinLimit = 0,
                 MaxLimit = 1,
                 Labeler = value => $"{value:P0}"
             }
-        };
+        ];
 
         _ = LoadAccuracyAsync();
     }
@@ -65,7 +64,7 @@ public partial class SummaryPageViewModel : PageViewModel
             series.Add(new PieSeries<double>
             {
                 Name = problem.Word,
-                Values = new[] { seconds }
+                Values = [seconds]
             });
         }
 
@@ -77,8 +76,8 @@ public partial class SummaryPageViewModel : PageViewModel
         var tests = await _testDataStorageService.GetRecentTests(10);
         if (tests.Length == 0)
         {
-            AccuracyLineSeries = Array.Empty<ISeries>();
-            AccuracyXAxes = Array.Empty<Axis>();
+            AccuracyLineSeries = [];
+            AccuracyXAxes = [];
             return;
         }
 
@@ -86,22 +85,22 @@ public partial class SummaryPageViewModel : PageViewModel
         var values = ordered.Select(t => t.Accuracy).ToArray();
         var labels = ordered.Select(t => t.TestTime.ToString("MM-dd")).ToArray();
 
-        AccuracyLineSeries = new ISeries[]
-        {
+        AccuracyLineSeries =
+        [
             new LineSeries<double>
             {
                 Values = values,
                 GeometrySize = 8,
                 Fill = null
             }
-        };
+        ];
 
-        AccuracyXAxes = new[]
-        {
+        AccuracyXAxes =
+        [
             new Axis
             {
                 Labels = labels
             }
-        };
+        ];
     }
 }

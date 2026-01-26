@@ -19,11 +19,11 @@ public partial class FavoritesPageViewModel : PageViewModel
     private readonly IUserWordQueryService _wordQueryService;
     public FavoritesPageViewModel(IFavoritesDataStorageService dataStorageService ,IUserWordQueryService wordQueryService)
     {
-        PageNames = Data.ApplicationPageNames.Favorites;
+        PageNames = ApplicationPageNames.Favorites;
         
-        this._dataStorageService = dataStorageService;
+        _dataStorageService = dataStorageService;
         
-        this._wordQueryService = wordQueryService;
+        _wordQueryService = wordQueryService;
         
         _favorites = new ObservableCollection<FavoritesDataModel>();
         
@@ -49,17 +49,19 @@ public partial class FavoritesPageViewModel : PageViewModel
         var wordInfo = await _wordQueryService.QueryUserWordInfoAsync(favorite.WordId);
         if (wordInfo != null)
         {
-            var temp = new dictionary();
-            temp.word = wordInfo.Word;
-            temp.translation = wordInfo.Translation;
-            temp.cet4 = (favorite.IsCet4) ? 1 : 0;
-            temp.cet6 = (favorite.IsCet6) ? 1 : 0;
-            temp.tf = (favorite.IsTf) ? 1 : 0;
-            temp.ys = (favorite.IsYs) ? 1 : 0;
-            temp.hs = (favorite.IsHs) ? 1 : 0;
-            temp.ph = (favorite.IsPh) ? 1 : 0;
-            
-            WeakReferenceMessenger.Default.Send(new NavigationMessage(Data.ApplicationPageNames.Detail, temp));
+            var temp = new dictionary
+            {
+                word = wordInfo.Word,
+                translation = wordInfo.Translation,
+                cet4 = (favorite.IsCet4) ? 1 : 0,
+                cet6 = (favorite.IsCet6) ? 1 : 0,
+                tf = (favorite.IsTf) ? 1 : 0,
+                ys = (favorite.IsYs) ? 1 : 0,
+                hs = (favorite.IsHs) ? 1 : 0,
+                ph = (favorite.IsPh) ? 1 : 0
+            };
+
+            WeakReferenceMessenger.Default.Send(new NavigationMessage(ApplicationPageNames.Detail, temp));
         }
     }
 
@@ -69,15 +71,17 @@ public partial class FavoritesPageViewModel : PageViewModel
         var wordInfo = await _wordQueryService.QueryUserWordInfoAsync(favorite.WordId);
         if (wordInfo != null)
         {
-            var temp = new dictionary();
-            temp.word = wordInfo.Word;
-            temp.translation = wordInfo.Translation;
-            temp.cet4 = (favorite.IsCet4) ? 1 : 0;
-            temp.cet6 = (favorite.IsCet6) ? 1 : 0;
-            temp.tf = (favorite.IsTf) ? 1 : 0;
-            temp.ys = (favorite.IsYs) ? 1 : 0;
-            temp.hs = (favorite.IsHs) ? 1 : 0;
-            temp.ph = (favorite.IsPh) ? 1 : 0;
+            var temp = new dictionary
+            {
+                word = wordInfo.Word,
+                translation = wordInfo.Translation,
+                cet4 = (favorite.IsCet4) ? 1 : 0,
+                cet6 = (favorite.IsCet6) ? 1 : 0,
+                tf = (favorite.IsTf) ? 1 : 0,
+                ys = (favorite.IsYs) ? 1 : 0,
+                hs = (favorite.IsHs) ? 1 : 0,
+                ph = (favorite.IsPh) ? 1 : 0
+            };
 
             await _dataStorageService.RemoveFromFavorites(temp);
             Favorites.Remove(favorite);

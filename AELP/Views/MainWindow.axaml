@@ -16,7 +16,7 @@
                 <Button HorizontalAlignment="Stretch" Content="词典" Command="{Binding GoToDictionaryPageCommand}"></Button>
                 <Button HorizontalAlignment="Stretch" Content="收藏" Command="{Binding GoToFavoritesPageCommand}"></Button>
                 <Button HorizontalAlignment="Stretch" Content="测试" Command="{Binding GoToTestsPageCommand}"></Button>
-                <Button HorizontalAlignment="Stretch" Content="错题文"></Button>
+                <Button HorizontalAlignment="Stretch" Content="错题本" Command="{Binding GoToMistakePageCommand}"></Button>
                 <Button HorizontalAlignment="Stretch" Content="设置"></Button>
             </StackPanel>
         </Border>

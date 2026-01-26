@@ -14,7 +14,7 @@ public partial class DictionaryPageViewModel : PageViewModel
 {
     private readonly IWordQueryService _wordQueryService;
 
-    private IFavoritesDataStorageService _favoritesDataStorageService;
+    private readonly IFavoritesDataStorageService _favoritesDataStorageService;
 
     [ObservableProperty] private string _searchText = string.Empty;
 
@@ -22,7 +22,7 @@ public partial class DictionaryPageViewModel : PageViewModel
 
     [ObservableProperty] private ObservableCollection<string> _examTags = new();
 
-    [ObservableProperty] private double _contentBlurRadius = 0;
+    [ObservableProperty] private double _contentBlurRadius;
 
     [ObservableProperty] private ObservableCollection<string> _searchResults = new();
 

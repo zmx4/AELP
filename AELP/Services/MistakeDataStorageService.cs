@@ -10,7 +10,7 @@ public class MistakeDataStorageService : IMistakeDataStorageService
 {
     public async Task SaveMistakeData(MistakeDataModel[] mistakeData)
     {
-        using var context = new UserDbContext();
+        await using var context = new UserDbContext();
         await context.Database.EnsureCreatedAsync();
 
         // 1. Resolve Word IDs for items that have a Word string but possibly no WordId (or 0)
@@ -73,10 +73,47 @@ public class MistakeDataStorageService : IMistakeDataStorageService
         await context.SaveChangesAsync();
     }
 
-    public async Task<MistakeDataModel[]> LoadTestData()
+    public async Task<MistakeDataModel[]> LoadMistakeData()
     {
-        using var context = new UserDbContext();
+        await using var context = new UserDbContext();
         await context.Database.EnsureCreatedAsync();
-        return await context.Mistakes.ToArrayAsync();
+        var mistakes = await context.Mistakes
+            .AsNoTracking()
+            .ToListAsync();
+
+        var wordIds = mistakes
+            .Where(m => m.WordId != 0)
+            .Select(m => m.WordId)
+            .Distinct()
+            .ToList();
+
+        if (wordIds.Count > 0)
+        {
+            var wordMap = await context.Words
+                .Where(w => wordIds.Contains(w.Id))
+                .ToDictionaryAsync(w => w.Id);
+
+            foreach (var mistake in mistakes)
+            {
+                if (mistake.WordId != 0 && wordMap.TryGetValue(mistake.WordId, out var word))
+                {
+                    mistake.Word = word.Word;
+                    mistake.Translation = word.Translation;
+                }
+            }
+        }
+
+        return mistakes
+            .OrderByDescending(m => m.Time)
+            .ThenByDescending(m => m.Count)
+            .ToArray();
+    }
+
+    public async Task UpdateMistakeData(MistakeDataModel[] mistakeData)
+    {
+        await using var context = new UserDbContext();
+        await context.Database.EnsureCreatedAsync();
+        context.Mistakes.UpdateRange(mistakeData);
+        await context.SaveChangesAsync();
     }
 }

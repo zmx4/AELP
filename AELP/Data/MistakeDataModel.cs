@@ -13,4 +13,6 @@ public class MistakeDataModel
     public string? Word { get; set; }
     public DateTime Time { get; set; }
     public int Count { get; set; }
+    [NotMapped]
+    public string? Translation { get; set; }
 }

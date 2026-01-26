@@ -7,5 +7,6 @@ namespace AELP.Services;
 public interface IMistakeDataStorageService
 {
     public Task SaveMistakeData(MistakeDataModel[] mistakeData);
-    public Task<MistakeDataModel[]> LoadTestData();
+    public Task<MistakeDataModel[]> LoadMistakeData();
+    public Task UpdateMistakeData(MistakeDataModel[] mistakeData);
 }

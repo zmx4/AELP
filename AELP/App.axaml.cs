@@ -80,7 +80,13 @@ public partial class App : Application
                 using var scope = serviceProvider.CreateScope();
                 var db = scope.ServiceProvider.GetRequiredService<UserDbContext>();
                 await db.Database.EnsureCreatedAsync();
-                using var favoritesFromStorage =  scope.ServiceProvider.GetRequiredKeyedService<IFavoritesDataStorageService>(null).LoadFavorites();
+                using var favoritesFromStorage =  scope.ServiceProvider
+                    .GetRequiredKeyedService<IFavoritesDataStorageService>(null)
+                    .LoadFavorites();
+                using var mistakesFromStorage =  scope.ServiceProvider
+                    .GetRequiredKeyedService<IMistakeDataStorageService>(null)
+                    .LoadMistakeData();
+                
             }
             catch
             {

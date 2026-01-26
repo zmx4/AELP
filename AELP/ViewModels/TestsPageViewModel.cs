@@ -17,8 +17,8 @@ namespace AELP.ViewModels;
 public partial class TestsPageViewModel : PageViewModel
 {
     private List<Word> _testWords = new();
-    private readonly List<ProblemData> _problemDatas = new();
-    private readonly List<MistakeDataModel> _mistakeDatas = new();
+    private readonly List<ProblemData> _problemData = new();
+    private readonly List<MistakeDataModel> _mistakeData = new();
     private readonly Stopwatch _stopwatch = new();
     private readonly Random _random = new();
     private Word? _currentWord;
@@ -37,7 +37,7 @@ public partial class TestsPageViewModel : PageViewModel
         PageNames = Data.ApplicationPageNames.Tests;
 
         TestRanges = new ObservableCollection<TestRange>((TestRange[])Enum.GetValues(typeof(TestRange)));
-        QuestionCounts = new ObservableCollection<int> { 5, 10, 15, 20 };
+        QuestionCounts = [5, 10, 15, 20];
         SelectedTestRange = TestRange.Cet4;
         QuestionCount = 10;
         StatusText = string.Empty;
@@ -90,8 +90,8 @@ public partial class TestsPageViewModel : PageViewModel
             return;
         }
 
-        _problemDatas.Clear();
-        _mistakeDatas.Clear();
+        _problemData.Clear();
+        _mistakeData.Clear();
         CurrentIndex = 0;
         IsTesting = true;
         IsChoiceQuestion = true;
@@ -200,7 +200,7 @@ public partial class TestsPageViewModel : PageViewModel
         if (_currentWord is null) return;
 
         var elapsed = _stopwatch.ElapsedMilliseconds;
-        _problemDatas.Add(new ProblemData
+        _problemData.Add(new ProblemData
         {
             Word = _currentWord.word,
             Translation = CurrentTranslation,
@@ -210,7 +210,7 @@ public partial class TestsPageViewModel : PageViewModel
 
         if (!isRight)
         {
-            _mistakeDatas.Add(new MistakeDataModel
+            _mistakeData.Add(new MistakeDataModel
             {
                 Word = _currentWord.word,
                 Time = DateTime.Now,
@@ -236,25 +236,25 @@ public partial class TestsPageViewModel : PageViewModel
         IsTesting = false;
         ProgressText = string.Empty;
 
-        var rightCount = _problemDatas.Count(p => p.IsRight);
-        var accuracy = _problemDatas.Count == 0 ? 0 : (double)rightCount / _problemDatas.Count;
+        var rightCount = _problemData.Count(p => p.IsRight);
+        var accuracy = _problemData.Count == 0 ? 0 : (double)rightCount / _problemData.Count;
 
         var testData = new TestDataModel
         {
             TestTime = DateTime.Now,
             Accuracy = accuracy,
-            TotalQuestions = _problemDatas.Count,
+            TotalQuestions = _problemData.Count,
             Mistakes = new List<int>()
         };
 
-        await _testDataStorageService.SaveTestData(new[] { testData });
+        await _testDataStorageService.SaveTestData([testData]);
 
-        if (_mistakeDatas.Count > 0)
+        if (_mistakeData.Count > 0)
         {
-            await _mistakeDataStorageService.SaveMistakeData(_mistakeDatas.ToArray());
+            await _mistakeDataStorageService.SaveMistakeData(_mistakeData.ToArray());
         }
 
-        WeakReferenceMessenger.Default.Send(new NavigationMessage(Data.ApplicationPageNames.Summary, _problemDatas));
+        WeakReferenceMessenger.Default.Send(new NavigationMessage(ApplicationPageNames.Summary, _problemData));
     }
 }
 

@@ -9,11 +9,11 @@ namespace AELP.ViewModels;
 
 public partial class MainWindowViewModel : ViewModelBase
 {
-    private PageFactory _pageFactory;
+    private readonly PageFactory _pageFactory;
 
     private ViewModelBase _content;
     
-    private ObservableCollection<ViewModelBase> _pages = new();
+    private readonly ObservableCollection<ViewModelBase> _pages = new();
 
     public MainWindowViewModel(PageFactory pageFactory)
     {

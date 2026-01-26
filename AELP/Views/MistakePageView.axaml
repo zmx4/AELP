@@ -2,7 +2,49 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:AELP.ViewModels"
+             xmlns:data="clr-namespace:AELP.Data"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="AELP.Views.MistakePageView">
-    Welcome to Avalonia!
+             x:Class="AELP.Views.MistakePageView"
+             x:DataType="vm:MistakePageViewModel">
+    <Grid RowDefinitions="Auto,*" Margin="10">
+        <StackPanel Orientation="Horizontal" Spacing="10" Grid.Row="0">
+            <TextBlock Text="错题本" FontSize="24" FontWeight="Bold"/>
+            <TextBlock Text="最近答错的单词会显示在这里" VerticalAlignment="Center" Foreground="#BBBBBB"/>
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="1" Margin="0,10,0,0" IsVisible="{Binding Items.Count}">
+            <ItemsControl ItemsSource="{Binding Items}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Spacing="8"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="data:MistakeDataModel">
+                        <Border Background="#333B5A" CornerRadius="8" Padding="12" BorderBrush="#7C59CD" BorderThickness="1">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="5" OffsetY="2" Opacity="0.1"/>
+                            </Border.Effect>
+                            <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto">
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Word}" FontSize="20" FontWeight="Bold"/>
+                                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Count, StringFormat='×{0}'}" FontSize="20" FontWeight="Bold" Foreground="#FFB347"/>
+                                <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Translation}" TextWrapping="Wrap" Foreground="#7C59CD" Margin="0,6,0,0"/>
+                                <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Spacing="10" Margin="0,8,0,0">
+                                    <TextBlock Text="最近错题时间:" Foreground="#BBBBBB" FontSize="12"/>
+                                    <TextBlock Text="{Binding Time, StringFormat='{}{0:yyyy-MM-dd HH:mm}'}" Foreground="#DDDDDD" FontSize="12"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="8" IsVisible="{Binding !Items.Count}">
+            <TextBlock Text="👌" FontSize="48" HorizontalAlignment="Center"/>
+            <TextBlock Text="暂无错误单词" FontSize="16" Foreground="#999999" HorizontalAlignment="Center"/>
+            <TextBlock Text="完成测试后，错误单词会显示在这里" FontSize="14" Foreground="#CCCCCC" HorizontalAlignment="Center"/>
+        </StackPanel>
+    </Grid>
 </UserControl>

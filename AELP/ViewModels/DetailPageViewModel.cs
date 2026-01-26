@@ -9,7 +9,7 @@ namespace AELP.ViewModels;
 
 public partial class DetailPageViewModel : PageViewModel
 {
-    private IFavoritesDataStorageService _dataStorageService;
+    private readonly IFavoritesDataStorageService _dataStorageService;
     
     private dictionary? _word;
 
