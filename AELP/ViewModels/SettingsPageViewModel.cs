@@ -14,7 +14,7 @@ public partial class SettingsPageViewModel : PageViewModel
     [RelayCommand]
     private static void OpenUserDataFolder()
     {
-        var userDataPath = PathHelper.GetLocalFilePath("userdata.sqlite");
+        var userDataPath = PathHelper.GetLocalFilePath("");
         System.Diagnostics.Process.Start("explorer.exe", userDataPath);
     }
 
