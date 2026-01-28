@@ -4,13 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AELP.Models;
 
-public partial class AppDbContext : DbContext
+public partial class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options)
-        : base(options)
-    {
-    }
-
     public virtual DbSet<CET4> CET4s { get; set; }
 
     public virtual DbSet<CET6> CET6s { get; set; }

@@ -13,11 +13,12 @@
     <Grid ColumnDefinitions="Auto,*">
         <Border Padding="20">
             <StackPanel>
+                <Button HorizontalAlignment="Stretch" Content="返回" IsVisible="{Binding IsBackButtonVisible}" Command="{Binding GoBackCommand} "></Button>
                 <Button HorizontalAlignment="Stretch" Content="词典" Command="{Binding GoToDictionaryPageCommand}"></Button>
                 <Button HorizontalAlignment="Stretch" Content="收藏" Command="{Binding GoToFavoritesPageCommand}"></Button>
                 <Button HorizontalAlignment="Stretch" Content="测试" Command="{Binding GoToTestsPageCommand}"></Button>
                 <Button HorizontalAlignment="Stretch" Content="错题本" Command="{Binding GoToMistakePageCommand}"></Button>
-                <Button HorizontalAlignment="Stretch" Content="设置"></Button>
+                <Button HorizontalAlignment="Stretch" Content="设置" Command="{Binding GoToSettingsPageCommand}"></Button>
             </StackPanel>
         </Border>
         <UserControl Grid.Column="1" Content="{Binding Content}">

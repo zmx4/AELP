@@ -76,7 +76,7 @@ public class FavoritesDataStorageService : IFavoritesDataStorageService
 
     public async Task SaveFavorites(dictionary[] favorites)
     {
-        using var context = new UserDbContext();
+        await using var context = new UserDbContext();
         if (!_dbChecked)
         {
             await context.Database.EnsureCreatedAsync();

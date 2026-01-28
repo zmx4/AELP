@@ -2,6 +2,7 @@
 using AELP.Data;
 using AELP.Factories;
 using AELP.Messages;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 
@@ -14,6 +15,9 @@ public partial class MainWindowViewModel : ViewModelBase
     private ViewModelBase _content;
     
     private readonly ObservableCollection<ViewModelBase> _pages = new();
+    
+    [ObservableProperty]
+    private bool _isBackButtonVisible;
 
     public MainWindowViewModel(PageFactory pageFactory)
     {
@@ -24,17 +28,20 @@ public partial class MainWindowViewModel : ViewModelBase
         WeakReferenceMessenger.Default.Register<NavigationMessage>(this, (r, m) =>
         {
             var page = _pageFactory.GetPageViewModel(m.Value.PageName, m.Value.Parameter);
+            IsBackButtonVisible = true;
             PushContent(page);
         });
     }
 
+    
+    
     public ViewModelBase Content
     {
         get => _content;
         private set => SetProperty(ref _content, value);
     }
-    
-    public void PushContent(ViewModelBase page)
+
+    private void PushContent(ViewModelBase page)
     {
         _pages.Add(Content);
         
@@ -46,6 +53,7 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         Content = _pageFactory.GetPageViewModel(ApplicationPageNames.Dictionary);
         _pages.Clear();
+        IsBackButtonVisible = false;
     }
 
     [RelayCommand]
@@ -53,6 +61,7 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         Content = _pageFactory.GetPageViewModel(ApplicationPageNames.Favorites);
         _pages.Clear();
+        IsBackButtonVisible = false;
     }
 
     [RelayCommand]
@@ -60,6 +69,7 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         Content = _pageFactory.GetPageViewModel(ApplicationPageNames.Tests);
         _pages.Clear();
+        IsBackButtonVisible = false;
     }
 
     [RelayCommand]
@@ -67,6 +77,7 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         Content = _pageFactory.GetPageViewModel(ApplicationPageNames.Mistakes);
         _pages.Clear();
+        IsBackButtonVisible = false;
     }
 
     [RelayCommand]
@@ -74,14 +85,15 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         Content = _pageFactory.GetPageViewModel(ApplicationPageNames.Settings);
         _pages.Clear();
+        IsBackButtonVisible = false;
     }
     
     [RelayCommand]
     private void GoBack()
     {
         if(_pages.Count <= 0) return;
-        
         Content = _pages[^1];
         _pages.RemoveAt(_pages.Count - 1);
+        if(_pages.Count <= 0)IsBackButtonVisible = false;
     }
 }

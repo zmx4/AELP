@@ -2,7 +2,32 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:AELP.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="AELP.Views.SettingsPageView">
-    Welcome to Avalonia!
+             x:Class="AELP.Views.SettingsPageView"
+             x:DataType="vm:SettingsPageViewModel">
+    <Grid RowDefinitions="Auto,*" ColumnDefinitions="*">
+        <TextBlock Text="Settings" FontSize="24" FontWeight="Bold" Margin="0,0,0,16"/>
+
+        <StackPanel Grid.Row="1" Spacing="12">
+            <TextBlock Text="Storage" FontSize="16" FontWeight="SemiBold"/>
+
+            <StackPanel Spacing="8">
+                <Button Content="Open User Data Folder"
+                        Command="{Binding OpenUserDataFolderCommand}"
+                        HorizontalAlignment="Left" Width="220"/>
+                <Button Content="Open App Folder"
+                        Command="{Binding OpenAppFolderCommand}"
+                        HorizontalAlignment="Left" Width="220"/>
+            </StackPanel>
+
+            <Separator Margin="0,8"/>
+
+            <TextBlock Text="Reset" FontSize="16" FontWeight="SemiBold"/>
+            <TextBlock Text="Delete local user data (cannot be undone)." Opacity="0.7"/>
+            <Button Content="Delete User Data"
+                    Command="{Binding DeleteUserDataCommand}"
+                    HorizontalAlignment="Left" Width="220"/>
+        </StackPanel>
+    </Grid>
 </UserControl>
