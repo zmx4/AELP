@@ -38,8 +38,9 @@ public partial class App : Application
     public override void OnFrameworkInitializationCompleted()
     {
         var collection = new ServiceCollection();
+        var dbPath = System.IO.Path.Combine(AppContext.BaseDirectory, "Assets", "Database", "stardict.db");
         collection.AddDbContext<AppDbContext>(options =>
-            options.UseSqlite("Data Source=../../../Assets/Database/stardict.db"));
+            options.UseSqlite($"Data Source={dbPath}"));
         collection.AddDbContext<UserDbContext>();
         collection.AddTransient<IWordQueryService, WordQueryService>();
         collection.AddTransient<IFavoritesDataStorageService, FavoritesDataStorageService>();
