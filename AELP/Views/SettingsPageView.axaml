@@ -6,28 +6,38 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="AELP.Views.SettingsPageView"
              x:DataType="vm:SettingsPageViewModel">
-    <Grid RowDefinitions="Auto,*" ColumnDefinitions="*">
-        <TextBlock Text="Settings" FontSize="24" FontWeight="Bold" Margin="0,0,0,16"/>
+    <Grid RowDefinitions="Auto,*" ColumnDefinitions="*" Classes="content-grid">
+        <TextBlock Text="Settings" FontSize="24" FontWeight="Bold" Margin="16,16,16,16" 
+                   Foreground="{DynamicResource PrimaryText}"/>
 
-        <StackPanel Grid.Row="1" Spacing="12">
-            <TextBlock Text="Storage" FontSize="16" FontWeight="SemiBold"/>
+        <StackPanel Grid.Row="1" Spacing="16" Classes="content-panel">
+            <Border Classes="card">
+                <StackPanel Spacing="12">
+                    <TextBlock Text="📁 存储设置" FontSize="18" FontWeight="SemiBold" 
+                               Foreground="{DynamicResource PrimaryText}"/>
 
-            <StackPanel Spacing="8">
-                <Button Content="Open User Data Folder"
-                        Command="{Binding OpenUserDataFolderCommand}"
-                        HorizontalAlignment="Left" Width="220"/>
-                <Button Content="Open App Folder"
-                        Command="{Binding OpenAppFolderCommand}"
-                        HorizontalAlignment="Left" Width="220"/>
-            </StackPanel>
+                    <StackPanel Spacing="8">
+                        <Button Classes="nav-button" Content="🗂️ 打开用户数据文件夹"
+                                Command="{Binding OpenUserDataFolderCommand}"
+                                HorizontalAlignment="Left" Width="260"/>
+                        <Button Classes="nav-button" Content="📱 打开应用程序文件夹"
+                                Command="{Binding OpenAppFolderCommand}"
+                                HorizontalAlignment="Left" Width="260"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
 
-            <Separator Margin="0,8"/>
-
-            <TextBlock Text="Reset" FontSize="16" FontWeight="SemiBold"/>
-            <TextBlock Text="Delete local user data (cannot be undone)." Opacity="0.7"/>
-            <Button Content="Delete User Data"
-                    Command="{Binding DeleteUserDataCommand}"
-                    HorizontalAlignment="Left" Width="220"/>
+            <Border Classes="card">
+                <StackPanel Spacing="12">
+                    <TextBlock Text="🔄 重置选项" FontSize="18" FontWeight="SemiBold" 
+                               Foreground="{DynamicResource PrimaryText}"/>
+                    <TextBlock Text="删除本地用户数据（此操作无法撤销）" 
+                               Foreground="{DynamicResource SecondaryText}" FontSize="14"/>
+                    <Button Content="🗑️ 删除用户数据" Classes="nav-button"
+                            Command="{Binding DeleteUserDataCommand}"
+                            HorizontalAlignment="Left" Width="260"/>
+                </StackPanel>
+            </Border>
         </StackPanel>
     </Grid>
 </UserControl>

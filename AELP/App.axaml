@@ -2,14 +2,40 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="AELP.App"
              xmlns:local="using:AELP"
-             RequestedThemeVariant="Default">
+             RequestedThemeVariant="Dark">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
     <Application.DataTemplates>
         <local:ViewLocator/>
     </Application.DataTemplates>
   
+    <Application.Resources>
+        <!-- 自定义暗色主题颜色 -->
+        <Color x:Key="PrimaryDark">#1a1a1a</Color>
+        <Color x:Key="SecondaryDark">#2d2d2d</Color>
+        <Color x:Key="AccentDark">#3d3d3d</Color>
+        <Color x:Key="PrimaryText">#ffffff</Color>
+        <Color x:Key="SecondaryText">#b0b0b0</Color>
+        <Color x:Key="AccentBlue">#007acc</Color>
+        <Color x:Key="AccentHover">#005a9e</Color>
+        
+        <!-- 渐变背景 -->
+        <LinearGradientBrush x:Key="PrimaryBackgroundGradient" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Offset="0" Color="#1a1a1a"/>
+            <GradientStop Offset="1" Color="#2d2d2d"/>
+        </LinearGradientBrush>
+        
+        <SolidColorBrush x:Key="NavigationBackground" Color="{StaticResource PrimaryDark}"/>
+        <SolidColorBrush x:Key="ContentBackground" Color="{StaticResource SecondaryDark}"/>
+        <SolidColorBrush x:Key="ButtonBackground" Color="{StaticResource AccentDark}"/>
+        <SolidColorBrush x:Key="ButtonHover" Color="{StaticResource AccentBlue}"/>
+        
+        <!-- 字体资源 -->
+        <FontFamily x:Key="DefaultFontFamily">Microsoft YaHei, Segoe UI, Arial</FontFamily>
+    </Application.Resources>
+    
     <Application.Styles>
         <FluentTheme />
+        <StyleInclude Source="/Styles/AppDefaultStyle.axaml"/>
     </Application.Styles>
 </Application>

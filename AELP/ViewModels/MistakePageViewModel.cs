@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,13 +16,25 @@ public partial class MistakePageViewModel : PageViewModel
 {
     [ObservableProperty]
     private ObservableCollection<MistakeDataModel> _items;
+
+    [ObservableProperty]
+    private SortOption? _selectedSortOption;
     
     private readonly IMistakeDataStorageService _mistakeDataStorageService;
+    private readonly List<MistakeDataModel> _allMistakes = new();
+
+    public IReadOnlyList<SortOption> SortOptions { get; } =
+    [
+        new SortOption("按犯错时间（近到远）", MistakeSortOption.TimeDesc),
+        new SortOption("按英文字母顺序", MistakeSortOption.WordAsc)
+    ];
     public MistakePageViewModel(IMistakeDataStorageService mistakeDataStorageService)
     {
         _items = [];
         PageNames = Data.ApplicationPageNames.Mistakes;
         _mistakeDataStorageService = mistakeDataStorageService;
+
+        SelectedSortOption = SortOptions[0];
         
         LoadMistakesAsync().ConfigureAwait(false);
     }
@@ -29,7 +42,55 @@ public partial class MistakePageViewModel : PageViewModel
     private async Task LoadMistakesAsync()
     {
         var mistakes = await _mistakeDataStorageService.LoadMistakeData();
-        Items = new ObservableCollection<MistakeDataModel>(mistakes);
+        foreach (var mistake in mistakes)
+        {
+            mistake.Translation = NormalizeTranslation(mistake.Translation);
+        }
+        _allMistakes.Clear();
+        _allMistakes.AddRange(mistakes);
+        ApplySort();
+    }
+
+    partial void OnSelectedSortOptionChanged(SortOption? value)
+    {
+        ApplySort();
+    }
+
+    private void ApplySort()
+    {
+        if (_allMistakes.Count == 0)
+        {
+            Items = new ObservableCollection<MistakeDataModel>();
+            return;
+        }
+
+        var option = SelectedSortOption?.Value ?? MistakeSortOption.TimeDesc;
+        IEnumerable<MistakeDataModel> ordered = option switch
+        {
+            MistakeSortOption.WordAsc => _allMistakes
+                .OrderBy(x => x.Word ?? string.Empty, StringComparer.OrdinalIgnoreCase)
+                .ThenByDescending(x => x.Time),
+            _ => _allMistakes
+                .OrderByDescending(x => x.Time)
+                .ThenBy(x => x.Word ?? string.Empty, StringComparer.OrdinalIgnoreCase)
+        };
+
+        Items = new ObservableCollection<MistakeDataModel>(ordered);
+    }
+
+    private static string? NormalizeTranslation(string? translation)
+    {
+        return translation?
+            .Replace("\\r\\n", "\n", StringComparison.Ordinal)
+            .Replace("\\n", "\n", StringComparison.Ordinal);
+    }
+
+    public sealed record SortOption(string Display, MistakeSortOption Value);
+
+    public enum MistakeSortOption
+    {
+        TimeDesc,
+        WordAsc
     }
 
     [RelayCommand]
