@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AELP.UnitTest.Services;
 
-public class ITestWordGetterTest
+public class TestWordGetterTest
 {
     private AppDbContext GetDbContext()
     {
