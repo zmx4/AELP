@@ -26,7 +26,8 @@ public partial class MistakePageViewModel : PageViewModel
     public IReadOnlyList<SortOption> SortOptions { get; } =
     [
         new SortOption("按犯错时间（近到远）", MistakeSortOption.TimeDesc),
-        new SortOption("按英文字母顺序", MistakeSortOption.WordAsc)
+        new SortOption("按英文字母顺序", MistakeSortOption.WordAsc),
+        new SortOption("按犯错次数（多到少）", MistakeSortOption.CountDesc)
     ];
     public MistakePageViewModel(IMistakeDataStorageService mistakeDataStorageService)
     {
@@ -70,9 +71,12 @@ public partial class MistakePageViewModel : PageViewModel
             MistakeSortOption.WordAsc => _allMistakes
                 .OrderBy(x => x.Word ?? string.Empty, StringComparer.OrdinalIgnoreCase)
                 .ThenByDescending(x => x.Time),
-            _ => _allMistakes
+            MistakeSortOption.TimeDesc => _allMistakes
                 .OrderByDescending(x => x.Time)
-                .ThenBy(x => x.Word ?? string.Empty, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(x => x.Word ?? string.Empty, StringComparer.OrdinalIgnoreCase),
+            _ => _allMistakes
+                .OrderByDescending(x => x.Count)
+                .ThenByDescending(x => x.Time),
         };
 
         Items = new ObservableCollection<MistakeDataModel>(ordered);
@@ -90,7 +94,8 @@ public partial class MistakePageViewModel : PageViewModel
     public enum MistakeSortOption
     {
         TimeDesc,
-        WordAsc
+        WordAsc,
+        CountDesc
     }
 
     [RelayCommand]

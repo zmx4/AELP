@@ -89,7 +89,9 @@ public partial class App : Application
                 using var mistakesFromStorage =  scope.ServiceProvider
                     .GetRequiredKeyedService<IMistakeDataStorageService>(null)
                     .LoadMistakeData();
-                
+                using var testRecordsFromStorage =  scope.ServiceProvider
+                    .GetRequiredKeyedService<ITestDataStorageService>(null)
+                    .LoadTestData();
             }
             catch
             {

@@ -11,6 +11,7 @@
         <StackPanel Orientation="Horizontal" Spacing="10" Grid.Row="0" VerticalAlignment="Center">
             <TextBlock Text="错题本" FontSize="24" FontWeight="Bold"/>
             <TextBlock Text="最近答错的单词会显示在这里" VerticalAlignment="Center" Foreground="#BBBBBB"/>
+            <Button Content="开始复习" Command="{Binding GoToReviewCommand}" IsVisible="{Binding Items.Count}" />
             <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center" Margin="10,0,0,0">
                 <TextBlock Text="排序:" VerticalAlignment="Center" Foreground="#BBBBBB"/>
                 <ComboBox Width="180"
@@ -23,7 +24,6 @@
                     </ComboBox.ItemTemplate>
                 </ComboBox>
             </StackPanel>
-            <Button Content="开始复习" Command="{Binding GoToReviewCommand}" IsVisible="{Binding Items.Count}" />
         </StackPanel>
 
         <ScrollViewer Grid.Row="1" Margin="0,10,0,0" IsVisible="{Binding Items.Count}">

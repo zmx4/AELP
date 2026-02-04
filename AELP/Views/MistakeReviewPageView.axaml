@@ -33,7 +33,11 @@
                     <TextBlock Text="翻译" FontSize="16" FontWeight="SemiBold" />
                     <TextBlock Text="{Binding CurrentTranslation}" FontSize="22" FontWeight="Bold" TextWrapping="Wrap" />
                     <StackPanel Orientation="Horizontal" Spacing="8">
-                        <TextBox Width="260" Text="{Binding UserInput, UpdateSourceTrigger=PropertyChanged}" Watermark="输入单词" />
+                        <TextBox Width="260" Text="{Binding UserInput, UpdateSourceTrigger=PropertyChanged}" Watermark="输入单词">
+                            <TextBox.KeyBindings>
+                                <KeyBinding Gesture="Enter" Command="{Binding SubmitAnswerCommand}" />
+                            </TextBox.KeyBindings>
+                        </TextBox>
                         <Button Content="提交" Command="{Binding SubmitAnswerCommand}" />
                     </StackPanel>
                     <TextBlock Text="{Binding StatusText}" Foreground="#FFB347" />

@@ -43,7 +43,11 @@
                     <TextBlock Text="{Binding CurrentTranslation}" FontSize="18" />
                     <TextBlock Text="{Binding PartialWord}" FontSize="28" FontWeight="Bold" FontFamily="Consolas" />
                     <StackPanel Orientation="Horizontal" Spacing="8">
-                        <TextBox Width="220" Text="{Binding FillInput, UpdateSourceTrigger=PropertyChanged}" Watermark="输入缺失部分" />
+                        <TextBox Width="220" Text="{Binding FillInput, UpdateSourceTrigger=PropertyChanged}" Watermark="输入缺失部分">
+                            <TextBox.KeyBindings>
+                                <KeyBinding Gesture="Enter" Command="{Binding SubmitFillCommand}" />
+                            </TextBox.KeyBindings>
+                        </TextBox>
                         <Button Content="提交" Command="{Binding SubmitFillCommand}" />
                     </StackPanel>
                 </StackPanel>
