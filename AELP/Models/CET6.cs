@@ -5,6 +5,4 @@ namespace AELP.Models;
 
 public partial class CET6 : Word
 {
-
-
 }

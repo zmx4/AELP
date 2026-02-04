@@ -5,9 +5,6 @@ namespace AELP.Models;
 
 public partial class dictionary : Word
 {
-
-
-
     public int? cet4 { get; set; }
 
     public int? cet6 { get; set; }
