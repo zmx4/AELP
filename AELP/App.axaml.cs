@@ -42,6 +42,8 @@ public partial class App : Application
         collection.AddDbContext<AppDbContext>(options =>
             options.UseSqlite($"Data Source={dbPath}"));
         collection.AddDbContext<UserDbContext>();
+        collection.AddSingleton<IPreferenceStorage, FilePreferenceStorage>();
+        collection.AddSingleton<IThemeService, ThemeService>();
         collection.AddTransient<IWordQueryService, WordQueryService>();
         collection.AddTransient<IFavoritesDataStorageService, FavoritesDataStorageService>();
         collection.AddTransient<IMistakeDataStorageService, MistakeDataStorageService>();
@@ -75,6 +77,11 @@ public partial class App : Application
         });
         
         var serviceProvider = collection.BuildServiceProvider();
+        
+        // 初始化主题
+        var themeService = serviceProvider.GetRequiredService<IThemeService>();
+        var savedTheme = themeService.GetSavedTheme();
+        themeService.SetTheme(savedTheme);
         
         Task.Run(async () =>
         {

@@ -1,0 +1,101 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <!-- 护眼主题 - 采用柔和的绿色调和低对比度配色 -->
+    
+    <!-- 护眼主题颜色定义 -->
+    <Style Selector="Application /template/ ContentPresenter">
+        <Style.Resources>
+            <!-- 护眼背景色 - 淡绿色调 -->
+            <Color x:Key="PrimaryDark">#C7EDCC</Color>
+            <Color x:Key="SecondaryDark">#D8F3DC</Color>
+            <Color x:Key="AccentDark">#B7E4C7</Color>
+            
+            <!-- 护眼文字颜色 - 深色但不刺眼 -->
+            <Color x:Key="PrimaryText">#2D3E2D</Color>
+            <Color x:Key="SecondaryText">#5A6B5A</Color>
+            
+            <!-- 护眼强调色 -->
+            <Color x:Key="AccentBlue">#40916C</Color>
+            <Color x:Key="AccentHover">#52B788</Color>
+            
+            <!-- 渐变背景 -->
+            <LinearGradientBrush x:Key="PrimaryBackgroundGradient" StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Offset="0" Color="#C7EDCC"/>
+                <GradientStop Offset="1" Color="#D8F3DC"/>
+            </LinearGradientBrush>
+            
+            <SolidColorBrush x:Key="NavigationBackground" Color="{StaticResource PrimaryDark}"/>
+            <SolidColorBrush x:Key="ContentBackground" Color="{StaticResource SecondaryDark}"/>
+            <SolidColorBrush x:Key="ButtonBackground" Color="{StaticResource AccentDark}"/>
+            <SolidColorBrush x:Key="ButtonHover" Color="{StaticResource AccentBlue}"/>
+        </Style.Resources>
+    </Style>
+    
+    <!-- 窗口样式 -->
+    <Style Selector="Window">
+        <Setter Property="Background" Value="{DynamicResource PrimaryBackgroundGradient}"/>
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryText}"/>
+    </Style>
+    
+    <!-- 导航按钮样式 -->
+    <Style Selector="Button.nav-button">
+        <Setter Property="Background" Value="{DynamicResource ButtonBackground}"/>
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryText}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+    </Style>
+    
+    <Style Selector="Button.nav-button:pointerover">
+        <Setter Property="Background" Value="{DynamicResource ButtonHover}"/>
+        <Setter Property="Foreground" Value="#FFFFFF"/>
+    </Style>
+    
+    <!-- Border 卡片样式 -->
+    <Style Selector="Border.card">
+        <Setter Property="Background" Value="{DynamicResource ContentBackground}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <SolidColorBrush Color="{StaticResource AccentDark}"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <!-- TextBlock 样式 -->
+    <Style Selector="TextBlock">
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryText}"/>
+    </Style>
+    
+    <!-- TextBox 样式 -->
+    <Style Selector="TextBox">
+        <Setter Property="Background">
+            <Setter.Value>
+                <SolidColorBrush Color="#E8F5E9"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryText}"/>
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <SolidColorBrush Color="{StaticResource AccentBlue}"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <!-- ListBox 样式 -->
+    <Style Selector="ListBox">
+        <Setter Property="Background" Value="{DynamicResource ContentBackground}"/>
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryText}"/>
+    </Style>
+    
+    <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+        <Setter Property="Background">
+            <Setter.Value>
+                <SolidColorBrush Color="{StaticResource AccentBlue}"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="TextBlock.Foreground" Value="#FFFFFF"/>
+    </Style>
+    
+
+    
+</Styles>

@@ -1,9 +1,8 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="AELP.App"
-             xmlns:local="using:AELP"
-             RequestedThemeVariant="Dark">
-             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+             xmlns:local="using:AELP">
+             <!-- ThemeVariant is now controlled by ThemeService -->
 
     <Application.DataTemplates>
         <local:ViewLocator/>
