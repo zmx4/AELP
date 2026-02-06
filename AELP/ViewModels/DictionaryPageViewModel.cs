@@ -41,10 +41,11 @@ public partial class DictionaryPageViewModel : PageViewModel
         // But initially it's empty.
         _favoritesDataStorageService = favoritesDataStorageService;
         ContentBlurRadius = 0;
+        // _word = new dictionary();
     }
 
     [RelayCommand]
-    private void SearchTranslation()
+    private async Task SearchTranslationAsync()
     {
         if (string.IsNullOrWhiteSpace(SearchText))
         {
@@ -52,7 +53,7 @@ public partial class DictionaryPageViewModel : PageViewModel
             return;
         }
 
-        var resultDictionary = _wordQueryService.QueryWordInfo(SearchText);
+        var resultDictionary = await _wordQueryService.QueryWordInfoAsync(SearchText);
 
         if (resultDictionary != null)
         {
@@ -88,7 +89,7 @@ public partial class DictionaryPageViewModel : PageViewModel
     }
 
     [RelayCommand]
-    private void SearchWords()
+    private async Task SearchWordsAsync()
     {
         if (string.IsNullOrWhiteSpace(SearchText))
         {
@@ -96,7 +97,7 @@ public partial class DictionaryPageViewModel : PageViewModel
         }
 
         _rawSearchResults.Clear();
-        _rawSearchResults = _wordQueryService.QueryWords(SearchText);
+        _rawSearchResults = new List<dictionary>(await _wordQueryService.QueryWordsAsync(SearchText));
         SearchResults.Clear();
         foreach (var word in _rawSearchResults)
         {

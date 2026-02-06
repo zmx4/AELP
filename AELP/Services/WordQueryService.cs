@@ -45,12 +45,21 @@ public class WordQueryService : IWordQueryService
         return results;
     }
 
-    public async Task<List<dictionary>> QueryWordsAsync(string translation)
+    public async Task<dictionary[]> QueryWordsAsync(string translation)
     {
         return await Task.Run(() =>
             _context.dictionaries
                 .Where(x => x.translation != null && x.translation.Contains(translation))
-                //.Select(x => x.word)
-                .ToList());
+                .ToArray());
+    }
+
+    public async Task<dictionary[]> QueryWordsAsync(string translation, int skip, int take)
+    {
+        return await Task.Run(() =>
+            _context.dictionaries
+                .Where(x => x.translation != null && x.translation.Contains(translation))
+                .Skip(skip)
+                .Take(take)
+                .ToArray());
     }
 }

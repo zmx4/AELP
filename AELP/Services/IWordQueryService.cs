@@ -11,5 +11,8 @@ public interface IWordQueryService
     public string QueryWordTranslation(string word);
     public string QueryWord(string translation);
     public List<dictionary> QueryWords(string translation);
-    public Task<List<dictionary>> QueryWordsAsync(string translation);
+    // public Task<List<dictionary>> QueryWordsAsync(string translation);
+    public Task<dictionary[]> QueryWordsAsync(string translation);
+    public Task<dictionary[]> QueryWordsAsync(string translation,int skip,int take);
+
 }
