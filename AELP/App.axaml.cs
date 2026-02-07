@@ -55,6 +55,7 @@ public partial class App : Application
         collection.AddTransient<DictionaryPageViewModel>();
         collection.AddTransient<FavoritesPageViewModel>();
         collection.AddTransient<TestsPageViewModel>();
+        collection.AddTransient<TestSessionPageViewModel>();
         collection.AddTransient<MistakePageViewModel>();
         collection.AddTransient<MistakeReviewPageViewModel>();
         collection.AddTransient<SummaryPageViewModel>(sp => new SummaryPageViewModel(
@@ -67,6 +68,7 @@ public partial class App : Application
             ApplicationPageNames.Dictionary => x.GetRequiredService<DictionaryPageViewModel>(),
             ApplicationPageNames.Favorites => x.GetRequiredService<FavoritesPageViewModel>(),
             ApplicationPageNames.Tests => x.GetRequiredService<TestsPageViewModel>(),
+            ApplicationPageNames.TestSession => x.GetRequiredService<TestSessionPageViewModel>(),
             ApplicationPageNames.Mistakes => x.GetRequiredService<MistakePageViewModel>(),
             ApplicationPageNames.MistakeReview => x.GetRequiredService<MistakeReviewPageViewModel>(),
             ApplicationPageNames.Summary => x.GetRequiredService<SummaryPageViewModel>(),

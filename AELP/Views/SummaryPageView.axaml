@@ -10,10 +10,12 @@
     <Grid RowDefinitions="Auto,*" ColumnDefinitions="*,*" Margin="20" ColumnSpacing="16" RowSpacing="16">
         <TextBlock Text="测试总结" FontSize="24" FontWeight="Bold" Grid.ColumnSpan="2" />
 
-        <Border Grid.Row="1" Grid.Column="0" Background="#0F000000" CornerRadius="8" Padding="12">
+        <Border Grid.Row="1" Grid.Column="0" Background="#0F0000" CornerRadius="8" Padding="12">
             <Grid RowDefinitions="Auto,*" RowSpacing="8" MinHeight="280">
                 <TextBlock Text="单词耗时占比" FontSize="16" FontWeight="SemiBold" />
-                <lvc:PieChart Grid.Row="1" Series="{Binding TimePieSeries}" LegendPosition="Right" />
+                <lvc:PieChart Grid.Row="1" 
+                              Series="{Binding TimePieSeries}" 
+                              LegendPosition="Right" />
             </Grid>
         </Border>
 

@@ -5,6 +5,7 @@ public enum ApplicationPageNames
     Dictionary,
     Favorites,
     Tests,
+    TestSession,
     Mistakes,
     Settings,
     Summary,
