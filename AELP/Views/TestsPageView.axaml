@@ -7,7 +7,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
              x:Class="AELP.Views.TestsPageView"
              x:DataType="vm:TestsPageViewModel">
-            <Grid RowDefinitions="Auto,*" Margin="20" RowSpacing="16">
+            <Grid RowDefinitions="Auto,*" Margin="20">
                 <Border Background="#0F000000" CornerRadius="8" Padding="12">
                     <StackPanel Orientation="Horizontal" Spacing="12">
                         <TextBlock Text="测试范围" VerticalAlignment="Center" />
@@ -19,7 +19,7 @@
                     </StackPanel>
                 </Border>
 
-                <Grid Grid.Row="1" ColumnDefinitions="*,*" ColumnSpacing="16">
+                <Grid Grid.Row="1" ColumnDefinitions="*,*" Margin="0,16,0,0">
                     <Border Background="#0F000000" CornerRadius="8" Padding="16">
                         <StackPanel Spacing="10">
                             <TextBlock Text="最近测试" FontSize="18" FontWeight="SemiBold" />
@@ -33,7 +33,7 @@
                         </StackPanel>
                     </Border>
 
-                    <Border Grid.Column="1" Background="#0F000000" CornerRadius="8" Padding="16">
+                    <Border Grid.Column="1" Background="#0F000000" CornerRadius="8" Padding="16" Margin="16,0,0,0">
                         <StackPanel Spacing="10">
                             <TextBlock Text="最近测试对比" FontSize="18" FontWeight="SemiBold" />
                             <StackPanel Spacing="6" IsVisible="{Binding HasPreviousTest}">

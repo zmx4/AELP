@@ -6,13 +6,13 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="AELP.Views.MistakeReviewPageView"
              x:DataType="vm:MistakeReviewPageViewModel">
-    <Grid RowDefinitions="Auto,*" Margin="20" RowSpacing="16">
+    <Grid RowDefinitions="Auto,*" Margin="20">
         <StackPanel Orientation="Horizontal" Spacing="10">
             <TextBlock Text="错题复习" FontSize="24" FontWeight="Bold" />
             <TextBlock Text="根据翻译写出单词" VerticalAlignment="Center" Foreground="#BBBBBB" />
         </StackPanel>
 
-        <Border Grid.Row="1" Background="#0F000000" CornerRadius="8" Padding="16">
+        <Border Grid.Row="1" Background="#0F000000" CornerRadius="8" Padding="16" Margin="0,16,0,0">
             <StackPanel Spacing="14">
                 <StackPanel IsVisible="{Binding IsNotReviewing}" Spacing="10">
                     <TextBlock Text="准备开始错题复习" FontSize="18" FontWeight="SemiBold" />

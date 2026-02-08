@@ -7,7 +7,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
              x:Class="AELP.Views.TestSessionPageView"
              x:DataType="vm:TestSessionPageViewModel">
-    <Grid RowDefinitions="Auto,*" Margin="20" RowSpacing="16">
+    <Grid RowDefinitions="Auto,*" Margin="20">
         <Border Background="#0F000000" CornerRadius="8" Padding="12">
             <StackPanel Orientation="Horizontal" Spacing="12" IsVisible="{Binding IsNotTesting}">
                 <TextBlock Text="测试范围" VerticalAlignment="Center" />
@@ -19,7 +19,7 @@
             </StackPanel>
         </Border>
 
-        <Border Grid.Row="1" Background="#0F000000" CornerRadius="8" Padding="16" IsVisible="{Binding IsTesting}">
+        <Border Grid.Row="1" Background="#0F000000" CornerRadius="8" Padding="16" Margin="0,16,0,0" IsVisible="{Binding IsTesting}">
             <StackPanel Spacing="16">
                 <TextBlock Text="{Binding ProgressText}" HorizontalAlignment="Right" Foreground="#666" />
 
