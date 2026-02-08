@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Avalonia;
+using Avalonia.Media;
 using Avalonia.Markup.Xaml.Styling;
 using Avalonia.Styling;
 
@@ -9,17 +10,22 @@ namespace AELP.Services;
 public class ThemeService : IThemeService
 {
     private const string ThemePreferenceKey = "AppTheme";
+    private const string FontPreferenceKey = "UserFont";
     private readonly IPreferenceStorage _preferenceStorage;
     private AppTheme _currentTheme;
+    private string _currentFontFamily;
 
     public event EventHandler<AppTheme>? ThemeChanged;
+    public event EventHandler<string>? FontFamilyChanged;
 
     public AppTheme CurrentTheme => _currentTheme;
+    public string CurrentFontFamily => _currentFontFamily;
 
     public ThemeService(IPreferenceStorage preferenceStorage)
     {
         _preferenceStorage = preferenceStorage;
         _currentTheme = GetSavedTheme();
+        _currentFontFamily = GetSavedFontFamily();
     }
 
     public void SetTheme(AppTheme theme)
@@ -32,6 +38,16 @@ public class ThemeService : IThemeService
         ThemeChanged?.Invoke(this, theme);
     }
 
+    public void SetFontFamily(string fontFamily)
+    {
+        if (_currentFontFamily == fontFamily) return;
+
+        _currentFontFamily = fontFamily;
+        _preferenceStorage.Set(FontPreferenceKey, fontFamily);
+        ApplyFont(fontFamily);
+        FontFamilyChanged?.Invoke(this, fontFamily);
+    }
+
     public AppTheme GetSavedTheme()
     {
         var themeValue = _preferenceStorage.Get(ThemePreferenceKey, "0");
@@ -41,6 +57,26 @@ public class ThemeService : IThemeService
             return (AppTheme)themeInt;
         }
         return AppTheme.Dark;
+    }
+
+    public string GetSavedFontFamily()
+    {
+        return _preferenceStorage.Get(FontPreferenceKey, "Microsoft YaHei, Segoe UI, Arial");
+    }
+
+    private void ApplyFont(string fontFamily)
+    {
+        var app = Application.Current;
+        if (app == null) return;
+        
+        try
+        {
+            app.Resources["DefaultFontFamily"] = new FontFamily(fontFamily);
+        }
+        catch
+        {
+            // Fallback or ignore invalid fonts
+        }
     }
 
     private void ApplyTheme(AppTheme theme)

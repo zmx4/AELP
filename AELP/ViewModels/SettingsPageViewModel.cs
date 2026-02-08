@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Avalonia.Media;
 using AELP.Helper;
 using AELP.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -15,7 +16,11 @@ public partial class SettingsPageViewModel : PageViewModel
     [ObservableProperty]
     private ThemeOptionViewModel? _selectedTheme;
     
+    [ObservableProperty]
+    private string _selectedFont;
+
     public ObservableCollection<ThemeOptionViewModel> ThemeOptions { get; }
+    public ObservableCollection<string> AvailableFonts { get; }
 
     public SettingsPageViewModel(IThemeService themeService)
     {
@@ -32,6 +37,28 @@ public partial class SettingsPageViewModel : PageViewModel
         // 设置当前主题
         var currentTheme = _themeService.CurrentTheme;
         _selectedTheme = ThemeOptions.FirstOrDefault(t => t.Theme == currentTheme);
+
+        // 设置字体
+        AvailableFonts = new ObservableCollection<string>();
+        // Add default font option
+        const string defaultFont = "Microsoft YaHei, Segoe UI, Arial";
+        AvailableFonts.Add(defaultFont);
+        
+        if (FontManager.Current != null)
+        {
+            var systemFonts = FontManager.Current.SystemFonts.Select(x => x.Name).OrderBy(x => x);
+            foreach (var font in systemFonts)
+            {
+                if (font != defaultFont)
+                    AvailableFonts.Add(font);
+            }
+        }
+        
+        _selectedFont = _themeService.CurrentFontFamily;
+        if (string.IsNullOrEmpty(_selectedFont))
+        {
+            _selectedFont = defaultFont;
+        }
     }
     
     partial void OnSelectedThemeChanged(ThemeOptionViewModel? value)
@@ -39,6 +66,14 @@ public partial class SettingsPageViewModel : PageViewModel
         if (value != null)
         {
             _themeService.SetTheme(value.Theme);
+        }
+    }
+
+    partial void OnSelectedFontChanged(string value)
+    {
+        if (!string.IsNullOrEmpty(value))
+        {
+            _themeService.SetFontFamily(value);
         }
     }
     

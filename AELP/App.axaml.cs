@@ -85,6 +85,10 @@ public partial class App : Application
         var savedTheme = themeService.GetSavedTheme();
         themeService.SetTheme(savedTheme);
         
+        // 初始化字体
+        var savedFont = themeService.GetSavedFontFamily();
+        themeService.SetFontFamily(savedFont);
+        
         Task.Run(async () =>
         {
             try
