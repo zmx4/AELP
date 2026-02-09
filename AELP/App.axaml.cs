@@ -42,7 +42,7 @@ public partial class App : Application
         collection.AddDbContext<AppDbContext>(options =>
             options.UseSqlite($"Data Source={dbPath}"));
         collection.AddDbContext<UserDbContext>();
-        collection.AddSingleton<IPreferenceStorage, FilePreferenceStorage>();
+        collection.AddSingleton<IPreferenceStorage, JsonPreferenceStorage>();
         collection.AddSingleton<IThemeService, ThemeService>();
         collection.AddTransient<IWordQueryService, WordQueryService>();
         collection.AddTransient<IFavoritesDataStorageService, FavoritesDataStorageService>();

@@ -1,6 +1,7 @@
 ﻿namespace AELP.Services;
 
-public interface IKeyboardPerferanceService
+public interface IKeyboardPreferenceService
 {
-    public 
+    public void SetKeyboardPreference(string keyboardId);
+    public string GetKeyboardPreference();
 }

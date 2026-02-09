@@ -6,12 +6,14 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="AELP.Views.SettingsPageView"
              x:DataType="vm:SettingsPageViewModel">
-    <Grid RowDefinitions="Auto,*" ColumnDefinitions="*" Classes="content-grid">
-        <TextBlock Text="Settings" FontSize="24" FontWeight="Bold" Margin="16,16,16,16" 
-                   Foreground="{DynamicResource PrimaryText}"/>
+    <!-- <Grid RowDefinitions="Auto,*" ColumnDefinitions="*" Classes="content-grid"> -->
+        <!-- <TextBlock Text="Settings" FontSize="24" FontWeight="Bold" Margin="16,16,16,16"  -->
+        <!--            Foreground="{DynamicResource PrimaryText}"/> -->
 
-        <StackPanel Grid.Row="1" Spacing="16" Classes="content-panel">
-            <Border Classes="card">
+        <TabControl Classes="content-panel">
+            <!-- 主题设置 -->
+            <TabItem Header="主题">
+            <Border Classes="card" Margin="0,10,0,16">
                 <StackPanel Spacing="12">
                     <TextBlock Text="🎨 主题设置" FontSize="18" FontWeight="SemiBold" 
                                Foreground="{DynamicResource PrimaryText}"/>
@@ -50,34 +52,39 @@
                     </ComboBox>
                 </StackPanel>
             </Border>
+            </TabItem>
+            <!-- 用户数据 -->
+            <TabItem Header="数据">
+                <Border Classes="card" Margin="0,10,0,16">
+                    <StackPanel Spacing="12">
+                        <TextBlock Text="📁 存储设置" FontSize="18" FontWeight="SemiBold" 
+                                   Foreground="{DynamicResource PrimaryText}"/>
 
-            <Border Classes="card">
-                <StackPanel Spacing="12">
-                    <TextBlock Text="📁 存储设置" FontSize="18" FontWeight="SemiBold" 
-                               Foreground="{DynamicResource PrimaryText}"/>
-
-                    <StackPanel Spacing="8">
-                        <Button Classes="nav-button" Content="🗂️ 打开用户数据文件夹"
-                                Command="{Binding OpenUserDataFolderCommand}"
-                                HorizontalAlignment="Left" Width="260"/>
-                        <Button Classes="nav-button" Content="📱 打开应用程序文件夹"
-                                Command="{Binding OpenAppFolderCommand}"
+                        <StackPanel Spacing="8">
+                            <Button Classes="nav-button" Content="🗂️ 打开用户数据文件夹"
+                                    Command="{Binding OpenUserDataFolderCommand}"
+                                    HorizontalAlignment="Left" Width="260"/>
+                            <Button Classes="nav-button" Content="📱 打开应用程序文件夹"
+                                    Command="{Binding OpenAppFolderCommand}"
+                                    HorizontalAlignment="Left" Width="260"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </TabItem>
+            <!-- 重置 -->
+            <TabItem Header="重置">
+                <Border Classes="card" Margin="0,10,0,16">
+                    <StackPanel Spacing="12">
+                        <TextBlock Text="🔄 重置选项" FontSize="18" FontWeight="SemiBold" 
+                                   Foreground="{DynamicResource PrimaryText}"/>
+                        <TextBlock Text="删除本地用户数据（此操作无法撤销）" 
+                                   Foreground="{DynamicResource SecondaryText}" FontSize="14"/>
+                        <Button Content="🗑️ 删除用户数据" Classes="nav-button"
+                                Command="{Binding DeleteUserDataCommand}"
                                 HorizontalAlignment="Left" Width="260"/>
                     </StackPanel>
-                </StackPanel>
-            </Border>
-
-            <Border Classes="card">
-                <StackPanel Spacing="12">
-                    <TextBlock Text="🔄 重置选项" FontSize="18" FontWeight="SemiBold" 
-                               Foreground="{DynamicResource PrimaryText}"/>
-                    <TextBlock Text="删除本地用户数据（此操作无法撤销）" 
-                               Foreground="{DynamicResource SecondaryText}" FontSize="14"/>
-                    <Button Content="🗑️ 删除用户数据" Classes="nav-button"
-                            Command="{Binding DeleteUserDataCommand}"
-                            HorizontalAlignment="Left" Width="260"/>
-                </StackPanel>
-            </Border>
-        </StackPanel>
-    </Grid>
+                </Border>
+            </TabItem>
+        </TabControl>
+    <!-- </Grid> -->
 </UserControl>
