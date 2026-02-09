@@ -14,49 +14,49 @@ public class WordQueryService : IWordQueryService
         _context = context;
     }
     
-    public dictionary? QueryWordInfo(string word)
+    public Dictionary? QueryWordInfo(string word)
     {
-        return _context.dictionaries.FirstOrDefault(x => x.word == word);
+        return _context.Dictionaries.FirstOrDefault(x => x.word == word);
     }
 
-    public async Task<dictionary?> QueryWordInfoAsync(string word)
+    public async Task<Dictionary?> QueryWordInfoAsync(string word)
     {
-        return await Task.Run(() => _context.dictionaries.FirstOrDefault(x => x.word == word));
+        return await Task.Run(() => _context.Dictionaries.FirstOrDefault(x => x.word == word));
     }
 
     public string QueryWordTranslation(string word)
     {
-        var result = _context.dictionaries.FirstOrDefault(x => x.word == word);
+        var result = _context.Dictionaries.FirstOrDefault(x => x.word == word);
         return result?.translation ?? string.Empty;
     }
 
     public string QueryWord(string translation)
     {
-        var result = _context.dictionaries.FirstOrDefault(x => x.translation != null && x.translation.Contains(translation));
+        var result = _context.Dictionaries.FirstOrDefault(x => x.translation != null && x.translation.Contains(translation));
         return result?.word ?? string.Empty;
     }
 
-    public List<dictionary> QueryWords(string translation)
+    public List<Dictionary> QueryWords(string translation)
     {
-        var results = _context.dictionaries
+        var results = _context.Dictionaries
             .Where(x => x.translation != null && x.translation.Contains(translation))
             //.Select(x => x.word)
             .ToList();  
         return results;
     }
 
-    public async Task<dictionary[]> QueryWordsAsync(string translation)
+    public async Task<Dictionary[]> QueryWordsAsync(string translation)
     {
         return await Task.Run(() =>
-            _context.dictionaries
+            _context.Dictionaries
                 .Where(x => x.translation != null && x.translation.Contains(translation))
                 .ToArray());
     }
 
-    public async Task<dictionary[]> QueryWordsAsync(string translation, int skip, int take)
+    public async Task<Dictionary[]> QueryWordsAsync(string translation, int skip, int take)
     {
         return await Task.Run(() =>
-            _context.dictionaries
+            _context.Dictionaries
                 .Where(x => x.translation != null && x.translation.Contains(translation))
                 .Skip(skip)
                 .Take(take)

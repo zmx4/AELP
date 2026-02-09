@@ -13,7 +13,7 @@ public class TestDataModel
     [Precision(3)]
     public DateTime TestTime { get; set; }
     
-    public List<int> Mistakes { get; set; }
+    public required List<int> Mistakes { get; set; }
     
     public int TotalQuestions { get; set; }
     

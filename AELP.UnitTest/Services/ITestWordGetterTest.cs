@@ -37,12 +37,12 @@ public class TestWordGetterTest
             // Seed data
             case TestRange.Cet4:
             {
-                for(var i=0; i<10; i++) context.CET4s.Add(new CET4 { word = $"c4_{i}", translation = "t" });
+                for(var i=0; i<10; i++) context.Cet4S.Add(new Cet4 { word = $"c4_{i}", translation = "t" });
                 break;
             }
             case TestRange.Cet6:
             {
-                for(var i=0; i<10; i++) context.CET6s.Add(new CET6 { word = $"c6_{i}", translation = "t" });
+                for(var i=0; i<10; i++) context.Cet6S.Add(new Cet6 { word = $"c6_{i}", translation = "t" });
                 break;
             }
             case TestRange.Senior:
@@ -52,12 +52,12 @@ public class TestWordGetterTest
             }
             case TestRange.Toefl:
             {
-                for(var i=0; i<10; i++) context.tfs.Add(new tf { word = $"tf_{i}", translation = "t" });
+                for(var i=0; i<10; i++) context.Tfs.Add(new Tf { word = $"tf_{i}", translation = "t" });
                 break;
             }
             case TestRange.Ielts:
             {
-                for(var i=0; i<10; i++) context.ys.Add(new y { word = $"ys_{i}", translation = "t" });
+                for(var i=0; i<10; i++) context.Ys.Add(new Y { word = $"ys_{i}", translation = "t" });
                 break;
             }
             case TestRange.Primary:

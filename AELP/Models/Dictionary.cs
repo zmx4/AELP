@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace AELP.Models;
 
-namespace AELP.Models;
-
-public partial class dictionary : Word
+public partial class Dictionary : Word
 {
     public int? cet4 { get; set; }
 

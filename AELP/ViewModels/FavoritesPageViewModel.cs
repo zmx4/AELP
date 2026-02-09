@@ -49,7 +49,7 @@ public partial class FavoritesPageViewModel : PageViewModel
         var wordInfo = await _wordQueryService.QueryUserWordInfoAsync(favorite.WordId);
         if (wordInfo != null)
         {
-            var temp = new dictionary
+            var temp = new Dictionary
             {
                 word = wordInfo.Word,
                 translation = wordInfo.Translation,
@@ -71,7 +71,7 @@ public partial class FavoritesPageViewModel : PageViewModel
         var wordInfo = await _wordQueryService.QueryUserWordInfoAsync(favorite.WordId);
         if (wordInfo != null)
         {
-            var temp = new dictionary
+            var temp = new Dictionary
             {
                 word = wordInfo.Word,
                 translation = wordInfo.Translation,

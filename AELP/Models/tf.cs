@@ -3,6 +3,6 @@ using System.Collections.Generic;
 
 namespace AELP.Models;
 
-public partial class tf : Word
+public partial class Tf : Word
 {
 }

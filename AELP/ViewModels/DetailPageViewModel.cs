@@ -11,9 +11,9 @@ public partial class DetailPageViewModel : PageViewModel
 {
     private readonly IFavoritesDataStorageService _dataStorageService;
     
-    private dictionary? _word;
+    private Dictionary? _word;
 
-    public dictionary? Word
+    public Dictionary? Word
     {
         get => _word;
         private set
@@ -35,7 +35,7 @@ public partial class DetailPageViewModel : PageViewModel
 
     public override void SetParameter(object parameter)
     {
-        if (parameter is dictionary word)
+        if (parameter is Dictionary word)
         {
             Word = word;
             word.translation = word.translation?.Replace("\\n", "\n");

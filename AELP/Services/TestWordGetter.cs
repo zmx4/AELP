@@ -16,12 +16,12 @@ public class TestWordGetter(AppDbContext context) : ITestWordGetter
     {
         return testRange switch
         {
-            TestRange.Cet4 => _dbContext.CET4s
+            TestRange.Cet4 => _dbContext.Cet4S
                 .OrderBy(r => EF.Functions.Random())
                 .Take(count)
                 .ToListAsync()
                 .ContinueWith(t => t.Result.Cast<Word>().ToList()),
-            TestRange.Cet6 => _dbContext.CET6s
+            TestRange.Cet6 => _dbContext.Cet6S
                 .OrderBy(r => EF.Functions.Random())
                 .Take(count)
                 .ToListAsync()
@@ -31,12 +31,12 @@ public class TestWordGetter(AppDbContext context) : ITestWordGetter
                 .Take(count)
                 .ToListAsync()
                 .ContinueWith(t => t.Result.Cast<Word>().ToList()),
-            TestRange.Toefl => _dbContext.tfs
+            TestRange.Toefl => _dbContext.Tfs
                 .OrderBy(r => EF.Functions.Random())
                 .Take(count)
                 .ToListAsync()
                 .ContinueWith(t => t.Result.Cast<Word>().ToList()),
-            TestRange.Ielts => _dbContext.ys
+            TestRange.Ielts => _dbContext.Ys
                 .OrderBy(r => EF.Functions.Random())
                 .Take(count)
                 .ToListAsync()

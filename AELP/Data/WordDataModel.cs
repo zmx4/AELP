@@ -7,8 +7,8 @@ public class WordDataModel
     [Key]
     public int Id { get; set; }
     
-    public string Word { get; set; } 
+    public required string Word { get; set; } 
 
-    public string Translation { get; set; }
+    public required string Translation { get; set; }
     
 }

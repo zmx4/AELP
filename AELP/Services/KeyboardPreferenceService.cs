@@ -1,30 +1,23 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace AELP.Services;
 
-public class KeyboardPreferenceService : IKeyboardPreferenceService
+public class KeyboardPreferenceService(IPreferenceStorage preferenceStorage) : IKeyboardPreferenceService
 {
     private const string ChoiceKeysPreferenceKey = "ChoiceOptionKeys";
     private const string DefaultChoiceKeys = "qwer";
-    private readonly IPreferenceStorage _preferenceStorage;
-
-    public KeyboardPreferenceService(IPreferenceStorage preferenceStorage)
-    {
-        _preferenceStorage = preferenceStorage;
-    }
 
     public string GetChoiceOptionKeys()
     {
-        var stored = _preferenceStorage.Get(ChoiceKeysPreferenceKey, DefaultChoiceKeys);
+        var stored = preferenceStorage.Get(ChoiceKeysPreferenceKey, DefaultChoiceKeys);
         return NormalizeKeys(stored) ?? DefaultChoiceKeys;
     }
 
     public void SetChoiceOptionKeys(string keys)
     {
         var normalized = NormalizeKeys(keys) ?? DefaultChoiceKeys;
-        _preferenceStorage.Set(ChoiceKeysPreferenceKey, normalized);
+        preferenceStorage.Set(ChoiceKeysPreferenceKey, normalized);
     }
 
     private static string? NormalizeKeys(string keys)

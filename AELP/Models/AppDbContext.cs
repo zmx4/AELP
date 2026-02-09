@@ -6,32 +6,32 @@ namespace AELP.Models;
 
 public partial class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
-    public virtual DbSet<CET4> CET4s { get; set; }
+    public virtual DbSet<Cet4> Cet4S { get; set; }
 
-    public virtual DbSet<CET6> CET6s { get; set; }
+    public virtual DbSet<Cet6> Cet6S { get; set; }
 
     public virtual DbSet<HighSchool> HighSchools { get; set; }
 
     public virtual DbSet<PrimarySchool> PrimarySchools { get; set; }
 
-    public virtual DbSet<dictionary> dictionaries { get; set; }
+    public virtual DbSet<Dictionary> Dictionaries { get; set; }
 
-    public virtual DbSet<re> res { get; set; }
+    public virtual DbSet<Re> Res { get; set; }
 
-    public virtual DbSet<tf> tfs { get; set; }
+    public virtual DbSet<Tf> Tfs { get; set; }
 
-    public virtual DbSet<y> ys { get; set; }
+    public virtual DbSet<Y> Ys { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<CET4>(entity =>
+        modelBuilder.Entity<Cet4>(entity =>
         {
             entity.HasKey(e => e.word);
 
             entity.ToTable("CET4");
         });
 
-        modelBuilder.Entity<CET6>(entity =>
+        modelBuilder.Entity<Cet6>(entity =>
         {
             entity.HasKey(e => e.word);
 
@@ -52,26 +52,26 @@ public partial class AppDbContext(DbContextOptions<AppDbContext> options) : DbCo
             entity.ToTable("PrimarySchool");
         });
 
-        modelBuilder.Entity<dictionary>(entity =>
+        modelBuilder.Entity<Dictionary>(entity =>
         {
             entity.HasKey(e => e.word);
 
             entity.ToTable("dictionary");
         });
 
-        modelBuilder.Entity<re>(entity =>
+        modelBuilder.Entity<Re>(entity =>
         {
             entity.HasKey(e => e.word);
         });
 
-        modelBuilder.Entity<tf>(entity =>
+        modelBuilder.Entity<Tf>(entity =>
         {
             entity.HasKey(e => e.word);
 
             entity.ToTable("tf");
         });
 
-        modelBuilder.Entity<y>(entity =>
+        modelBuilder.Entity<Y>(entity =>
         {
             entity.HasKey(e => e.word);
         });

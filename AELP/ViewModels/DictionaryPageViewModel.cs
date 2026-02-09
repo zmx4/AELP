@@ -26,9 +26,9 @@ public partial class DictionaryPageViewModel : PageViewModel
 
     [ObservableProperty] private ObservableCollection<string> _searchResults = new();
 
-    private List<dictionary> _rawSearchResults = new();
+    private List<Dictionary> _rawSearchResults = new();
 
-    private dictionary _word;
+    private Dictionary _word;
 
     public DictionaryPageViewModel(IWordQueryService wordQueryService,
         IFavoritesDataStorageService favoritesDataStorageService)
@@ -41,6 +41,7 @@ public partial class DictionaryPageViewModel : PageViewModel
         // But initially it's empty.
         _favoritesDataStorageService = favoritesDataStorageService;
         ContentBlurRadius = 0;
+        _word = new Dictionary();
         // _word = new dictionary();
     }
 
@@ -97,7 +98,7 @@ public partial class DictionaryPageViewModel : PageViewModel
         }
 
         _rawSearchResults.Clear();
-        _rawSearchResults = new List<dictionary>(await _wordQueryService.QueryWordsAsync(SearchText));
+        _rawSearchResults = new List<Dictionary>(await _wordQueryService.QueryWordsAsync(SearchText));
         SearchResults.Clear();
         foreach (var word in _rawSearchResults)
         {

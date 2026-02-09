@@ -13,7 +13,7 @@ public class FavoritesDataStorageService : IFavoritesDataStorageService
     private static bool _dbChecked = false;
     public event EventHandler? OnFavoritesChanged;
 
-    public async Task AddToFavorites(dictionary favorite)
+    public async Task AddToFavorites(Dictionary favorite)
     {
         await using var context = new UserDbContext();
         if (!_dbChecked)
@@ -53,7 +53,7 @@ public class FavoritesDataStorageService : IFavoritesDataStorageService
         OnFavoritesChanged?.Invoke(this, EventArgs.Empty);
     }
 
-    public async Task RemoveFromFavorites(dictionary favorite)
+    public async Task RemoveFromFavorites(Dictionary favorite)
     {
         await using var context = new UserDbContext();
         if (!_dbChecked)
@@ -74,7 +74,7 @@ public class FavoritesDataStorageService : IFavoritesDataStorageService
         }
     }
 
-    public async Task SaveFavorites(dictionary[] favorites)
+    public async Task SaveFavorites(Dictionary[] favorites)
     {
         await using var context = new UserDbContext();
         if (!_dbChecked)

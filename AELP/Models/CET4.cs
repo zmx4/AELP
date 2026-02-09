@@ -3,6 +3,6 @@ using System.Collections.Generic;
 
 namespace AELP.Models;
 
-public partial class CET4 : Word
+public partial class Cet4 : Word
 {
 }
