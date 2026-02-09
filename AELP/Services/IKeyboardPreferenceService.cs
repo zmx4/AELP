@@ -2,6 +2,6 @@
 
 public interface IKeyboardPreferenceService
 {
-    public void SetKeyboardPreference(string keyboardId);
-    public string GetKeyboardPreference();
+    string GetChoiceOptionKeys();
+    void SetChoiceOptionKeys(string keys);
 }

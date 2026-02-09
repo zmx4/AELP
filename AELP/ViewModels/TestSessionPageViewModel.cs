@@ -27,14 +27,17 @@ public partial class TestSessionPageViewModel : PageViewModel
     private readonly ITestDataStorageService _testDataStorageService;
     private readonly IMistakeDataStorageService _mistakeDataStorageService;
     private readonly ITestWordGetter _testWordGetter;
+    private readonly IKeyboardPreferenceService _keyboardPreferenceService;
 
     public TestSessionPageViewModel(ITestWordGetter testWordGetter,
         ITestDataStorageService testDataStorageService,
-        IMistakeDataStorageService mistakeDataStorageService)
+        IMistakeDataStorageService mistakeDataStorageService,
+        IKeyboardPreferenceService keyboardPreferenceService)
     {
         _testWordGetter = testWordGetter;
         _testDataStorageService = testDataStorageService;
         _mistakeDataStorageService = mistakeDataStorageService;
+        _keyboardPreferenceService = keyboardPreferenceService;
         PageNames = Data.ApplicationPageNames.TestSession;
 
         TestRanges = new ObservableCollection<TestRange>((TestRange[])Enum.GetValues(typeof(TestRange)));
@@ -42,6 +45,7 @@ public partial class TestSessionPageViewModel : PageViewModel
         SelectedTestRange = TestRange.Cet4;
         QuestionCount = 10;
         StatusText = string.Empty;
+        ChoiceKeyMapping = _keyboardPreferenceService.GetChoiceOptionKeys();
     }
 
     [ObservableProperty] private ObservableCollection<TestRange> _testRanges = new();
@@ -55,9 +59,10 @@ public partial class TestSessionPageViewModel : PageViewModel
     [ObservableProperty] private string _currentTranslation = string.Empty;
     [ObservableProperty] private string _partialWord = string.Empty;
     [ObservableProperty] private string _fillInput = string.Empty;
-    [ObservableProperty] private ObservableCollection<string> _options = new();
+    [ObservableProperty] private ObservableCollection<OptionItem> _options = new();
     [ObservableProperty] private string _progressText = string.Empty;
     [ObservableProperty] private string _statusText = string.Empty;
+    [ObservableProperty] private string _choiceKeyMapping = string.Empty;
 
     public bool IsNotTesting => !IsTesting;
     public bool IsFillQuestion => IsTesting && !IsChoiceQuestion;
@@ -182,10 +187,19 @@ public partial class TestSessionPageViewModel : PageViewModel
         var options = new List<string> { correct };
         options.AddRange(distractors);
 
-        foreach (var opt in options.Distinct(StringComparer.OrdinalIgnoreCase)
-                     .OrderBy(_ => _random.Next()))
+        var choiceKeys = _keyboardPreferenceService.GetChoiceOptionKeys();
+        ChoiceKeyMapping = choiceKeys;
+
+        var optionList = options.Distinct(StringComparer.OrdinalIgnoreCase)
+            .OrderBy(_ => _random.Next())
+            .ToList();
+
+        for (var i = 0; i < optionList.Count; i++)
         {
-            Options.Add(opt);
+            var keyLabel = i < choiceKeys.Length
+                ? char.ToUpperInvariant(choiceKeys[i]).ToString()
+                : string.Empty;
+            Options.Add(new OptionItem(keyLabel, optionList[i]));
         }
     }
 
@@ -267,6 +281,36 @@ public partial class TestSessionPageViewModel : PageViewModel
 
         WeakReferenceMessenger.Default.Send(new NavigationMessage(ApplicationPageNames.Summary, _problemData));
     }
+
+    public async Task<bool> TryHandleChoiceKeyAsync(char keyChar)
+    {
+        if (!IsTesting || !IsChoiceQuestion)
+        {
+            return false;
+        }
+
+        var mapping = _keyboardPreferenceService.GetChoiceOptionKeys();
+        var index = GetChoiceKeyIndex(mapping, keyChar);
+        if (index < 0 || index >= Options.Count)
+        {
+            return false;
+        }
+
+        await ChooseOptionAsync(Options[index].Text);
+        return true;
+    }
+
+    private static int GetChoiceKeyIndex(string mapping, char keyChar)
+    {
+        if (string.IsNullOrWhiteSpace(mapping))
+        {
+            return -1;
+        }
+
+        var normalized = mapping.Trim().ToLowerInvariant();
+        var key = char.ToLowerInvariant(keyChar);
+        return normalized.IndexOf(key);
+    }
 }
 
 public record TestSessionParameter(TestRange Range, int QuestionCount);
@@ -278,3 +322,5 @@ public record ProblemData
     public long CostTimeMs { get; init; }
     public bool IsRight { get; init; }
 }
+
+public record OptionItem(string KeyLabel, string Text);

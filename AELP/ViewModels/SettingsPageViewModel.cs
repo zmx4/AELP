@@ -12,6 +12,8 @@ namespace AELP.ViewModels;
 public partial class SettingsPageViewModel : PageViewModel
 {
     private readonly IThemeService _themeService;
+    private readonly IKeyboardPreferenceService _keyboardPreferenceService;
+    private bool _updatingChoiceKeys;
     
     [ObservableProperty]
     private ThemeOptionViewModel? _selectedTheme;
@@ -19,13 +21,17 @@ public partial class SettingsPageViewModel : PageViewModel
     [ObservableProperty]
     private string _selectedFont;
 
+    [ObservableProperty]
+    private string _choiceKeyMapping;
+
     public ObservableCollection<ThemeOptionViewModel> ThemeOptions { get; }
     public ObservableCollection<string> AvailableFonts { get; }
 
-    public SettingsPageViewModel(IThemeService themeService)
+    public SettingsPageViewModel(IThemeService themeService, IKeyboardPreferenceService keyboardPreferenceService)
     {
         PageNames = Data.ApplicationPageNames.Settings;
         _themeService = themeService;
+        _keyboardPreferenceService = keyboardPreferenceService;
         
         ThemeOptions = new ObservableCollection<ThemeOptionViewModel>
         {
@@ -59,6 +65,8 @@ public partial class SettingsPageViewModel : PageViewModel
         {
             _selectedFont = defaultFont;
         }
+
+        _choiceKeyMapping = _keyboardPreferenceService.GetChoiceOptionKeys();
     }
     
     partial void OnSelectedThemeChanged(ThemeOptionViewModel? value)
@@ -75,6 +83,19 @@ public partial class SettingsPageViewModel : PageViewModel
         {
             _themeService.SetFontFamily(value);
         }
+    }
+
+    partial void OnChoiceKeyMappingChanged(string value)
+    {
+        if (_updatingChoiceKeys)
+        {
+            return;
+        }
+
+        _keyboardPreferenceService.SetChoiceOptionKeys(value);
+        _updatingChoiceKeys = true;
+        ChoiceKeyMapping = _keyboardPreferenceService.GetChoiceOptionKeys();
+        _updatingChoiceKeys = false;
     }
     
     [RelayCommand]

@@ -6,7 +6,9 @@
              xmlns:data="clr-namespace:AELP.Data"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
              x:Class="AELP.Views.TestSessionPageView"
-             x:DataType="vm:TestSessionPageViewModel">
+             x:DataType="vm:TestSessionPageViewModel"
+             Focusable="True"
+             KeyDown="OnKeyDown">
     <Grid RowDefinitions="Auto,*" Margin="20">
         <Border Background="#0F000000" CornerRadius="8" Padding="12">
             <StackPanel Orientation="Horizontal" Spacing="12" IsVisible="{Binding IsNotTesting}">
@@ -29,10 +31,17 @@
                     <ItemsControl ItemsSource="{Binding Options}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Button Content="{Binding}" Margin="0,4,0,0"
+                                <Button Margin="0,4,0,0"
                                         x:CompileBindings="False"
                                         Command="{Binding DataContext.ChooseOptionCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                        CommandParameter="{Binding}" />
+                                        CommandParameter="{Binding Text}">
+                                    <StackPanel Orientation="Horizontal" Spacing="10">
+                                        <Border Background="#22000000" CornerRadius="4" Padding="6,2">
+                                            <TextBlock Text="{Binding KeyLabel}" FontWeight="Bold" FontFamily="Consolas" />
+                                        </Border>
+                                        <TextBlock Text="{Binding Text}" VerticalAlignment="Center" />
+                                    </StackPanel>
+                                </Button>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>

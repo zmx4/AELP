@@ -44,6 +44,7 @@ public partial class App : Application
         collection.AddDbContext<UserDbContext>();
         collection.AddSingleton<IPreferenceStorage, JsonPreferenceStorage>();
         collection.AddSingleton<IThemeService, ThemeService>();
+        collection.AddSingleton<IKeyboardPreferenceService, KeyboardPreferenceService>();
         collection.AddSingleton<IWordQueryService, WordQueryService>();
         collection.AddSingleton<IFavoritesDataStorageService, FavoritesDataStorageService>();
         collection.AddSingleton<IMistakeDataStorageService, MistakeDataStorageService>();

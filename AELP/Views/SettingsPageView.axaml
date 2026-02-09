@@ -7,20 +7,20 @@
              x:Class="AELP.Views.SettingsPageView"
              x:DataType="vm:SettingsPageViewModel">
     <!-- <Grid RowDefinitions="Auto,*" ColumnDefinitions="*" Classes="content-grid"> -->
-        <!-- <TextBlock Text="Settings" FontSize="24" FontWeight="Bold" Margin="16,16,16,16"  -->
-        <!--            Foreground="{DynamicResource PrimaryText}"/> -->
+    <!-- <TextBlock Text="Settings" FontSize="24" FontWeight="Bold" Margin="16,16,16,16"  -->
+    <!--            Foreground="{DynamicResource PrimaryText}"/> -->
 
-        <TabControl Classes="content-panel">
-            <!-- 主题设置 -->
-            <TabItem Header="主题">
+    <TabControl Classes="content-panel">
+        <!-- 主题设置 -->
+        <TabItem Header="主题">
             <Border Classes="card" Margin="0,10,0,16">
                 <StackPanel Spacing="12">
-                    <TextBlock Text="🎨 主题设置" FontSize="18" FontWeight="SemiBold" 
-                               Foreground="{DynamicResource PrimaryText}"/>
-                    <TextBlock Text="选择您喜欢的主题外观" 
-                               Foreground="{DynamicResource SecondaryText}" FontSize="14"/>
-                    
-                    <ListBox ItemsSource="{Binding ThemeOptions}" 
+                    <TextBlock Text="🎨 主题设置" FontSize="18" FontWeight="SemiBold"
+                               Foreground="{DynamicResource PrimaryText}" />
+                    <TextBlock Text="选择您喜欢的主题外观"
+                               Foreground="{DynamicResource SecondaryText}" FontSize="14" />
+
+                    <ListBox ItemsSource="{Binding ThemeOptions}"
                              SelectedItem="{Binding SelectedTheme}"
                              Background="Transparent"
                              BorderThickness="0"
@@ -28,63 +28,81 @@
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" Spacing="12" Margin="4,6">
-                                    <TextBlock Text="{Binding Icon}" FontSize="20" VerticalAlignment="Center"/>
-                                    <TextBlock Text="{Binding Name}" FontSize="14" VerticalAlignment="Center" 
-                                             Foreground="{DynamicResource PrimaryText}"/>
+                                    <TextBlock Text="{Binding Icon}" FontSize="20" VerticalAlignment="Center" />
+                                    <TextBlock Text="{Binding Name}" FontSize="14" VerticalAlignment="Center"
+                                               Foreground="{DynamicResource PrimaryText}" />
                                 </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
 
-                    <Separator Margin="0,8" Opacity="0.2" Background="{DynamicResource SecondaryText}"/>
-                    
-                    <TextBlock Text="🔤 字体设置" FontSize="16" FontWeight="SemiBold" 
-                               Foreground="{DynamicResource PrimaryText}"/>
-                    <ComboBox ItemsSource="{Binding AvailableFonts}" 
+                    <Separator Margin="0,8" Opacity="0.2" Background="{DynamicResource SecondaryText}" />
+
+                    <TextBlock Text="🔤 字体设置" FontSize="16" FontWeight="SemiBold"
+                               Foreground="{DynamicResource PrimaryText}" />
+                    <ComboBox ItemsSource="{Binding AvailableFonts}"
                               SelectedItem="{Binding SelectedFont}"
                               HorizontalAlignment="Stretch"
                               MaxDropDownHeight="300">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding}" FontFamily="{Binding}" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding}" FontFamily="{Binding}" VerticalAlignment="Center" />
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                 </StackPanel>
             </Border>
-            </TabItem>
-            <!-- 用户数据 -->
-            <TabItem Header="数据">
-                <Border Classes="card" Margin="0,10,0,16">
-                    <StackPanel Spacing="12">
-                        <TextBlock Text="📁 存储设置" FontSize="18" FontWeight="SemiBold" 
-                                   Foreground="{DynamicResource PrimaryText}"/>
-
-                        <StackPanel Spacing="8">
-                            <Button Classes="nav-button" Content="🗂️ 打开用户数据文件夹"
-                                    Command="{Binding OpenUserDataFolderCommand}"
-                                    HorizontalAlignment="Left" Width="260"/>
-                            <Button Classes="nav-button" Content="📱 打开应用程序文件夹"
-                                    Command="{Binding OpenAppFolderCommand}"
-                                    HorizontalAlignment="Left" Width="260"/>
+        </TabItem>
+        <!-- 按键绑定 -->
+        <TabItem Header="按键">
+            <Border Classes="card" Margin="0,10,0,16">
+                <StackPanel Spacing="12">
+                    <Grid ColumnDefinitions="Auto,*">
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="⌨️ 选择题快捷键" FontSize="16" FontWeight="SemiBold"
+                                       Foreground="{DynamicResource PrimaryText}" />
+                            <TextBlock Text="请输入 4 个不重复字母，对应选项 1-4（默认 qwer）"
+                                       Foreground="{DynamicResource SecondaryText}" FontSize="14" />
                         </StackPanel>
+                        <TextBox Grid.Column="1" HorizontalAlignment="Right" Width="160" Text="{Binding ChoiceKeyMapping, UpdateSourceTrigger=LostFocus}"
+                                 Watermark="qwer" />
+                    </Grid>
+                    <Separator Margin="0,8" Opacity="0.2" Background="{DynamicResource SecondaryText}" />
+                </StackPanel>
+            </Border>
+        </TabItem>
+        <!-- 用户数据 -->
+        <TabItem Header="数据">
+            <Border Classes="card" Margin="0,10,0,16">
+                <StackPanel Spacing="12">
+                    <TextBlock Text="📁 存储设置" FontSize="18" FontWeight="SemiBold"
+                               Foreground="{DynamicResource PrimaryText}" />
+
+                    <StackPanel Spacing="8">
+                        <Button Classes="nav-button" Content="🗂️ 打开用户数据文件夹"
+                                Command="{Binding OpenUserDataFolderCommand}"
+                                HorizontalAlignment="Left" Width="260" />
+                        <Button Classes="nav-button" Content="📱 打开应用程序文件夹"
+                                Command="{Binding OpenAppFolderCommand}"
+                                HorizontalAlignment="Left" Width="260" />
                     </StackPanel>
-                </Border>
-            </TabItem>
-            <!-- 重置 -->
-            <TabItem Header="重置">
-                <Border Classes="card" Margin="0,10,0,16">
-                    <StackPanel Spacing="12">
-                        <TextBlock Text="🔄 重置选项" FontSize="18" FontWeight="SemiBold" 
-                                   Foreground="{DynamicResource PrimaryText}"/>
-                        <TextBlock Text="删除本地用户数据（此操作无法撤销）" 
-                                   Foreground="{DynamicResource SecondaryText}" FontSize="14"/>
-                        <Button Content="🗑️ 删除用户数据" Classes="nav-button"
-                                Command="{Binding DeleteUserDataCommand}"
-                                HorizontalAlignment="Left" Width="260"/>
-                    </StackPanel>
-                </Border>
-            </TabItem>
-        </TabControl>
+                </StackPanel>
+            </Border>
+        </TabItem>
+        <!-- 重置 -->
+        <TabItem Header="重置">
+            <Border Classes="card" Margin="0,10,0,16">
+                <StackPanel Spacing="12">
+                    <TextBlock Text="🔄 重置选项" FontSize="18" FontWeight="SemiBold"
+                               Foreground="{DynamicResource PrimaryText}" />
+                    <TextBlock Text="删除本地用户数据（此操作无法撤销）"
+                               Foreground="{DynamicResource SecondaryText}" FontSize="14" />
+                    <Button Content="🗑️ 删除用户数据" Classes="nav-button"
+                            Command="{Binding DeleteUserDataCommand}"
+                            HorizontalAlignment="Left" Width="260" />
+                </StackPanel>
+            </Border>
+        </TabItem>
+    </TabControl>
     <!-- </Grid> -->
 </UserControl>
