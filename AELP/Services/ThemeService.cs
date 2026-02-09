@@ -4,6 +4,8 @@ using Avalonia;
 using Avalonia.Media;
 using Avalonia.Markup.Xaml.Styling;
 using Avalonia.Styling;
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
 
 namespace AELP.Services;
 
@@ -91,7 +93,21 @@ public class ThemeService : IThemeService
             _ => ThemeVariant.Dark
         };
         app.RequestedThemeVariant = themeVariant;
-
+        
+        // 更新LiveCharts的主题
+        LiveCharts.Configure(config =>
+        {
+            switch (theme)
+            {
+                case AppTheme.Light:
+                    config.AddLightTheme();
+                    break;
+                default:
+                    config.AddDarkTheme();
+                    break;
+            }
+        });
+        
         // 清除现有的主题样式
         var existingThemeStyle = app.Styles.FirstOrDefault(s => 
             s is StyleInclude si && 

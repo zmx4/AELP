@@ -29,7 +29,7 @@ public partial class App : Application
             config 
                 .AddSkiaSharp() 
                 .AddDefaultMappers() 
-                .AddLightTheme() 
+                .AddDarkTheme() 
         );
     }
 
@@ -44,12 +44,12 @@ public partial class App : Application
         collection.AddDbContext<UserDbContext>();
         collection.AddSingleton<IPreferenceStorage, JsonPreferenceStorage>();
         collection.AddSingleton<IThemeService, ThemeService>();
-        collection.AddTransient<IWordQueryService, WordQueryService>();
-        collection.AddTransient<IFavoritesDataStorageService, FavoritesDataStorageService>();
-        collection.AddTransient<IMistakeDataStorageService, MistakeDataStorageService>();
-        collection.AddTransient<ITestDataStorageService, TestDataStorageService>();
+        collection.AddSingleton<IWordQueryService, WordQueryService>();
+        collection.AddSingleton<IFavoritesDataStorageService, FavoritesDataStorageService>();
+        collection.AddSingleton<IMistakeDataStorageService, MistakeDataStorageService>();
+        collection.AddSingleton<ITestDataStorageService, TestDataStorageService>();
         collection.AddSingleton<IUserWordQueryService, UserWordQueryService>();
-        collection.AddTransient<ITestWordGetter, TestWordGetter>();
+        collection.AddSingleton<ITestWordGetter, TestWordGetter>();
         collection.AddSingleton<PageFactory>();
         collection.AddSingleton<MainWindowViewModel>();
         collection.AddTransient<DictionaryPageViewModel>();
@@ -65,15 +65,15 @@ public partial class App : Application
 
         collection.AddSingleton<Func<ApplicationPageNames, PageViewModel>>(x => name => name switch
         {
-            ApplicationPageNames.Dictionary => x.GetRequiredService<DictionaryPageViewModel>(),
-            ApplicationPageNames.Favorites => x.GetRequiredService<FavoritesPageViewModel>(),
-            ApplicationPageNames.Tests => x.GetRequiredService<TestsPageViewModel>(),
-            ApplicationPageNames.TestSession => x.GetRequiredService<TestSessionPageViewModel>(),
-            ApplicationPageNames.Mistakes => x.GetRequiredService<MistakePageViewModel>(),
+            ApplicationPageNames.Dictionary    => x.GetRequiredService<DictionaryPageViewModel   >(),
+            ApplicationPageNames.Favorites     => x.GetRequiredService<FavoritesPageViewModel    >(),
+            ApplicationPageNames.Tests         => x.GetRequiredService<TestsPageViewModel        >(),
+            ApplicationPageNames.TestSession   => x.GetRequiredService<TestSessionPageViewModel  >(),
+            ApplicationPageNames.Mistakes      => x.GetRequiredService<MistakePageViewModel      >(),
             ApplicationPageNames.MistakeReview => x.GetRequiredService<MistakeReviewPageViewModel>(),
-            ApplicationPageNames.Summary => x.GetRequiredService<SummaryPageViewModel>(),
-            ApplicationPageNames.Detail => x.GetRequiredService<DetailPageViewModel>(),
-            ApplicationPageNames.Settings => x.GetRequiredService<SettingsPageViewModel>(),
+            ApplicationPageNames.Summary       => x.GetRequiredService<SummaryPageViewModel      >(),
+            ApplicationPageNames.Detail        => x.GetRequiredService<DetailPageViewModel       >(),
+            ApplicationPageNames.Settings      => x.GetRequiredService<SettingsPageViewModel     >(),
 
             _ => throw new NotImplementedException($"No ViewModel implemented for page {name}")
         });
@@ -105,6 +105,9 @@ public partial class App : Application
                 using var testRecordsFromStorage =  scope.ServiceProvider
                     .GetRequiredKeyedService<ITestDataStorageService>(null)
                     .LoadTestData();
+                using var favoritesFromStorage2 =  scope.ServiceProvider
+                    .GetRequiredKeyedService<IFavoritesDataStorageService>(null)
+                    .LoadFavorites();
             }
             catch
             {
