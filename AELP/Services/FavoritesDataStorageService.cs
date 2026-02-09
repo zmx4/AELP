@@ -22,13 +22,13 @@ public class FavoritesDataStorageService : IFavoritesDataStorageService
             _dbChecked = true;
         }
         
-        var wordModel = await context.Words.FirstOrDefaultAsync(w => w.Word == favorite.word);
+        var wordModel = await context.Words.FirstOrDefaultAsync(w => w.Word == favorite.RawWord);
         if (wordModel == null)
         {
             wordModel = new WordDataModel
             {
-                Word = favorite.word,
-                Translation = favorite.translation ?? ""
+                Word = favorite.RawWord,
+                Translation = favorite.Translation ?? ""
             };
             await context.Words.AddAsync(wordModel);
             await context.SaveChangesAsync();
@@ -62,7 +62,7 @@ public class FavoritesDataStorageService : IFavoritesDataStorageService
             _dbChecked = true;
         }
         
-        var wordModel = await context.Words.FirstOrDefaultAsync(w => w.Word == favorite.word);
+        var wordModel = await context.Words.FirstOrDefaultAsync(w => w.Word == favorite.RawWord);
         if (wordModel == null) return;
 
         var favModel = await context.Favorites.FindAsync(wordModel.Id);
@@ -84,7 +84,7 @@ public class FavoritesDataStorageService : IFavoritesDataStorageService
         }
 
         // 1. Get IDs of words in the new favorites list. Ensure they exist in WordDataModel.
-        var dictWords = favorites.ToDictionary(d => d.word);
+        var dictWords = favorites.ToDictionary(d => d.RawWord);
         var inputWordStrings = dictWords.Keys.ToList();
 
         // Check existing WordDataModels
@@ -103,8 +103,8 @@ public class FavoritesDataStorageService : IFavoritesDataStorageService
                 var dictItem = dictWords[wordStr];
                 var newWord = new WordDataModel
                 {
-                    Word = dictItem.word,
-                    Translation = dictItem.translation ?? ""
+                    Word = dictItem.RawWord,
+                    Translation = dictItem.Translation ?? ""
                 };
                 newWords.Add(newWord);
                 // Temporarily add to map, ID will be 0 until save, but we handle Save below for batch

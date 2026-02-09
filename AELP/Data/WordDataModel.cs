@@ -5,7 +5,7 @@ namespace AELP.Data;
 public class WordDataModel
 {
     [Key]
-    public int Id { get; set; }
+    public int Id { get; init; }
     
     public required string Word { get; set; } 
 

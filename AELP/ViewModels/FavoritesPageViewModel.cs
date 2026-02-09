@@ -51,8 +51,8 @@ public partial class FavoritesPageViewModel : PageViewModel
         {
             var temp = new Dictionary
             {
-                word = wordInfo.Word,
-                translation = wordInfo.Translation,
+                RawWord = wordInfo.Word,
+                Translation = wordInfo.Translation,
                 Cet4 = (favorite.IsCet4) ? 1 : 0,
                 Cet6 = (favorite.IsCet6) ? 1 : 0,
                 Tf = (favorite.IsTf) ? 1 : 0,
@@ -73,8 +73,8 @@ public partial class FavoritesPageViewModel : PageViewModel
         {
             var temp = new Dictionary
             {
-                word = wordInfo.Word,
-                translation = wordInfo.Translation,
+                RawWord = wordInfo.Word,
+                Translation = wordInfo.Translation,
                 Cet4 = (favorite.IsCet4) ? 1 : 0,
                 Cet6 = (favorite.IsCet6) ? 1 : 0,
                 Tf = (favorite.IsTf) ? 1 : 0,

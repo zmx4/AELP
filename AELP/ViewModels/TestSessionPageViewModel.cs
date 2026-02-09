@@ -146,8 +146,8 @@ public partial class TestSessionPageViewModel : PageViewModel
         }
 
         _currentWord = _testWords[CurrentIndex];
-        CurrentWordText = _currentWord.word;
-        CurrentTranslation = _currentWord.translation ?? "无翻译";
+        CurrentWordText = _currentWord.RawWord;
+        CurrentTranslation = _currentWord.Translation ?? "无翻译";
 
         IsChoiceQuestion = CurrentIndex % 2 == 0;
 
@@ -172,7 +172,7 @@ public partial class TestSessionPageViewModel : PageViewModel
         Options.Clear();
         var correct = CurrentTranslation;
         var translations = _testWords
-            .Select(w => w.translation)
+            .Select(w => w.Translation)
             .Where(t => !string.IsNullOrWhiteSpace(t))
             .Select(t => t!)
             .Distinct(StringComparer.OrdinalIgnoreCase)
@@ -207,7 +207,7 @@ public partial class TestSessionPageViewModel : PageViewModel
     {
         if (_currentWord is null) return;
 
-        var word = _currentWord.word ?? string.Empty;
+        var word = _currentWord.RawWord ?? string.Empty;
         if (string.IsNullOrEmpty(word))
         {
             _missingPart = string.Empty;
@@ -227,7 +227,7 @@ public partial class TestSessionPageViewModel : PageViewModel
         var elapsed = _stopwatch.ElapsedMilliseconds;
         _problemData.Add(new ProblemData
         {
-            Word = _currentWord.word,
+            Word = _currentWord.RawWord,
             Translation = CurrentTranslation,
             CostTimeMs = elapsed,
             IsRight = isRight
@@ -237,7 +237,7 @@ public partial class TestSessionPageViewModel : PageViewModel
         {
             _mistakeData.Add(new MistakeDataModel
             {
-                Word = _currentWord.word,
+                Word = _currentWord.RawWord,
                 Time = DateTime.Now,
                 Count = 1
             });

@@ -37,32 +37,32 @@ public class TestWordGetterTest
             // Seed data
             case TestRange.Cet4:
             {
-                for(var i=0; i<10; i++) context.Cet4S.Add(new Cet4 { word = $"c4_{i}", translation = "t" });
+                for(var i=0; i<10; i++) context.Cet4S.Add(new Cet4 { RawWord = $"c4_{i}", Translation = "t" });
                 break;
             }
             case TestRange.Cet6:
             {
-                for(var i=0; i<10; i++) context.Cet6S.Add(new Cet6 { word = $"c6_{i}", translation = "t" });
+                for(var i=0; i<10; i++) context.Cet6S.Add(new Cet6 { RawWord = $"c6_{i}", Translation = "t" });
                 break;
             }
             case TestRange.Senior:
             {
-                for(var i=0; i<10; i++) context.HighSchools.Add(new HighSchool { word = $"hs_{i}", translation = "t" });
+                for(var i=0; i<10; i++) context.HighSchools.Add(new HighSchool { RawWord = $"hs_{i}", Translation = "t" });
                 break;
             }
             case TestRange.Toefl:
             {
-                for(var i=0; i<10; i++) context.Tfs.Add(new Tf { word = $"tf_{i}", translation = "t" });
+                for(var i=0; i<10; i++) context.Tfs.Add(new Tf { RawWord = $"tf_{i}", Translation = "t" });
                 break;
             }
             case TestRange.Ielts:
             {
-                for(var i=0; i<10; i++) context.Ys.Add(new Y { word = $"ys_{i}", translation = "t" });
+                for(var i=0; i<10; i++) context.Ys.Add(new Y { RawWord = $"ys_{i}", Translation = "t" });
                 break;
             }
             case TestRange.Primary:
             {
-                for(var i=0; i<10; i++) context.PrimarySchools.Add(new PrimarySchool { word = $"ps_{i}", translation = "t" });
+                for(var i=0; i<10; i++) context.PrimarySchools.Add(new PrimarySchool { RawWord = $"ps_{i}", Translation = "t" });
                 break;
             }
         }
@@ -77,7 +77,7 @@ public class TestWordGetterTest
 
         // Assert
         Assert.Equal(count, result.Count);
-        Assert.All(result, w => Assert.NotNull(w.word));
-        Assert.All(result, w => Assert.NotEmpty(w.word));
+        Assert.All(result, w => Assert.NotNull(w.RawWord));
+        Assert.All(result, w => Assert.NotEmpty(w.RawWord));
     }
 }

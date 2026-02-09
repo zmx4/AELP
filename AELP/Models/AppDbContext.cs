@@ -26,54 +26,54 @@ public partial class AppDbContext(DbContextOptions<AppDbContext> options) : DbCo
     {
         modelBuilder.Entity<Cet4>(entity =>
         {
-            entity.HasKey(e => e.word);
+            entity.HasKey(e => e.RawWord);
 
             entity.ToTable("CET4");
         });
 
         modelBuilder.Entity<Cet6>(entity =>
         {
-            entity.HasKey(e => e.word);
+            entity.HasKey(e => e.RawWord);
 
             entity.ToTable("CET6");
         });
 
         modelBuilder.Entity<HighSchool>(entity =>
         {
-            entity.HasKey(e => e.word);
+            entity.HasKey(e => e.RawWord);
 
             entity.ToTable("HighSchool");
         });
 
         modelBuilder.Entity<PrimarySchool>(entity =>
         {
-            entity.HasKey(e => e.word);
+            entity.HasKey(e => e.RawWord);
 
             entity.ToTable("PrimarySchool");
         });
 
         modelBuilder.Entity<Dictionary>(entity =>
         {
-            entity.HasKey(e => e.word);
+            entity.HasKey(e => e.RawWord);
             
             entity.ToTable("dictionary");
         });
 
         modelBuilder.Entity<Re>(entity =>
         {
-            entity.HasKey(e => e.word);
+            entity.HasKey(e => e.RawWord);
         });
 
         modelBuilder.Entity<Tf>(entity =>
         {
-            entity.HasKey(e => e.word);
+            entity.HasKey(e => e.RawWord);
 
             entity.ToTable("tf");
         });
 
         modelBuilder.Entity<Y>(entity =>
         {
-            entity.HasKey(e => e.word);
+            entity.HasKey(e => e.RawWord);
         });
 
         OnModelCreatingPartial(modelBuilder);

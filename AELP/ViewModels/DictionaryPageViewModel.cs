@@ -61,7 +61,7 @@ public partial class DictionaryPageViewModel : PageViewModel
             _word = resultDictionary;
             // 搜出的文本包含\n, 需要处理一下
             // SearchResult = resultDictionary.translation ?? string.Empty;
-            SearchResult = resultDictionary.translation?.Replace("\\n", "\n") ?? string.Empty;
+            SearchResult = resultDictionary.Translation?.Replace("\\n", "\n") ?? string.Empty;
             ExamTags.Clear();
             if (resultDictionary.Cet4 == 1) ExamTags.Add("CET4");
             if (resultDictionary.Cet6 == 1) ExamTags.Add("CET6");
@@ -102,7 +102,7 @@ public partial class DictionaryPageViewModel : PageViewModel
         SearchResults.Clear();
         foreach (var word in _rawSearchResults)
         {
-            SearchResults.Add(word.word);
+            SearchResults.Add(word.RawWord);
         }
     }
 
@@ -112,7 +112,7 @@ public partial class DictionaryPageViewModel : PageViewModel
         if (string.IsNullOrEmpty(word)) return;
 
         // var wordInfo = _wordQueryService.QueryWordInfo(word);
-        var wordInfo = _rawSearchResults.Find(x => x.word == word);
+        var wordInfo = _rawSearchResults.Find(x => x.RawWord == word);
         if (wordInfo != null)
         {
             WeakReferenceMessenger.Default.Send(new NavigationMessage(Data.ApplicationPageNames.Detail, wordInfo));

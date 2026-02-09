@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace AELP.Models;
+﻿namespace AELP.Models;
 
 public partial class Cet4 : Word
 {

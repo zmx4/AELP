@@ -16,30 +16,30 @@ public class WordQueryService : IWordQueryService
     
     public Dictionary? QueryWordInfo(string word)
     {
-        return _context.Dictionaries.FirstOrDefault(x => x.word == word);
+        return _context.Dictionaries.FirstOrDefault(x => x.RawWord == word);
     }
 
     public async Task<Dictionary?> QueryWordInfoAsync(string word)
     {
-        return await Task.Run(() => _context.Dictionaries.FirstOrDefault(x => x.word == word));
+        return await Task.Run(() => _context.Dictionaries.FirstOrDefault(x => x.RawWord == word));
     }
 
     public string QueryWordTranslation(string word)
     {
-        var result = _context.Dictionaries.FirstOrDefault(x => x.word == word);
-        return result?.translation ?? string.Empty;
+        var result = _context.Dictionaries.FirstOrDefault(x => x.RawWord == word);
+        return result?.Translation ?? string.Empty;
     }
 
     public string QueryWord(string translation)
     {
-        var result = _context.Dictionaries.FirstOrDefault(x => x.translation != null && x.translation.Contains(translation));
-        return result?.word ?? string.Empty;
+        var result = _context.Dictionaries.FirstOrDefault(x => x.Translation != null && x.Translation.Contains(translation));
+        return result?.RawWord ?? string.Empty;
     }
 
     public List<Dictionary> QueryWords(string translation)
     {
         var results = _context.Dictionaries
-            .Where(x => x.translation != null && x.translation.Contains(translation))
+            .Where(x => x.Translation != null && x.Translation.Contains(translation))
             //.Select(x => x.word)
             .ToList();  
         return results;
@@ -49,7 +49,7 @@ public class WordQueryService : IWordQueryService
     {
         return await Task.Run(() =>
             _context.Dictionaries
-                .Where(x => x.translation != null && x.translation.Contains(translation))
+                .Where(x => x.Translation != null && x.Translation.Contains(translation))
                 .ToArray());
     }
 
@@ -57,7 +57,7 @@ public class WordQueryService : IWordQueryService
     {
         return await Task.Run(() =>
             _context.Dictionaries
-                .Where(x => x.translation != null && x.translation.Contains(translation))
+                .Where(x => x.Translation != null && x.Translation.Contains(translation))
                 .Skip(skip)
                 .Take(take)
                 .ToArray());

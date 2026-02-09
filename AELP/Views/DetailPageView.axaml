@@ -8,14 +8,14 @@
              x:DataType="vm:DetailPageViewModel">
     <Grid RowDefinitions="Auto, Auto, Auto, *, Auto">
         <!-- Word -->
-        <TextBlock Text="{Binding Word.word}" 
+        <TextBlock Text="{Binding Word.RawWord}" 
                    FontSize="32" 
                    FontWeight="Bold" 
                    Margin="20,20,20,10"/>
         
         <!-- Translation -->
         <TextBlock Grid.Row="1" 
-                   Text="{Binding Word.translation}" 
+                   Text="{Binding Word.Translation}" 
                    FontSize="18" 
                    TextWrapping="Wrap"
                    Margin="20,0,20,20"

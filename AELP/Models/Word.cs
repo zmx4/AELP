@@ -1,8 +1,11 @@
-﻿namespace AELP.Models;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace AELP.Models;
 
 public class Word
 {
-    public string word { get; set; } = null!;
-
-    public string? translation { get; set; }
+    [Column("word")]
+    public string RawWord { get; set; } = null!;
+    [Column("translation")]
+    public string? Translation { get; set; }
 }

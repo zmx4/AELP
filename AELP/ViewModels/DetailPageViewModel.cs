@@ -38,7 +38,7 @@ public partial class DetailPageViewModel : PageViewModel
         if (parameter is Dictionary word)
         {
             Word = word;
-            word.translation = word.translation?.Replace("\\n", "\n");
+            word.Translation = word.Translation?.Replace("\\n", "\n");
         }
     }
 
