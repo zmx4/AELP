@@ -63,12 +63,12 @@ public partial class DictionaryPageViewModel : PageViewModel
             // SearchResult = resultDictionary.translation ?? string.Empty;
             SearchResult = resultDictionary.translation?.Replace("\\n", "\n") ?? string.Empty;
             ExamTags.Clear();
-            if (resultDictionary.cet4 == 1) ExamTags.Add("CET4");
-            if (resultDictionary.cet6 == 1) ExamTags.Add("CET6");
-            if (resultDictionary.hs == 1) ExamTags.Add("High School");
-            if (resultDictionary.ph == 1) ExamTags.Add("Primary School");
-            if (resultDictionary.tf == 1) ExamTags.Add("TOEFL");
-            if (resultDictionary.ys == 1) ExamTags.Add("IELTS");
+            if (resultDictionary.Cet4 == 1) ExamTags.Add("CET4");
+            if (resultDictionary.Cet6 == 1) ExamTags.Add("CET6");
+            if (resultDictionary.Hs == 1) ExamTags.Add("High School");
+            if (resultDictionary.Ph == 1) ExamTags.Add("Primary School");
+            if (resultDictionary.Tf == 1) ExamTags.Add("TOEFL");
+            if (resultDictionary.Ys == 1) ExamTags.Add("IELTS");
 
             ContentBlurRadius = 0;
         }

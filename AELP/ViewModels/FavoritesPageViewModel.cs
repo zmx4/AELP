@@ -53,12 +53,12 @@ public partial class FavoritesPageViewModel : PageViewModel
             {
                 word = wordInfo.Word,
                 translation = wordInfo.Translation,
-                cet4 = (favorite.IsCet4) ? 1 : 0,
-                cet6 = (favorite.IsCet6) ? 1 : 0,
-                tf = (favorite.IsTf) ? 1 : 0,
-                ys = (favorite.IsYs) ? 1 : 0,
-                hs = (favorite.IsHs) ? 1 : 0,
-                ph = (favorite.IsPh) ? 1 : 0
+                Cet4 = (favorite.IsCet4) ? 1 : 0,
+                Cet6 = (favorite.IsCet6) ? 1 : 0,
+                Tf = (favorite.IsTf) ? 1 : 0,
+                Ys = (favorite.IsYs) ? 1 : 0,
+                Hs = (favorite.IsHs) ? 1 : 0,
+                Ph = (favorite.IsPh) ? 1 : 0
             };
 
             WeakReferenceMessenger.Default.Send(new NavigationMessage(ApplicationPageNames.Detail, temp));
@@ -75,12 +75,12 @@ public partial class FavoritesPageViewModel : PageViewModel
             {
                 word = wordInfo.Word,
                 translation = wordInfo.Translation,
-                cet4 = (favorite.IsCet4) ? 1 : 0,
-                cet6 = (favorite.IsCet6) ? 1 : 0,
-                tf = (favorite.IsTf) ? 1 : 0,
-                ys = (favorite.IsYs) ? 1 : 0,
-                hs = (favorite.IsHs) ? 1 : 0,
-                ph = (favorite.IsPh) ? 1 : 0
+                Cet4 = (favorite.IsCet4) ? 1 : 0,
+                Cet6 = (favorite.IsCet6) ? 1 : 0,
+                Tf = (favorite.IsTf) ? 1 : 0,
+                Ys = (favorite.IsYs) ? 1 : 0,
+                Hs = (favorite.IsHs) ? 1 : 0,
+                Ph = (favorite.IsPh) ? 1 : 0
             };
 
             await _dataStorageService.RemoveFromFavorites(temp);

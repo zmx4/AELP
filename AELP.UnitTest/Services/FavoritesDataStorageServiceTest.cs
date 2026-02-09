@@ -35,7 +35,7 @@ public class FavoritesDataStorageServiceTest : IDisposable
 		{
 			word = "apple",
 			translation = "苹果",
-			cet4 = 1
+			Cet4 = 1
 		};
 
 		await service.AddToFavorites(input);
@@ -65,15 +65,15 @@ public class FavoritesDataStorageServiceTest : IDisposable
 		{
 			word = "orange",
 			translation = "橙子",
-			cet4 = 1
+			Cet4 = 1
 		});
 
 		await service.AddToFavorites(new Dictionary
 		{
 			word = "orange",
 			translation = "橙子",
-			cet6 = 1,
-			hs = 1
+			Cet6 = 1,
+			Hs = 1
 		});
 
 		var favorites = await service.LoadFavorites();
@@ -96,7 +96,7 @@ public class FavoritesDataStorageServiceTest : IDisposable
 		{
 			word = "banana",
 			translation = "香蕉",
-			cet4 = 1
+			Cet4 = 1
 		};
 
 		await service.AddToFavorites(input);
@@ -117,14 +117,14 @@ public class FavoritesDataStorageServiceTest : IDisposable
 
 		await service.SaveFavorites(new[]
 		{
-			new Dictionary { word = "alpha", translation = "阿尔法", cet4 = 1 },
-			new Dictionary { word = "beta", translation = "贝塔", cet6 = 1 }
+			new Dictionary { word = "alpha", translation = "阿尔法", Cet4 = 1 },
+			new Dictionary { word = "beta", translation = "贝塔", Cet6 = 1 }
 		});
 
 		await service.SaveFavorites(new[]
 		{
-			new Dictionary { word = "beta", translation = "贝塔", cet6 = 1, hs = 1 },
-			new Dictionary { word = "gamma", translation = "伽马", ph = 1 }
+			new Dictionary { word = "beta", translation = "贝塔", Cet6 = 1, Hs = 1 },
+			new Dictionary { word = "gamma", translation = "伽马", Ph = 1 }
 		});
 
 		var favorites = await service.LoadFavorites();

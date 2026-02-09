@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AELP.Data;
 
-public class MistakeDataModel
+public sealed class MistakeDataModel
 {
     [Key]
     public int Id { get; set; }
@@ -16,5 +16,5 @@ public class MistakeDataModel
     [NotMapped]
     public string? Translation { get; set; }
     [ForeignKey("WordId")]
-    public virtual WordDataModel? RawWord { get; set; }
+    public WordDataModel? RawWord { get; set; }
 }

@@ -1,16 +1,19 @@
-﻿namespace AELP.Models;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace AELP.Models;
 
 public partial class Dictionary : Word
 {
-    public int? cet4 { get; set; }
-
-    public int? cet6 { get; set; }
-
-    public int? hs { get; set; }
-
-    public int? ph { get; set; }
-
-    public int? tf { get; set; }
-
-    public int? ys { get; set; }
+    [Column("cet4")]
+    public int? Cet4 { get; set; }
+    [Column("cet6")]
+    public int? Cet6 { get; set; }
+    [Column("hs")]
+    public int? Hs { get; set; }
+    [Column("ph")]
+    public int? Ph { get; set; }
+    [Column("tf")]
+    public int? Tf { get; set; }
+    [Column("ys")]
+    public int? Ys { get; set; }
 }

@@ -42,12 +42,12 @@ public class FavoritesDataStorageService : IFavoritesDataStorageService
         }
 
         favModel.IsFavorite = true;
-        favModel.IsCet4 = favorite.cet4.HasValue;
-        favModel.IsCet6 = favorite.cet6.HasValue;
-        favModel.IsHs = favorite.hs.HasValue;
-        favModel.IsPh = favorite.ph.HasValue;
-        favModel.IsTf = favorite.tf.HasValue;
-        favModel.IsYs = favorite.ys.HasValue;
+        favModel.IsCet4 = favorite.Cet4 == 1;
+        favModel.IsCet6 = favorite.Cet6 == 1;
+        favModel.IsHs = favorite.Hs == 1;
+        favModel.IsPh = favorite.Ph == 1;
+        favModel.IsTf = favorite.Tf == 1;
+        favModel.IsYs = favorite.Ys == 1;
 
         await context.SaveChangesAsync();
         OnFavoritesChanged?.Invoke(this, EventArgs.Empty);
@@ -156,12 +156,12 @@ public class FavoritesDataStorageService : IFavoritesDataStorageService
 
             // Update
             favModel.IsFavorite = true;
-            favModel.IsCet4 = dictItem.cet4.HasValue;
-            favModel.IsCet6 = dictItem.cet6.HasValue;
-            favModel.IsHs = dictItem.hs.HasValue;
-            favModel.IsPh = dictItem.ph.HasValue;
-            favModel.IsTf = dictItem.tf.HasValue;
-            favModel.IsYs = dictItem.ys.HasValue;
+            favModel.IsCet4 = dictItem.Cet4 == 1;
+            favModel.IsCet6 = dictItem.Cet6 == 1;
+            favModel.IsHs = dictItem.Hs == 1;
+            favModel.IsPh = dictItem.Ph == 1;
+            favModel.IsTf = dictItem.Tf == 1;
+            favModel.IsYs = dictItem.Ys == 1;
         }
 
         await context.SaveChangesAsync();

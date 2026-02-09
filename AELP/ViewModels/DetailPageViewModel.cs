@@ -47,12 +47,12 @@ public partial class DetailPageViewModel : PageViewModel
         Tags.Clear();
         if (Word is null) return;
 
-        if (Word.cet4 > 0) Tags.Add("CET4");
-        if (Word.cet6 > 0) Tags.Add("CET6");
-        if (Word.hs > 0) Tags.Add("高中");
-        if (Word.ph > 0) Tags.Add("小学");
-        if (Word.tf > 0) Tags.Add("托福");
-        if (Word.ys > 0) Tags.Add("雅思");
+        if (Word.Cet4 > 0) Tags.Add("CET4");
+        if (Word.Cet6 > 0) Tags.Add("CET6");
+        if (Word.Hs > 0) Tags.Add("高中");
+        if (Word.Ph > 0) Tags.Add("小学");
+        if (Word.Tf > 0) Tags.Add("托福");
+        if (Word.Ys > 0) Tags.Add("雅思");
     }
     [RelayCommand]
     private async Task AddToFavoritesAsync()

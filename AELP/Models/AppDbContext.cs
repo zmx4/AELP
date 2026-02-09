@@ -55,7 +55,7 @@ public partial class AppDbContext(DbContextOptions<AppDbContext> options) : DbCo
         modelBuilder.Entity<Dictionary>(entity =>
         {
             entity.HasKey(e => e.word);
-
+            
             entity.ToTable("dictionary");
         });
 
