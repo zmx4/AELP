@@ -1,21 +1,33 @@
+using System;
+using System.ComponentModel;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Threading;
 using AELP.ViewModels;
-using Avalonia;
 
 namespace AELP.Views;
 
 public partial class TestSessionPageView : UserControl
 {
+    private TestSessionPageViewModel? _viewModel;
+
     public TestSessionPageView()
     {
         InitializeComponent();
+        DataContextChanged += OnDataContextChanged;
     }
 
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnAttachedToVisualTree(e);
-        Focus();
+        EnsureQuestionFocus();
+    }
+
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        UnsubscribeViewModel();
+        base.OnDetachedFromVisualTree(e);
     }
 
     private async void OnKeyDown(object? sender, KeyEventArgs e)
@@ -35,6 +47,55 @@ public partial class TestSessionPageView : UserControl
         if (handled)
         {
             e.Handled = true;
+        }
+    }
+
+    private void OnDataContextChanged(object? sender, EventArgs e)
+    {
+        UnsubscribeViewModel();
+        _viewModel = DataContext as TestSessionPageViewModel;
+        if (_viewModel is not null)
+        {
+            _viewModel.PropertyChanged += OnViewModelPropertyChanged;
+        }
+
+        EnsureQuestionFocus();
+    }
+
+    private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName is nameof(TestSessionPageViewModel.CurrentIndex)
+            or nameof(TestSessionPageViewModel.IsChoiceQuestion)
+            or nameof(TestSessionPageViewModel.IsTesting))
+        {
+            EnsureQuestionFocus();
+        }
+    }
+
+    private void EnsureQuestionFocus()
+    {
+        if (_viewModel is null || !_viewModel.IsTesting)
+        {
+            return;
+        }
+
+        Dispatcher.UIThread.Post(() =>
+        {
+            if (_viewModel.IsChoiceQuestion)
+            {
+                Focus();
+                return;
+            }
+
+            FillInputBox?.Focus();
+        }, DispatcherPriority.Background);
+    }
+
+    private void UnsubscribeViewModel()
+    {
+        if (_viewModel is not null)
+        {
+            _viewModel.PropertyChanged -= OnViewModelPropertyChanged;
         }
     }
 
