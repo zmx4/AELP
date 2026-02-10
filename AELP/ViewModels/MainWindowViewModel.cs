@@ -19,6 +19,9 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty]
     private bool _isBackButtonVisible;
 
+    [ObservableProperty]
+    private bool _isSidebarExpanded = true;
+
     public MainWindowViewModel(PageFactory pageFactory)
     {
         _pageFactory = pageFactory;
@@ -41,11 +44,24 @@ public partial class MainWindowViewModel : ViewModelBase
         private set => SetProperty(ref _content, value);
     }
 
+    public double SidebarWidth => IsSidebarExpanded ? 220 : 60;
+
     private void PushContent(ViewModelBase page)
     {
         _pages.Add(Content);
         
         Content = page;
+    }
+
+    partial void OnIsSidebarExpandedChanged(bool value)
+    {
+        OnPropertyChanged(nameof(SidebarWidth));
+    }
+
+    [RelayCommand]
+    private void ToggleSidebar()
+    {
+        IsSidebarExpanded = !IsSidebarExpanded;
     }
 
     [RelayCommand]

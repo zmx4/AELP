@@ -11,14 +11,45 @@
         Title="AELP">
 
     <Grid ColumnDefinitions="Auto,*" Background="{DynamicResource PrimaryBackgroundGradient}">
-        <Border Classes="navigation-panel">
+        <!-- <Border Classes="navigation-panel" Width="{Binding SidebarWidth}" DoubleTapped="NavigationPanel_DoubleTapped"> -->
+        <Border Classes="navigation-panel" DoubleTapped="NavigationPanel_DoubleTapped">
             <StackPanel Spacing="8">
-                <Button Classes="nav-button" Content="🔙 返回" IsVisible="{Binding IsBackButtonVisible}" Command="{Binding GoBackCommand}"></Button>
-                <Button Classes="nav-button" Content="📖 词典" Command="{Binding GoToDictionaryPageCommand}"></Button>
-                <Button Classes="nav-button" Content="⭐ 收藏" Command="{Binding GoToFavoritesPageCommand}"></Button>
-                <Button Classes="nav-button" Content="📝 测试" Command="{Binding GoToTestsPageCommand}"></Button>
-                <Button Classes="nav-button" Content="❌ 错题本" Command="{Binding GoToMistakePageCommand}"></Button>
-                <Button Classes="nav-button" Content="⚙️ 设置" Command="{Binding GoToSettingsPageCommand}"></Button>
+                <Button Classes="nav-button" Command="{Binding GoToDictionaryPageCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="📖" />
+                        <TextBlock Text="词典" IsVisible="{Binding IsSidebarExpanded}" />
+                    </StackPanel>
+                </Button>
+                <Button Classes="nav-button" Command="{Binding GoToFavoritesPageCommand}">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <TextBlock Text="⭐" />
+                        <TextBlock Text="收藏" IsVisible="{Binding IsSidebarExpanded}" />
+                    </StackPanel>
+                </Button>
+                <Button Classes="nav-button" Command="{Binding GoToTestsPageCommand}">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <TextBlock Text="📝" />
+                        <TextBlock Text="测试" IsVisible="{Binding IsSidebarExpanded}" />
+                    </StackPanel>
+                </Button>
+                <Button Classes="nav-button" Command="{Binding GoToMistakePageCommand}">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <TextBlock Text="❌" />
+                        <TextBlock Text="错题本" IsVisible="{Binding IsSidebarExpanded}" />
+                    </StackPanel>
+                </Button>
+                <Button Classes="nav-button" Command="{Binding GoToSettingsPageCommand}">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <TextBlock Text="⚙️" />
+                        <TextBlock Text="设置" IsVisible="{Binding IsSidebarExpanded}" />
+                    </StackPanel>
+                </Button>
+                <Button Classes="nav-button" IsVisible="{Binding IsBackButtonVisible}" Command="{Binding GoBackCommand}">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <TextBlock Text="🔙" />
+                        <TextBlock Text="返回" IsVisible="{Binding IsSidebarExpanded}" />
+                    </StackPanel>
+                </Button>
             </StackPanel>
         </Border>
         <UserControl Classes="content-area" Grid.Column="1" Content="{Binding Content}">
