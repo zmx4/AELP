@@ -36,5 +36,16 @@
     <Application.Styles>
         <FluentTheme />
         <StyleInclude Source="/Styles/AppDefaultStyle.axaml"/>
+
+        <Style Selector="Border.MistakeCard">
+            <Setter Property="Background" Value="#333B5A"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="12"/>
+            <Setter Property="BorderBrush" Value="#7C59CD"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+        <Style Selector="Border.MistakeCard.mastered">
+            <Setter Property="BorderBrush" Value="#4CAF50"/>
+        </Style>
     </Application.Styles>
 </Application>

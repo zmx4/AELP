@@ -15,6 +15,8 @@ public sealed class MistakeDataModel
     public int Count { get; set; }
     [NotMapped]
     public string? Translation { get; set; }
+    [NotMapped]
+    public bool IsMastered => Count <= 0;
     [ForeignKey("WordId")]
     public WordDataModel? RawWord { get; set; }
 }

@@ -19,6 +19,12 @@ public partial class MistakePageViewModel : PageViewModel
 
     [ObservableProperty]
     private SortOption? _selectedSortOption;
+
+    [ObservableProperty]
+    private int _maxTestCount = 20;
+
+    [ObservableProperty]
+    private bool _showMasteredWords = true;
     
     private readonly IMistakeDataStorageService _mistakeDataStorageService;
     private readonly List<MistakeDataModel> _allMistakes = new();
@@ -57,9 +63,20 @@ public partial class MistakePageViewModel : PageViewModel
         ApplySort();
     }
 
+    partial void OnShowMasteredWordsChanged(bool value)
+    {
+        ApplySort();
+    }
+
     private void ApplySort()
     {
-        if (_allMistakes.Count == 0)
+        var filtered = ShowMasteredWords 
+            ? (IEnumerable<MistakeDataModel>)_allMistakes 
+            : _allMistakes.Where(x => !x.IsMastered);
+            
+        var filteredList = filtered.ToList();
+
+        if (filteredList.Count == 0)
         {
             Items = new ObservableCollection<MistakeDataModel>();
             return;
@@ -68,13 +85,13 @@ public partial class MistakePageViewModel : PageViewModel
         var option = SelectedSortOption?.Value ?? MistakeSortOption.TimeDesc;
         IEnumerable<MistakeDataModel> ordered = option switch
         {
-            MistakeSortOption.WordAsc => _allMistakes
+            MistakeSortOption.WordAsc => filteredList
                 .OrderBy(x => x.Word ?? string.Empty, StringComparer.OrdinalIgnoreCase)
                 .ThenByDescending(x => x.Time),
-            MistakeSortOption.TimeDesc => _allMistakes
+            MistakeSortOption.TimeDesc => filteredList
                 .OrderByDescending(x => x.Time)
                 .ThenBy(x => x.Word ?? string.Empty, StringComparer.OrdinalIgnoreCase),
-            _ => _allMistakes
+            _ => filteredList
                 .OrderByDescending(x => x.Count)
                 .ThenByDescending(x => x.Time),
         };
@@ -103,7 +120,13 @@ public partial class MistakePageViewModel : PageViewModel
     {
         if (Items.Count == 0) return;
 
-        var shuffledItems = Shuffle(Items.ToArray());
+        var shuffledItems = Shuffle(Items.Where(x=>x.Count > 0).ToArray());
+
+        if (MaxTestCount > 0 && MaxTestCount < shuffledItems.Length)
+        {
+            shuffledItems = shuffledItems.Take(MaxTestCount).ToArray();
+        }
+
         WeakReferenceMessenger.Default.Send(
             new NavigationMessage(ApplicationPageNames.MistakeReview, shuffledItems));
     }
