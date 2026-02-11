@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using AELP.Data;
+using AELP.Helper;
 using AELP.Messages;
 using AELP.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -177,10 +178,11 @@ public partial class TestsPageViewModel : PageViewModel
     }
     private async Task LoadMistakesAsync()
     {
-        var mistakes = await _testDataStorageService.GetRecentTests(1);
-        var values = mistakes.Select(t => t.Id).ToList();
-        var mistakeData = await _mistakeDataStorageService.LoadMistakeDataByWordIds(values.ToArray());
-        
-        Mistakes = new ObservableCollection<MistakeDataModel>(mistakeData);
+        var mistakes = await _mistakeDataStorageService.LoadMistakeData(5);
+        foreach (var mistake in mistakes)
+        {
+            mistake.Translation = StringNormalizeHelper.ShortenString(mistake.Translation);
+        }
+        Mistakes = new ObservableCollection<MistakeDataModel>(mistakes);
     }
 }

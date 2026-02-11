@@ -100,6 +100,32 @@ public class MistakeDataStorageService(
         return mistakeData;
     }
 
+    public async Task<MistakeDataModel[]> LoadMistakeData(int count)
+    {
+        await using var context = await contextFactory.CreateDbContextAsync();
+        await context.Database.EnsureCreatedAsync();
+        var mistakeData = await context.Mistakes
+            .Include(m => m.RawWord)
+            .Take(count)
+            .ToArrayAsync();
+
+        foreach (var item in mistakeData)
+        {
+            var wordText = item.RawWord?.Word ?? item.Word;
+            var translation = item.RawWord?.Translation;
+
+            if (string.IsNullOrWhiteSpace(translation) && !string.IsNullOrWhiteSpace(wordText))
+            {
+                translation = wordQueryService.QueryWordTranslation(wordText);
+            }
+
+            item.Word = wordText;
+            item.Translation = translation;
+        }
+        return  mistakeData;
+    }
+
+
     public async Task UpdateMistakeData(MistakeDataModel[] mistakeData)
     {
         await using var context = await contextFactory.CreateDbContextAsync();
