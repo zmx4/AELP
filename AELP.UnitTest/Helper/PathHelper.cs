@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-
-namespace AELP.Helper;
+﻿namespace AELP.Helper;
 
 public static class PathHelper {
     private static string _localFolder = string.Empty;

@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AELP.Services;
 
-public class TestDataStorageService : ITestDataStorageService
+public class TestDataStorageService(IDbContextFactory<UserDbContext> contextFactory) : ITestDataStorageService
 {
     public async Task SaveTestData(TestDataModel[] testData)
     {
-        using var context = new UserDbContext();
+        await using var context = await contextFactory.CreateDbContextAsync();
         await context.Database.EnsureCreatedAsync();
         
         foreach (var test in testData)
@@ -28,14 +28,14 @@ public class TestDataStorageService : ITestDataStorageService
 
     public async Task<TestDataModel[]> LoadTestData()
     {
-        using var context = new UserDbContext();
+        await using var context = await contextFactory.CreateDbContextAsync();
         await context.Database.EnsureCreatedAsync();
         return await context.Tests.ToArrayAsync();
     }
 
     public async Task<TestDataModel[]> GetRecentTests(int count = 10)
     {
-        using var context = new UserDbContext();
+        await using var context = await contextFactory.CreateDbContextAsync();
         await context.Database.EnsureCreatedAsync();
         return await context.Tests.OrderByDescending(t => t.TestTime).Take(count).ToArrayAsync();
     }

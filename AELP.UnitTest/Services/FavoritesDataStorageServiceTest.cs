@@ -1,12 +1,11 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
+﻿using System.Reflection;
+using AELP.Data;
 using AELP.Helper;
 using AELP.Models;
 using AELP.Services;
+using AELP.UnitTest.Helper;
 using JetBrains.Annotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace AELP.UnitTest.Services;
 
@@ -27,7 +26,7 @@ public class FavoritesDataStorageServiceTest : IDisposable
 	[Fact]
 	public async Task AddToFavorites_CreatesWordAndFavoriteAndRaisesEvent()
 	{
-		var service = new FavoritesDataStorageService();
+		var service = new FavoritesDataStorageService(CreateContextFactory());
 		var eventCount = 0;
 		service.OnFavoritesChanged += (_, _) => eventCount++;
 
@@ -59,7 +58,7 @@ public class FavoritesDataStorageServiceTest : IDisposable
 	[Fact]
 	public async Task AddToFavorites_UpdatesExistingFavoriteFlags()
 	{
-		var service = new FavoritesDataStorageService();
+		var service = new FavoritesDataStorageService(CreateContextFactory());
 
 		await service.AddToFavorites(new Dictionary
 		{
@@ -88,7 +87,7 @@ public class FavoritesDataStorageServiceTest : IDisposable
 	[Fact]
 	public async Task RemoveFromFavorites_UnfavoritesAndRaisesEvent()
 	{
-		var service = new FavoritesDataStorageService();
+		var service = new FavoritesDataStorageService(CreateContextFactory());
 		var eventCount = 0;
 		service.OnFavoritesChanged += (_, _) => eventCount++;
 
@@ -112,7 +111,7 @@ public class FavoritesDataStorageServiceTest : IDisposable
 	[Fact]
 	public async Task SaveFavorites_ReplacesAndUpdatesFlags()
 	{
-		var service = new FavoritesDataStorageService();
+		var service = new FavoritesDataStorageService(CreateContextFactory());
 		var eventCount = 0;
 		service.OnFavoritesChanged += (_, _) => eventCount++;
 
@@ -149,7 +148,7 @@ public class FavoritesDataStorageServiceTest : IDisposable
 
 	private static void ResetDatabase()
 	{
-		var dbPath = PathHelper.GetLocalFilePath("user.sqlite");
+		var dbPath = PathHelper.GetLocalFilePath("test.db");
 		if (File.Exists(dbPath))
 		{
 			File.Delete(dbPath);
@@ -158,5 +157,13 @@ public class FavoritesDataStorageServiceTest : IDisposable
 		var field = typeof(FavoritesDataStorageService)
 			.GetField("_dbChecked", BindingFlags.NonPublic | BindingFlags.Static);
 		field?.SetValue(null, false);
+	}
+
+	private static IDbContextFactory<UserDbContext> CreateContextFactory()
+	{
+		var options = new DbContextOptionsBuilder<UserDbContext>()
+			.UseSqlite($"Data Source={PathHelper.GetLocalFilePath(UserDbContext.DbName)}")
+			.Options;
+		return new TestDbContextFactory<UserDbContext>(options);
 	}
 }

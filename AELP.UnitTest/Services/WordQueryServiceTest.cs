@@ -1,5 +1,6 @@
 ﻿using AELP.Models;
 using AELP.Services;
+using AELP.UnitTest.Helper;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,24 +9,18 @@ namespace AELP.UnitTest.Services;
 [TestSubject(typeof(IWordQueryService))]
 public class WordQueryServiceTest
 {
-    private AppDbContext GetDbContext()
+    private static DbContextOptions<AppDbContext> CreateOptions()
     {
-        var options = new DbContextOptionsBuilder<AppDbContext>()
+        return new DbContextOptionsBuilder<AppDbContext>()
             .UseSqlite("Data Source=../../../../AELP/Assets/Database/stardict.db")
             .Options;
-        var context = new AppDbContext(options);
-        // var context = new AppDbContext();
-        context.Database.OpenConnection();
-        context.Database.EnsureCreated();
-        return context;
     }
 
     [Fact]
     public async Task QueryWordInfoTest()
     {
-        await using var context = GetDbContext();
-        
-        var service = new WordQueryService(context);
+        var factory = new TestDbContextFactory<AppDbContext>(CreateOptions());
+        var service = new WordQueryService(factory);
 
         var word = await service.QueryWordInfoAsync("we");
         
@@ -35,9 +30,8 @@ public class WordQueryServiceTest
     [Fact]
     public async Task QueryWordTranslationTest()
     {
-        await using var context = GetDbContext();
-
-        var service = new WordQueryService(context);
+        var factory = new TestDbContextFactory<AppDbContext>(CreateOptions());
+        var service = new WordQueryService(factory);
 
         var translation = await service.QueryWordsAsync("人");
 

@@ -1,7 +1,6 @@
 using System;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Data.Core;
 using Avalonia.Data.Core.Plugins;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,8 +14,8 @@ using Microsoft.Extensions.DependencyInjection;
 using AELP.Services;
 using AELP.Models;
 using Microsoft.EntityFrameworkCore;
-using LiveChartsCore; 
-using LiveChartsCore.SkiaSharpView; 
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
 
 namespace AELP;
 
@@ -42,7 +41,11 @@ public partial class App : Application
         var dbPath = System.IO.Path.Combine(AppContext.BaseDirectory, "Assets", "Database", "stardict.db");
         collection.AddDbContext<AppDbContext>(options =>
             options.UseSqlite($"Data Source={dbPath}"));
+        collection.AddDbContextFactory<AppDbContext>(options =>
+            options.UseSqlite($"Data Source={dbPath}"));
         collection.AddDbContext<UserDbContext>(options => 
+            options.UseSqlite($"Data Source={PathHelper.GetLocalFilePath(UserDbContext.DbName)}"));
+        collection.AddDbContextFactory<UserDbContext>(options =>
             options.UseSqlite($"Data Source={PathHelper.GetLocalFilePath(UserDbContext.DbName)}"));
         collection.AddSingleton<IPreferenceStorage, JsonPreferenceStorage>();
         collection.AddSingleton<IThemeService, ThemeService>();

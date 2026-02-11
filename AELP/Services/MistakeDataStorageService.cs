@@ -6,18 +6,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AELP.Services;
 
-public class MistakeDataStorageService : IMistakeDataStorageService
+public class MistakeDataStorageService(
+    IWordQueryService wordQueryService,
+    IDbContextFactory<UserDbContext> contextFactory) : IMistakeDataStorageService
 {
-    private readonly IWordQueryService _wordQueryService;
-
-    public MistakeDataStorageService(IWordQueryService wordQueryService)
-    {
-        _wordQueryService = wordQueryService;
-    }
-
     public async Task SaveMistakeData(MistakeDataModel[] mistakeData)
     {
-        await using var context = new UserDbContext();
+        await using var context = await contextFactory.CreateDbContextAsync();
         await context.Database.EnsureCreatedAsync();
 
         // 1. Resolve Word IDs for items that have a Word string but possibly no WordId (or 0)
@@ -82,7 +77,7 @@ public class MistakeDataStorageService : IMistakeDataStorageService
 
     public async Task<MistakeDataModel[]> LoadMistakeData()
     {
-        await using var context = new UserDbContext();
+        await using var context = await contextFactory.CreateDbContextAsync();
         await context.Database.EnsureCreatedAsync();
         var mistakeData = await context.Mistakes
             .Include(m => m.RawWord)
@@ -95,7 +90,7 @@ public class MistakeDataStorageService : IMistakeDataStorageService
 
             if (string.IsNullOrWhiteSpace(translation) && !string.IsNullOrWhiteSpace(wordText))
             {
-                translation = _wordQueryService.QueryWordTranslation(wordText);
+                translation = wordQueryService.QueryWordTranslation(wordText);
             }
 
             item.Word = wordText;
@@ -107,7 +102,7 @@ public class MistakeDataStorageService : IMistakeDataStorageService
 
     public async Task UpdateMistakeData(MistakeDataModel[] mistakeData)
     {
-        await using var context = new UserDbContext();
+        await using var context = await contextFactory.CreateDbContextAsync();
         await context.Database.EnsureCreatedAsync();
         context.Mistakes.UpdateRange(mistakeData);
         await context.SaveChangesAsync();

@@ -1,5 +1,3 @@
-using Xunit;
-
 namespace AELP.UnitTest;
 
 [CollectionDefinition("UserDb", DisableParallelization = true)]

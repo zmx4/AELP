@@ -2,8 +2,6 @@
 using AELP.Models;
 using AELP.Services;
 using Microsoft.EntityFrameworkCore;
-using Xunit;
-using System.Threading.Tasks;
 
 namespace AELP.UnitTest.Services;
 

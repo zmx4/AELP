@@ -8,14 +8,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AELP.Services;
 
-public class FavoritesDataStorageService : IFavoritesDataStorageService
+public class FavoritesDataStorageService(IDbContextFactory<UserDbContext> contextFactory) : IFavoritesDataStorageService
 {
-    private static bool _dbChecked = false;
+    private static bool _dbChecked;
     public event EventHandler? OnFavoritesChanged;
 
     public async Task AddToFavorites(Dictionary favorite)
     {
-        await using var context = new UserDbContext();
+        await using var context = await contextFactory.CreateDbContextAsync();
         if (!_dbChecked)
         {
             await context.Database.EnsureCreatedAsync();
@@ -55,7 +55,7 @@ public class FavoritesDataStorageService : IFavoritesDataStorageService
 
     public async Task RemoveFromFavorites(Dictionary favorite)
     {
-        await using var context = new UserDbContext();
+        await using var context = await contextFactory.CreateDbContextAsync();
         if (!_dbChecked)
         {
             await context.Database.EnsureCreatedAsync();
@@ -76,7 +76,7 @@ public class FavoritesDataStorageService : IFavoritesDataStorageService
 
     public async Task SaveFavorites(Dictionary[] favorites)
     {
-        await using var context = new UserDbContext();
+        await using var context = await contextFactory.CreateDbContextAsync();
         if (!_dbChecked)
         {
             await context.Database.EnsureCreatedAsync();
@@ -170,7 +170,7 @@ public class FavoritesDataStorageService : IFavoritesDataStorageService
 
     public async Task<FavoritesDataModel[]> LoadFavorites()
     {
-        await using var context = new UserDbContext();
+        await using var context = await contextFactory.CreateDbContextAsync();
         if (!_dbChecked)
         {
             await context.Database.EnsureCreatedAsync();
