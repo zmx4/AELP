@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AELP.Data;
 using AELP.Factories;
+using AELP.Helper;
 using Avalonia.Markup.Xaml;
 using AELP.ViewModels;
 using AELP.Views;
@@ -41,7 +42,8 @@ public partial class App : Application
         var dbPath = System.IO.Path.Combine(AppContext.BaseDirectory, "Assets", "Database", "stardict.db");
         collection.AddDbContext<AppDbContext>(options =>
             options.UseSqlite($"Data Source={dbPath}"));
-        collection.AddDbContext<UserDbContext>();
+        collection.AddDbContext<UserDbContext>(options => 
+            options.UseSqlite($"Data Source={PathHelper.GetLocalFilePath(UserDbContext.DbName)}"));
         collection.AddSingleton<IPreferenceStorage, JsonPreferenceStorage>();
         collection.AddSingleton<IThemeService, ThemeService>();
         collection.AddSingleton<IKeyboardPreferenceService, KeyboardPreferenceService>();

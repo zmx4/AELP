@@ -5,19 +5,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AELP.Data;
 
-public class UserDbContext : DbContext
+public class UserDbContext(DbContextOptions<UserDbContext> options) : DbContext(options)
 {
-    private const string DbName = "userdata.sqlite";
+    public const string DbName = "userdata.sqlite";
     
     public DbSet<WordDataModel> Words { get; set; }
     public DbSet<FavoritesDataModel> Favorites { get; set; }
     public DbSet<TestDataModel> Tests { get; set; }
     public DbSet<MistakeDataModel> Mistakes { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseSqlite("Data Source=" + PathHelper.GetLocalFilePath(DbName));
-    }
+    // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    // {
+    //     optionsBuilder.UseSqlite("Data Source=" + PathHelper.GetLocalFilePath(DbName));
+    // }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
