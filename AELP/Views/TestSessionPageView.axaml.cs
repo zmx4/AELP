@@ -81,7 +81,13 @@ public partial class TestSessionPageView : UserControl
 
         Dispatcher.UIThread.Post(() =>
         {
-            if (_viewModel.IsChoiceQuestion)
+            var viewModel = _viewModel;
+            if (viewModel is null || !viewModel.IsTesting)
+            {
+                return;
+            }
+
+            if (viewModel.IsChoiceQuestion)
             {
                 Focus();
                 return;

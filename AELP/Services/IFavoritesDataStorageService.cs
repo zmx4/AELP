@@ -14,10 +14,7 @@ public interface IFavoritesDataStorageService
     public event EventHandler OnFavoritesChanged;
 }
 
-public class FavoriteStorageUpdatedEventArgs : EventArgs {
-    public FavoritesDataModel UpdatedFavorite { get; }
-
-    public FavoriteStorageUpdatedEventArgs(FavoritesDataModel favorite) {
-        UpdatedFavorite = favorite;
-    }
+public class FavoriteStorageUpdatedEventArgs(FavoritesDataModel favorite) : EventArgs
+{
+    public FavoritesDataModel UpdatedFavorite { get; } = favorite;
 }
