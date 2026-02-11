@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using AELP.Data;
 using AELP.Messages;
@@ -7,18 +9,25 @@ using AELP.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
 
 namespace AELP.ViewModels;
 
 public partial class TestsPageViewModel : PageViewModel
 {
+    [ObservableProperty] private Axis[] _accuracyXAxes;
+    [ObservableProperty] private Axis[] _accuracyYAxes;
+    [ObservableProperty] private IEnumerable<ISeries> _accuracyLineSeries;
+    [ObservableProperty] private ObservableCollection<MistakeDataModel> _mistakes;
     private readonly ITestDataStorageService _testDataStorageService;
-
-    public TestsPageViewModel(ITestDataStorageService testDataStorageService)
+    private readonly IMistakeDataStorageService _mistakeDataStorageService;
+    public TestsPageViewModel(ITestDataStorageService testDataStorageService,IMistakeDataStorageService mistakeDataStorageService)
     {
         _testDataStorageService = testDataStorageService;
+        _mistakeDataStorageService = mistakeDataStorageService;
         PageNames = Data.ApplicationPageNames.Tests;
-
+        _mistakes = [];
         TestRanges = new ObservableCollection<TestRange>((TestRange[])Enum.GetValues(typeof(TestRange)));
         QuestionCounts = [5, 10, 15, 20];
         SelectedTestRange = TestRange.Cet4;
@@ -26,6 +35,11 @@ public partial class TestsPageViewModel : PageViewModel
         StatusText = string.Empty;
 
         _ = LoadRecentTestsAsync();
+        AccuracyLineSeries = Array.Empty<ISeries>();
+        AccuracyXAxes = Array.Empty<Axis>();
+        AccuracyYAxes = Array.Empty<Axis>();
+        _ = LoadAccuracyAsync();
+        _ = LoadMistakesAsync();
     }
 
     [ObservableProperty] private ObservableCollection<TestRange> _testRanges = new();
@@ -127,5 +141,46 @@ public partial class TestsPageViewModel : PageViewModel
             AccuracyDeltaText = "-";
             TotalDeltaText = "-";
         }
+    }
+    
+    private async Task LoadAccuracyAsync()
+    {
+        var tests = await _testDataStorageService.GetRecentTests(10);
+        if (tests.Length == 0)
+        {
+            AccuracyLineSeries = [];
+            AccuracyXAxes = [];
+            return;
+        }
+
+        var ordered = tests.OrderBy(t => t.TestTime).ToList();
+        var values = ordered.Select(t => t.Accuracy).ToArray();
+        var labels = ordered.Select(t => t.TestTime.ToString("MM-dd")).ToArray();
+
+        AccuracyLineSeries =
+        [
+            new LineSeries<double>
+            {
+                Values = values,
+                GeometrySize = 8,
+                Fill = null
+            }
+        ];
+
+        AccuracyXAxes =
+        [
+            new Axis
+            {
+                Labels = labels
+            }
+        ];
+    }
+    private async Task LoadMistakesAsync()
+    {
+        var mistakes = await _testDataStorageService.GetRecentTests(1);
+        var values = mistakes.Select(t => t.Id).ToList();
+        var mistakeData = await _mistakeDataStorageService.LoadMistakeDataByWordIds(values.ToArray());
+        
+        Mistakes = new ObservableCollection<MistakeDataModel>(mistakeData);
     }
 }

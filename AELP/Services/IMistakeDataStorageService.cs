@@ -8,4 +8,5 @@ public interface IMistakeDataStorageService
     public Task SaveMistakeData(MistakeDataModel[] mistakeData);
     public Task<MistakeDataModel[]> LoadMistakeData();
     public Task UpdateMistakeData(MistakeDataModel[] mistakeData);
+    public Task<MistakeDataModel[]> LoadMistakeDataByWordIds(int[] wordIds);
 }

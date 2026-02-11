@@ -107,4 +107,16 @@ public class MistakeDataStorageService(
         context.Mistakes.UpdateRange(mistakeData);
         await context.SaveChangesAsync();
     }
+
+    public async Task<MistakeDataModel[]> LoadMistakeDataByWordIds(int[] wordIds)
+    {
+        var wordIdSet = wordIds.ToHashSet();
+        await using var context = await contextFactory.CreateDbContextAsync();
+        await context.Database.EnsureCreatedAsync();
+        var mistakeData = await context.Mistakes
+            .Where(m => wordIdSet.Contains(m.WordId))
+            .Include(m => m.RawWord)
+            .ToArrayAsync();
+        return mistakeData;
+    }
 }

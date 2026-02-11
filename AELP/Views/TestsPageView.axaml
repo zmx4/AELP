@@ -4,19 +4,32 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:AELP.ViewModels"
              xmlns:data="clr-namespace:AELP.Data"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Avalonia;assembly=LiveChartsCore.SkiaSharpView.Avalonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
              x:Class="AELP.Views.TestsPageView"
              x:DataType="vm:TestsPageViewModel">
             <Grid RowDefinitions="Auto,*" Margin="20">
                 <Border Background="#0F000000" CornerRadius="8" Padding="12">
-                    <StackPanel Orientation="Horizontal" Spacing="12">
-                        <TextBlock Text="测试范围" VerticalAlignment="Center" />
-                        <ComboBox ItemsSource="{Binding TestRanges}" SelectedItem="{Binding SelectedTestRange}" Width="160" />
-                        <TextBlock Text="题量" VerticalAlignment="Center" />
-                        <ComboBox ItemsSource="{Binding QuestionCounts}" SelectedItem="{Binding QuestionCount}" Width="100" />
-                        <Button Content="开始测试" Command="{Binding StartTestCommand}" />
-                        <TextBlock Text="{Binding StatusText}" Foreground="Red" VerticalAlignment="Center" />
-                    </StackPanel>
+                    <Grid RowDefinitions="Auto,*">
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <TextBlock Text="测试范围" VerticalAlignment="Center" />
+                            <ComboBox ItemsSource="{Binding TestRanges}" SelectedItem="{Binding SelectedTestRange}" Width="160" />
+                            <TextBlock Text="题量" VerticalAlignment="Center" />
+                            <ComboBox ItemsSource="{Binding QuestionCounts}" SelectedItem="{Binding QuestionCount}" Width="100" />
+                            <Button Content="开始测试" Command="{Binding StartTestCommand}" />
+                            <TextBlock Text="{Binding StatusText}" Foreground="Red" VerticalAlignment="Center" />
+                        </StackPanel>
+                        <ListBox Grid.Row="1" ItemsSource="{Binding Mistakes}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate DataType="data:MistakeDataModel">
+                                    <StackPanel Orientation="Horizontal" Spacing="10">
+                                        <TextBlock Text="{Binding Word}" FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding Translation}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Grid>
                 </Border>
 
                 <Grid Grid.Row="1" ColumnDefinitions="*,*" Margin="0,16,0,0">
@@ -34,17 +47,20 @@
                     </Border>
 
                     <Border Grid.Column="1" Background="#0F000000" CornerRadius="8" Padding="16" Margin="16,0,0,0">
-                        <StackPanel Spacing="10">
-                            <TextBlock Text="最近测试对比" FontSize="18" FontWeight="SemiBold" />
-                            <StackPanel Spacing="6" IsVisible="{Binding HasPreviousTest}">
-                                <TextBlock Text="{Binding PreviousTestTimeText}" />
-                                <TextBlock Text="{Binding PreviousAccuracyText}" />
-                                <TextBlock Text="{Binding PreviousTotalQuestionsText}" />
-                                <TextBlock Text="{Binding AccuracyDeltaText}" />
-                                <TextBlock Text="{Binding TotalDeltaText}" />
+                        <Grid RowDefinitions="Auto,*">
+                            <StackPanel Grid.Row="0" Spacing="10">
+                                <TextBlock Text="最近测试对比" FontSize="18" FontWeight="SemiBold" />
+                                <StackPanel Spacing="6" IsVisible="{Binding HasPreviousTest}">
+                                    <TextBlock Text="{Binding PreviousTestTimeText}" />
+                                    <TextBlock Text="{Binding PreviousAccuracyText}" />
+                                    <TextBlock Text="{Binding PreviousTotalQuestionsText}" />
+                                    <TextBlock Text="{Binding AccuracyDeltaText}" />
+                                    <TextBlock Text="{Binding TotalDeltaText}" />
+                                </StackPanel>
+                                <TextBlock Text="暂无上一条测试记录" Foreground="#666" IsVisible="{Binding HasNoPreviousTest}" />
                             </StackPanel>
-                            <TextBlock Text="暂无上一条测试记录" Foreground="#666" IsVisible="{Binding HasNoPreviousTest}" />
-                        </StackPanel>
+                            <lvc:CartesianChart  Grid.Row="1" Series="{Binding AccuracyLineSeries}" XAxes="{Binding AccuracyXAxes}" YAxes="{Binding AccuracyYAxes}" Margin="0,8,0,0" />
+                        </Grid>
                     </Border>
                 </Grid>
             </Grid>

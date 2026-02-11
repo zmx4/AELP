@@ -8,13 +8,13 @@ namespace AELP.Data;
 public class TestDataModel
 {
     [Key, Required]
-    public int Id { get; set; }
+    public int Id { get; init; }
     [Precision(3)]
-    public DateTime TestTime { get; set; }
+    public DateTime TestTime { get; init; }
     
-    public required List<int> Mistakes { get; set; }
+    public required List<int> Mistakes { get; init; }
     
-    public int TotalQuestions { get; set; }
+    public int TotalQuestions { get; init; }
     
-    public double Accuracy { get; set; }
+    public double Accuracy { get; init; }
 }
