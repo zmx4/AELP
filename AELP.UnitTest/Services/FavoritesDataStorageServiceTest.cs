@@ -40,10 +40,10 @@ public class FavoritesDataStorageServiceTest : IDisposable
 		await service.AddToFavorites(input);
 
 		var favorites = await service.LoadFavorites();
-		var favorite = favorites[0];
+		var favorite = favorites.FirstOrDefault(x=>x.Word?.Word == "apple");
 
 		Assert.Equal(1, eventCount);
-		Assert.True(favorite.IsFavorite);
+		Assert.True(favorite is { IsFavorite: true });
 		Assert.True(favorite.IsCet4);
 		Assert.False(favorite.IsCet6);
 		Assert.False(favorite.IsHs);

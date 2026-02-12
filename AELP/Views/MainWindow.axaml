@@ -49,12 +49,18 @@
                         <TextBlock Text="🔙" />
                         <TextBlock Text="返回" IsVisible="{Binding IsSidebarExpanded}" />
                     </StackPanel>
+                    <!-- <Button.KeyBindings> -->
+                    <!--     <KeyBinding Gesture="Escape" Command="{Binding GoBackCommand}" /> -->
+                    <!-- </Button.KeyBindings> -->
                 </Button>
             </StackPanel>
         </Border>
         <UserControl Classes="content-area" Grid.Column="1" Content="{Binding Content}">
             
         </UserControl>
+        <Grid.KeyBindings>
+            <KeyBinding Gesture="Escape" Command="{Binding GoBackCommand}" />
+        </Grid.KeyBindings>
     </Grid>
 
     
