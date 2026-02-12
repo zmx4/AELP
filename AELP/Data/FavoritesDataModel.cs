@@ -4,7 +4,7 @@ namespace AELP.Data;
 
 public class FavoritesDataModel
 {
-    [Key] public int WordId { get; set; }
+    [Key] public int WordId { get; init; }
 
     public bool IsCet4 { get; set; }
 

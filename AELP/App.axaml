@@ -1,6 +1,8 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="AELP.App"
+             xmlns:semi="https://irihi.tech/semi"
+             xmlns:u-Semi="https://irihi.tech/ursa/themes/semi"
              xmlns:local="using:AELP">
              <!-- ThemeVariant is now controlled by ThemeService -->
 
@@ -34,7 +36,9 @@
     </Application.Resources>
     
     <Application.Styles>
-        <FluentTheme />
+        <!-- <FluentTheme /> -->
+        <semi:SemiTheme Locale="zh-CN" />
+        <u-Semi:SemiTheme Locale="zh-CN"/>
         <StyleInclude Source="/Styles/AppDefaultStyle.axaml"/>
 
         <Style Selector="Border.MistakeCard">
