@@ -26,12 +26,12 @@
             <ItemsControl ItemsSource="{Binding Favorites}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate DataType="data:FavoritesDataModel">
-                        <Border BorderBrush="#7C59CD" 
+                        <Border BorderBrush="{DynamicResource CardBorderBrush}" 
                                 BorderThickness="1" 
                                 CornerRadius="8" 
                                 Padding="15" 
                                 Margin="0,5"
-                                Background="#333B5A">
+                                Background="{DynamicResource CardBackground}">
                             <Border.Effect>
                                 <DropShadowEffect BlurRadius="5" 
                                                   OffsetY="2" 
@@ -46,7 +46,7 @@
                                                FontWeight="Bold"/>
                                     <TextBlock Text="{Binding Word.Translation}" 
                                                FontSize="14" 
-                                               Foreground="#7C59CD"
+                                               Foreground="{DynamicResource AccentPurple}"
                                                TextWrapping="Wrap"/>
                                     
                                     <!-- 标签 -->
@@ -57,52 +57,52 @@
                                             </ItemsPanelTemplate>
                                         </ItemsControl.ItemsPanel>
                                         <ItemsControl.Items>
-                                            <Border Background="#660078D7" 
+                                            <Border Background="{DynamicResource TagBlueBg}" 
                                                     CornerRadius="4" 
                                                     Padding="6,3"
                                                     IsVisible="{Binding IsCet4}">
                                                 <TextBlock Text="CET4" 
-                                                           Foreground="White" 
+                                                           Foreground="{DynamicResource TagForeground}" 
                                                            FontSize="11"/>
                                             </Border>
-                                            <Border Background="#660078D7" 
+                                            <Border Background="{DynamicResource TagBlueBg}" 
                                                     CornerRadius="4" 
                                                     Padding="6,3"
                                                     IsVisible="{Binding IsCet6}">
                                                 <TextBlock Text="CET6" 
-                                                           Foreground="White" 
+                                                           Foreground="{DynamicResource TagForeground}" 
                                                            FontSize="11"/>
                                             </Border>
-                                            <Border Background="#6600BF00" 
+                                            <Border Background="{DynamicResource TagGreenBg}" 
                                                     CornerRadius="4" 
                                                     Padding="6,3"
                                                     IsVisible="{Binding IsHs}">
                                                 <TextBlock Text="高中" 
-                                                           Foreground="White" 
+                                                           Foreground="{DynamicResource TagForeground}" 
                                                            FontSize="11"/>
                                             </Border>
-                                            <Border Background="#66FF6600" 
+                                            <Border Background="{DynamicResource TagOrangeBg}" 
                                                     CornerRadius="4" 
                                                     Padding="6,3"
                                                     IsVisible="{Binding IsPh}">
                                                 <TextBlock Text="小学" 
-                                                           Foreground="White" 
+                                                           Foreground="{DynamicResource TagForeground}" 
                                                            FontSize="11"/>
                                             </Border>
-                                            <Border Background="#66DC143C" 
+                                            <Border Background="{DynamicResource TagRedBg}" 
                                                     CornerRadius="4" 
                                                     Padding="6,3"
                                                     IsVisible="{Binding IsTf}">
                                                 <TextBlock Text="托福" 
-                                                           Foreground="White" 
+                                                           Foreground="{DynamicResource TagForeground}" 
                                                            FontSize="11"/>
                                             </Border>
-                                            <Border Background="#669932CC" 
+                                            <Border Background="{DynamicResource TagPurpleBg}" 
                                                     CornerRadius="4" 
                                                     Padding="6,3"
                                                     IsVisible="{Binding IsYs}">
                                                 <TextBlock Text="雅思" 
-                                                           Foreground="White" 
+                                                           Foreground="{DynamicResource TagForeground}" 
                                                            FontSize="11"/>
                                             </Border>
                                         </ItemsControl.Items>
@@ -138,11 +138,11 @@
                        HorizontalAlignment="Center"/>
             <TextBlock Text="还没有收藏任何单词" 
                        FontSize="16" 
-                       Foreground="#999999"
+                       Foreground="{DynamicResource DimText}"
                        HorizontalAlignment="Center"/>
             <TextBlock Text="在词典页面搜索单词并收藏吧" 
                        FontSize="14" 
-                       Foreground="#CCCCCC"
+                       Foreground="{DynamicResource HintText}"
                        HorizontalAlignment="Center"/>
         </StackPanel>
     </Grid>

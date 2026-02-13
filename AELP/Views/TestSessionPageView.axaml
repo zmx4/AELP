@@ -10,20 +10,20 @@
              Focusable="True"
              KeyDown="OnKeyDown">
     <Grid RowDefinitions="Auto,*" Margin="20">
-        <Border Background="#0F000000" CornerRadius="8" Padding="12">
+        <Border Background="{DynamicResource SubtleBackground}" CornerRadius="8" Padding="12">
             <StackPanel Orientation="Horizontal" Spacing="12" IsVisible="{Binding IsNotTesting}">
                 <TextBlock Text="测试范围" VerticalAlignment="Center" />
                 <ComboBox ItemsSource="{Binding TestRanges}" SelectedItem="{Binding SelectedTestRange}" Width="160" />
                 <TextBlock Text="题量" VerticalAlignment="Center" />
                 <ComboBox ItemsSource="{Binding QuestionCounts}" SelectedItem="{Binding QuestionCount}" Width="100" />
                 <Button Content="开始测试" Command="{Binding StartTestCommand}" />
-                <TextBlock Text="{Binding StatusText}" Foreground="Red" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding StatusText}" Foreground="{DynamicResource StatusError}" VerticalAlignment="Center" />
             </StackPanel>
         </Border>
 
-        <Border Grid.Row="1" Background="#0F000000" CornerRadius="8" Padding="16" Margin="0,16,0,0" IsVisible="{Binding IsTesting}">
+        <Border Grid.Row="1" Background="{DynamicResource SubtleBackground}" CornerRadius="8" Padding="16" Margin="0,16,0,0" IsVisible="{Binding IsTesting}">
             <StackPanel Spacing="16">
-                <TextBlock Text="{Binding ProgressText}" HorizontalAlignment="Right" Foreground="#666" />
+                <TextBlock Text="{Binding ProgressText}" HorizontalAlignment="Right" Foreground="{DynamicResource ProgressText}" />
 
                 <StackPanel IsVisible="{Binding IsChoiceQuestion}" Spacing="10">
                     <TextBlock Text="选择正确翻译" FontSize="18" FontWeight="SemiBold" />
@@ -36,7 +36,7 @@
                                         Command="{Binding DataContext.ChooseOptionCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                         CommandParameter="{Binding Text}">
                                     <StackPanel Orientation="Horizontal" Spacing="10">
-                                        <Border Background="#22000000" CornerRadius="4" Padding="6,2">
+                                        <Border Background="{DynamicResource KeyLabelBg}" CornerRadius="4" Padding="6,2">
                                             <TextBlock Text="{Binding KeyLabel}" FontWeight="Bold" FontFamily="Consolas" />
                                         </Border>
                                         <TextBlock Text="{Binding Text}" VerticalAlignment="Center" />

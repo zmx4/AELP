@@ -9,27 +9,27 @@
     <Grid RowDefinitions="Auto,*" Margin="20">
         <StackPanel Orientation="Horizontal" Spacing="10">
             <TextBlock Text="错题复习" FontSize="24" FontWeight="Bold" />
-            <TextBlock Text="根据翻译写出单词" VerticalAlignment="Center" Foreground="#BBBBBB" />
+            <TextBlock Text="根据翻译写出单词" VerticalAlignment="Center" Foreground="{DynamicResource MutedText}" />
         </StackPanel>
 
-        <Border Grid.Row="1" Background="#0F000000" CornerRadius="8" Padding="16" Margin="0,16,0,0">
+        <Border Grid.Row="1" Background="{DynamicResource SubtleBackground}" CornerRadius="8" Padding="16" Margin="0,16,0,0">
             <StackPanel Spacing="14">
                 <StackPanel IsVisible="{Binding IsNotReviewing}" Spacing="10">
                     <TextBlock Text="准备开始错题复习" FontSize="18" FontWeight="SemiBold" />
-                    <TextBlock Text="{Binding TotalCount, StringFormat=当前错题数量：{0}}" Foreground="#BBBBBB" />
+                    <TextBlock Text="{Binding TotalCount, StringFormat=当前错题数量：{0}}" Foreground="{DynamicResource MutedText}" />
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <Button Content="开始复习" Command="{Binding StartReviewCommand}" IsVisible="{Binding HasMistakes}" />
-                        <TextBlock Text="{Binding StatusText}" Foreground="#FFB347" VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding StatusText}" Foreground="{DynamicResource AccentOrange}" VerticalAlignment="Center" />
                     </StackPanel>
                 </StackPanel>
 
                 <StackPanel IsVisible="{Binding IsEmpty}" HorizontalAlignment="Center" Spacing="8">
                     <TextBlock Text="👌" FontSize="40" HorizontalAlignment="Center" />
-                    <TextBlock Text="暂无可复习的错误单词" Foreground="#999999" HorizontalAlignment="Center" />
+                    <TextBlock Text="暂无可复习的错误单词" Foreground="{DynamicResource DimText}" HorizontalAlignment="Center" />
                 </StackPanel>
 
                 <StackPanel IsVisible="{Binding IsReviewing}" Spacing="12">
-                    <TextBlock Text="{Binding ProgressText}" HorizontalAlignment="Right" Foreground="#666" />
+                    <TextBlock Text="{Binding ProgressText}" HorizontalAlignment="Right" Foreground="{DynamicResource ProgressText}" />
                     <TextBlock Text="翻译" FontSize="16" FontWeight="SemiBold" />
                     <TextBlock Text="{Binding CurrentTranslation}" FontSize="22" FontWeight="Bold" TextWrapping="Wrap" />
                     <StackPanel Orientation="Horizontal" Spacing="8">
@@ -40,7 +40,7 @@
                         </TextBox>
                         <Button Content="提交" Command="{Binding SubmitAnswerCommand}" />
                     </StackPanel>
-                    <TextBlock Text="{Binding StatusText}" Foreground="#FFB347" />
+                    <TextBlock Text="{Binding StatusText}" Foreground="{DynamicResource AccentOrange}" />
                 </StackPanel>
             </StackPanel>
         </Border>

@@ -19,7 +19,7 @@
                    FontSize="18" 
                    TextWrapping="Wrap"
                    Margin="20,0,20,20"
-                   Foreground="Gray"/>
+                   Foreground="{DynamicResource MutedText}"/>
 
         <TextBlock Grid.Row="2" Text="考点:" FontWeight="SemiBold" Margin="20,0,0,10" IsVisible="{Binding Tags.Count}"/>
 
@@ -32,8 +32,8 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Border Background="#E6E6E6" CornerRadius="4" Margin="0,0,10,10" Padding="10,5">
-                        <TextBlock Text="{Binding}" FontSize="14" Foreground="#333333"/>
+                    <Border Background="{DynamicResource DetailTagBg}" CornerRadius="4" Margin="0,0,10,10" Padding="10,5">
+                        <TextBlock Text="{Binding}" FontSize="14" Foreground="{DynamicResource DetailTagFg}"/>
                     </Border>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

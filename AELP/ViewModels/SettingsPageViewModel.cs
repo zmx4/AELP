@@ -33,12 +33,12 @@ public partial class SettingsPageViewModel : PageViewModel
         _themeService = themeService;
         _keyboardPreferenceService = keyboardPreferenceService;
         
-        ThemeOptions = new ObservableCollection<ThemeOptionViewModel>
-        {
+        ThemeOptions =
+        [
             new ThemeOptionViewModel { Name = "暗色主题", Theme = AppTheme.Dark, Icon = "🌙" },
             new ThemeOptionViewModel { Name = "浅色主题", Theme = AppTheme.Light, Icon = "☀️" },
             new ThemeOptionViewModel { Name = "护眼主题", Theme = AppTheme.EyeCare, Icon = "👁️" }
-        };
+        ];
         
         // 设置当前主题
         var currentTheme = _themeService.CurrentTheme;
@@ -127,5 +127,5 @@ public class ThemeOptionViewModel
 {
     public string Name { get; set; } = string.Empty;
     public string Icon { get; set; } = string.Empty;
-    public AppTheme Theme { get; set; }
+    public AppTheme Theme { get; init; }
 }

@@ -86,10 +86,11 @@ public class ThemeService : IThemeService
         var app = Application.Current;
         if (app == null) return;
 
-        // 更新 FluentTheme 的主题变体
+        // 设置 SemiTheme 的主题变体（Dark/Light/EyeCare）
         var themeVariant = theme switch
         {
             AppTheme.Light => ThemeVariant.Light,
+            AppTheme.EyeCare => ThemeVariant.Light, // 护眼模式基于亮色主题
             _ => ThemeVariant.Dark
         };
         app.RequestedThemeVariant = themeVariant;
@@ -100,6 +101,7 @@ public class ThemeService : IThemeService
             switch (theme)
             {
                 case AppTheme.Light:
+                case AppTheme.EyeCare:
                     config.AddLightTheme();
                     break;
                 default:
@@ -108,31 +110,22 @@ public class ThemeService : IThemeService
             }
         });
         
-        // 清除现有的主题样式
+        // 清除现有的护眼主题样式覆盖
         var existingThemeStyle = app.Styles.FirstOrDefault(s => 
             s is StyleInclude si && 
-            (si.Source?.ToString().Contains("EyeCareTheme") == true ||
-             si.Source?.ToString().Contains("DarkTheme") == true ||
-             si.Source?.ToString().Contains("LightTheme") == true));
+            si.Source?.ToString().Contains("EyeCareTheme") == true);
         
         if (existingThemeStyle != null)
         {
             app.Styles.Remove(existingThemeStyle);
         }
 
-        // 根据主题添加对应的样式
-        string? themeStylePath = theme switch
-        {
-            AppTheme.EyeCare => "avares://AELP/Styles/EyeCareTheme.axaml",
-            AppTheme.Light => "avares://AELP/Styles/LightTheme.axaml",
-            _ => null // Dark theme is the default
-        };
-
-        if (themeStylePath != null)
+        // 护眼模式需要额外加载样式覆盖（在亮色主题基础上替换为绿色调）
+        if (theme == AppTheme.EyeCare)
         {
             var themeStyle = new StyleInclude(new Uri("avares://AELP"))
             {
-                Source = new Uri(themeStylePath)
+                Source = new Uri("avares://AELP/Styles/EyeCareTheme.axaml")
             };
             app.Styles.Add(themeStyle);
         }

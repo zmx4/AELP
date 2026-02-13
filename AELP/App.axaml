@@ -11,45 +11,110 @@
     </Application.DataTemplates>
   
     <Application.Resources>
-        <!-- 自定义暗色主题颜色 -->
-        <Color x:Key="PrimaryDark">#1a1a1a</Color>
-        <Color x:Key="SecondaryDark">#2d2d2d</Color>
-        <Color x:Key="AccentDark">#3d3d3d</Color>
-        <Color x:Key="PrimaryText">#ffffff</Color>
-        <Color x:Key="SecondaryText">#b0b0b0</Color>
-        <Color x:Key="AccentBlue">#007acc</Color>
-        <Color x:Key="AccentHover">#005a9e</Color>
-        
-        <!-- 渐变背景 -->
-        <LinearGradientBrush x:Key="PrimaryBackgroundGradient" StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Offset="0" Color="#1a1a1a"/>
-            <GradientStop Offset="1" Color="#2d2d2d"/>
-        </LinearGradientBrush>
-        
-        <SolidColorBrush x:Key="NavigationBackground" Color="{StaticResource PrimaryDark}"/>
-        <SolidColorBrush x:Key="ContentBackground" Color="{StaticResource SecondaryDark}"/>
-        <SolidColorBrush x:Key="ButtonBackground" Color="{StaticResource AccentDark}"/>
-        <SolidColorBrush x:Key="ButtonHover" Color="{StaticResource AccentBlue}"/>
-        
-        <!-- 字体资源 -->
-        <FontFamily x:Key="DefaultFontFamily">Microsoft YaHei, Segoe UI, Arial</FontFamily>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <!-- 暗色主题 -->
+                <ResourceDictionary x:Key="Dark">
+                    <LinearGradientBrush x:Key="PrimaryBackgroundGradient" StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Offset="0" Color="#1a1a1a"/>
+                        <GradientStop Offset="1" Color="#2d2d2d"/>
+                    </LinearGradientBrush>
+                    <SolidColorBrush x:Key="NavigationBackground" Color="#1a1a1a"/>
+                    <SolidColorBrush x:Key="ContentBackground" Color="#2d2d2d"/>
+                    <SolidColorBrush x:Key="ButtonBackground" Color="#3d3d3d"/>
+                    <SolidColorBrush x:Key="ButtonHover" Color="#007acc"/>
+                    <SolidColorBrush x:Key="AccentHover" Color="#005a9e"/>
+                    <SolidColorBrush x:Key="PrimaryText" Color="#ffffff"/>
+                    <SolidColorBrush x:Key="SecondaryText" Color="#b0b0b0"/>
+                    <!-- 卡片 -->
+                    <SolidColorBrush x:Key="CardBackground" Color="#333B5A"/>
+                    <SolidColorBrush x:Key="CardBorderBrush" Color="#7C59CD"/>
+                    <SolidColorBrush x:Key="MasteredBorderBrush" Color="#4CAF50"/>
+                    <!-- 强调色 -->
+                    <SolidColorBrush x:Key="AccentPurple" Color="#7C59CD"/>
+                    <SolidColorBrush x:Key="AccentOrange" Color="#FFB347"/>
+                    <!-- 文本层级 -->
+                    <SolidColorBrush x:Key="MutedText" Color="#BBBBBB"/>
+                    <SolidColorBrush x:Key="DimText" Color="#999999"/>
+                    <SolidColorBrush x:Key="HintText" Color="#CCCCCC"/>
+                    <SolidColorBrush x:Key="HighlightText" Color="#DDDDDD"/>
+                    <SolidColorBrush x:Key="ProgressText" Color="#666666"/>
+                    <!-- 功能色 -->
+                    <SolidColorBrush x:Key="SubtleBackground" Color="#0F000000"/>
+                    <SolidColorBrush x:Key="StatusError" Color="#FF4444"/>
+                    <SolidColorBrush x:Key="SeparatorBrush" Color="#555555"/>
+                    <SolidColorBrush x:Key="KeyLabelBg" Color="#22000000"/>
+                    <!-- 标签 -->
+                    <SolidColorBrush x:Key="TagForeground" Color="White"/>
+                    <SolidColorBrush x:Key="TagBlueBg" Color="#660078D7"/>
+                    <SolidColorBrush x:Key="TagGreenBg" Color="#6600BF00"/>
+                    <SolidColorBrush x:Key="TagOrangeBg" Color="#66FF6600"/>
+                    <SolidColorBrush x:Key="TagRedBg" Color="#66DC143C"/>
+                    <SolidColorBrush x:Key="TagPurpleBg" Color="#669932CC"/>
+                    <SolidColorBrush x:Key="DetailTagBg" Color="#3d3d3d"/>
+                    <SolidColorBrush x:Key="DetailTagFg" Color="#ffffff"/>
+                </ResourceDictionary>
+                <!-- 亮色主题 -->
+                <ResourceDictionary x:Key="Light">
+                    <LinearGradientBrush x:Key="PrimaryBackgroundGradient" StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Offset="0" Color="#F5F5F5"/>
+                        <GradientStop Offset="1" Color="#FFFFFF"/>
+                    </LinearGradientBrush>
+                    <SolidColorBrush x:Key="NavigationBackground" Color="#F5F5F5"/>
+                    <SolidColorBrush x:Key="ContentBackground" Color="#FFFFFF"/>
+                    <SolidColorBrush x:Key="ButtonBackground" Color="#E8E8E8"/>
+                    <SolidColorBrush x:Key="ButtonHover" Color="#2196F3"/>
+                    <SolidColorBrush x:Key="AccentHover" Color="#1976D2"/>
+                    <SolidColorBrush x:Key="PrimaryText" Color="#212121"/>
+                    <SolidColorBrush x:Key="SecondaryText" Color="#757575"/>
+                    <!-- 卡片 -->
+                    <SolidColorBrush x:Key="CardBackground" Color="#EDE8F5"/>
+                    <SolidColorBrush x:Key="CardBorderBrush" Color="#9B7AE0"/>
+                    <SolidColorBrush x:Key="MasteredBorderBrush" Color="#4CAF50"/>
+                    <!-- 强调色 -->
+                    <SolidColorBrush x:Key="AccentPurple" Color="#6B47B8"/>
+                    <SolidColorBrush x:Key="AccentOrange" Color="#E89820"/>
+                    <!-- 文本层级 -->
+                    <SolidColorBrush x:Key="MutedText" Color="#757575"/>
+                    <SolidColorBrush x:Key="DimText" Color="#9E9E9E"/>
+                    <SolidColorBrush x:Key="HintText" Color="#BDBDBD"/>
+                    <SolidColorBrush x:Key="HighlightText" Color="#424242"/>
+                    <SolidColorBrush x:Key="ProgressText" Color="#999999"/>
+                    <!-- 功能色 -->
+                    <SolidColorBrush x:Key="SubtleBackground" Color="#08000000"/>
+                    <SolidColorBrush x:Key="StatusError" Color="#D32F2F"/>
+                    <SolidColorBrush x:Key="SeparatorBrush" Color="#E0E0E0"/>
+                    <SolidColorBrush x:Key="KeyLabelBg" Color="#22000000"/>
+                    <!-- 标签 -->
+                    <SolidColorBrush x:Key="TagForeground" Color="White"/>
+                    <SolidColorBrush x:Key="TagBlueBg" Color="#660078D7"/>
+                    <SolidColorBrush x:Key="TagGreenBg" Color="#6600BF00"/>
+                    <SolidColorBrush x:Key="TagOrangeBg" Color="#66FF6600"/>
+                    <SolidColorBrush x:Key="TagRedBg" Color="#66DC143C"/>
+                    <SolidColorBrush x:Key="TagPurpleBg" Color="#669932CC"/>
+                    <SolidColorBrush x:Key="DetailTagBg" Color="#E6E6E6"/>
+                    <SolidColorBrush x:Key="DetailTagFg" Color="#333333"/>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+            <!-- 共享资源 -->
+            <FontFamily x:Key="DefaultFontFamily">Microsoft YaHei, Segoe UI, Arial</FontFamily>
+        </ResourceDictionary>
     </Application.Resources>
     
     <Application.Styles>
-        <!-- <FluentTheme /> -->
         <semi:SemiTheme Locale="zh-CN" />
         <u-Semi:SemiTheme Locale="zh-CN"/>
         <StyleInclude Source="/Styles/AppDefaultStyle.axaml"/>
 
         <Style Selector="Border.MistakeCard">
-            <Setter Property="Background" Value="#333B5A"/>
+            <Setter Property="Background" Value="{DynamicResource CardBackground}"/>
             <Setter Property="CornerRadius" Value="8"/>
             <Setter Property="Padding" Value="12"/>
-            <Setter Property="BorderBrush" Value="#7C59CD"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource CardBorderBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
         </Style>
         <Style Selector="Border.MistakeCard.mastered">
-            <Setter Property="BorderBrush" Value="#4CAF50"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource MasteredBorderBrush}"/>
         </Style>
     </Application.Styles>
 </Application>

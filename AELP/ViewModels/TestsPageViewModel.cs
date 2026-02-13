@@ -27,7 +27,7 @@ public partial class TestsPageViewModel : PageViewModel
     {
         _testDataStorageService = testDataStorageService;
         _mistakeDataStorageService = mistakeDataStorageService;
-        PageNames = Data.ApplicationPageNames.Tests;
+        PageNames = ApplicationPageNames.Tests;
         _mistakes = [];
         TestRanges = new ObservableCollection<TestRange>((TestRange[])Enum.GetValues(typeof(TestRange)));
         QuestionCounts = [5, 10, 15, 20];

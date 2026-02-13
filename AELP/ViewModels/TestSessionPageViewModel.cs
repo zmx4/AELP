@@ -38,7 +38,7 @@ public partial class TestSessionPageViewModel : PageViewModel
         _testDataStorageService = testDataStorageService;
         _mistakeDataStorageService = mistakeDataStorageService;
         _keyboardPreferenceService = keyboardPreferenceService;
-        PageNames = Data.ApplicationPageNames.TestSession;
+        PageNames = ApplicationPageNames.TestSession;
 
         TestRanges = new ObservableCollection<TestRange>((TestRange[])Enum.GetValues(typeof(TestRange)));
         QuestionCounts = [5, 10, 15, 20];

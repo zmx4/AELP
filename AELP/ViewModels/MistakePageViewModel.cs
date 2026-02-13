@@ -38,7 +38,7 @@ public partial class MistakePageViewModel : PageViewModel
     public MistakePageViewModel(IMistakeDataStorageService mistakeDataStorageService)
     {
         _items = [];
-        PageNames = Data.ApplicationPageNames.Mistakes;
+        PageNames = ApplicationPageNames.Mistakes;
         _mistakeDataStorageService = mistakeDataStorageService;
 
         SelectedSortOption = SortOptions[0];
@@ -71,7 +71,7 @@ public partial class MistakePageViewModel : PageViewModel
     private void ApplySort()
     {
         var filtered = ShowMasteredWords 
-            ? (IEnumerable<MistakeDataModel>)_allMistakes 
+            ? _allMistakes 
             : _allMistakes.Where(x => !x.IsMastered);
             
         var filteredList = filtered.ToList();
