@@ -7,13 +7,17 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="AELP.Views.MistakePageView"
              x:DataType="vm:MistakePageViewModel">
-    <Grid RowDefinitions="Auto,*,Auto" Margin="10">
-        <StackPanel Orientation="Horizontal" Spacing="10" Grid.Row="0" VerticalAlignment="Center">
-            <TextBlock Text="错题本" FontSize="24" FontWeight="Bold"/>
-            <TextBlock Text="最近答错的单词会显示在这里" VerticalAlignment="Center" Foreground="{DynamicResource MutedText}"/>
-            <CheckBox Content="显示已掌握" IsChecked="{Binding ShowMasteredWords}" VerticalAlignment="Center" Margin="10,0,0,0" />
-            <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center" Margin="10,0,0,0">
-                <TextBlock Text="排序:" VerticalAlignment="Center" Foreground="{DynamicResource MutedText}"/>
+    <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="20">
+        <!-- 页面标题 -->
+        <StackPanel Grid.Row="0">
+            <TextBlock Text="错题本" FontSize="26" FontWeight="Bold"/>
+            <TextBlock Text="最近答错的单词会显示在这里" FontSize="14" Foreground="{DynamicResource MutedText}" Margin="0,2,0,0"/>
+        </StackPanel>
+        <!-- 工具栏 -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="12" Margin="0,12,0,0" VerticalAlignment="Center">
+            <CheckBox Content="显示已掌握" IsChecked="{Binding ShowMasteredWords}" VerticalAlignment="Center" />
+            <Separator Width="1" Height="20" Margin="4,0" Opacity="0.3" />
+            <TextBlock Text="排序:" VerticalAlignment="Center" Foreground="{DynamicResource MutedText}"/>
                 <ComboBox Width="180"
                           ItemsSource="{Binding SortOptions}"
                           SelectedItem="{Binding SelectedSortOption}">
@@ -23,10 +27,9 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-            </StackPanel>
         </StackPanel>
         <!-- 错误单词 -->
-        <ScrollViewer Grid.Row="1" Margin="0,10,0,0" IsVisible="{Binding Items.Count}">
+        <ScrollViewer Grid.Row="2" Margin="0,12,0,0" IsVisible="{Binding Items.Count}">
             <ItemsControl ItemsSource="{Binding Items}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -74,13 +77,13 @@
             </ItemsControl>
         </ScrollViewer>
         <!-- 无错误提示 -->
-        <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="8" IsVisible="{Binding !Items.Count}">
-            <TextBlock Text="👌" FontSize="48" HorizontalAlignment="Center"/>
-            <TextBlock Text="暂无错误单词" FontSize="16" Foreground="{DynamicResource DimText}" HorizontalAlignment="Center"/>
+        <StackPanel Grid.Row="2" Classes="empty-state" IsVisible="{Binding !Items.Count}">
+            <TextBlock Text="👌" FontSize="56" HorizontalAlignment="Center"/>
+            <TextBlock Text="暂无错误单词" FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource DimText}" HorizontalAlignment="Center"/>
             <TextBlock Text="完成测试后，错误单词会显示在这里" FontSize="14" Foreground="{DynamicResource HintText}" HorizontalAlignment="Center"/>
         </StackPanel>
         <!-- 复习 -->
-        <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="10" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,10,0,0">
+        <StackPanel Grid.Row="3" Orientation="Horizontal" Spacing="12" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,12,0,0">
             <Button Content="开始复习" Command="{Binding GoToReviewCommand}" IsVisible="{Binding Items.Count}" />
             <StackPanel Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
                 <TextBlock Text="测试数量:" VerticalAlignment="Center" Foreground="{DynamicResource MutedText}"/>

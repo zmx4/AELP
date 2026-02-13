@@ -7,30 +7,29 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:DataType="vm:FavoritesPageViewModel"
              x:Class="AELP.Views.FavoritesPageView">
-    <Grid RowDefinitions="Auto,*">
+    <Grid RowDefinitions="Auto,*" Margin="20">
         <!-- 顶部工具栏 -->
-        <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="10">
-            <TextBlock Grid.Column="0" 
-                       Text="我的收藏" 
-                       FontSize="24" 
-                       FontWeight="Bold" 
-                       VerticalAlignment="Center"/>
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="0,0,0,12">
+            <StackPanel Grid.Column="0">
+                <TextBlock Text="我的收藏" FontSize="26" FontWeight="Bold"/>
+                <TextBlock Text="收藏的单词都在这里" FontSize="14" Foreground="{DynamicResource MutedText}" Margin="0,2,0,0"/>
+            </StackPanel>
             <Button Grid.Column="1" 
-                    Content="刷新" 
+                    Content="🔄 刷新" 
                     Command="{Binding RefreshCommand}" 
-                    Margin="5,0,0,0"/>
+                    VerticalAlignment="Center"/>
         </Grid>
 
         <!-- 收藏列表 -->
-        <ScrollViewer Grid.Row="1" Margin="10" IsVisible="{Binding Favorites.Count}">
+        <ScrollViewer Grid.Row="1" IsVisible="{Binding Favorites.Count}">
             <ItemsControl ItemsSource="{Binding Favorites}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate DataType="data:FavoritesDataModel">
                         <Border BorderBrush="{DynamicResource CardBorderBrush}" 
                                 BorderThickness="1" 
-                                CornerRadius="8" 
-                                Padding="15" 
-                                Margin="0,5"
+                                CornerRadius="12" 
+                                Padding="18" 
+                                Margin="0,6"
                                 Background="{DynamicResource CardBackground}">
                             <Border.Effect>
                                 <DropShadowEffect BlurRadius="5" 
@@ -134,10 +133,11 @@
                     Spacing="10"
                     IsVisible="{Binding !Favorites.Count}">
             <TextBlock Text="📚" 
-                       FontSize="48" 
+                       FontSize="56" 
                        HorizontalAlignment="Center"/>
             <TextBlock Text="还没有收藏任何单词" 
-                       FontSize="16" 
+                       FontSize="18" 
+                       FontWeight="SemiBold"
                        Foreground="{DynamicResource DimText}"
                        HorizontalAlignment="Center"/>
             <TextBlock Text="在词典页面搜索单词并收藏吧" 

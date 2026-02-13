@@ -1,52 +1,108 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     
-    <!-- 护眼主题 - 覆盖亮色主题资源为柔和绿色调 -->
+    <!-- 护眼主题 - 强烈绿色调覆盖，显著区别于标准亮色主题 -->
     <Styles.Resources>
         <ResourceDictionary>
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Light">
+                    <!-- 主背景 - 明显的淡绿底色 -->
                     <LinearGradientBrush x:Key="PrimaryBackgroundGradient" StartPoint="0,0" EndPoint="1,1">
-                        <GradientStop Offset="0" Color="#C7EDCC"/>
-                        <GradientStop Offset="1" Color="#D8F3DC"/>
+                        <GradientStop Offset="0" Color="#B8E6C0"/>
+                        <GradientStop Offset="1" Color="#C8F0D0"/>
                     </LinearGradientBrush>
-                    <SolidColorBrush x:Key="NavigationBackground" Color="#C7EDCC"/>
-                    <SolidColorBrush x:Key="ContentBackground" Color="#D8F3DC"/>
-                    <SolidColorBrush x:Key="ButtonBackground" Color="#B7E4C7"/>
-                    <SolidColorBrush x:Key="ButtonHover" Color="#40916C"/>
-                    <SolidColorBrush x:Key="AccentHover" Color="#52B788"/>
-                    <SolidColorBrush x:Key="PrimaryText" Color="#2D3E2D"/>
-                    <SolidColorBrush x:Key="SecondaryText" Color="#5A6B5A"/>
+                    <SolidColorBrush x:Key="NavigationBackground" Color="#A8D8B0"/>
+                    <SolidColorBrush x:Key="ContentBackground" Color="#C8F0D0"/>
+                    <SolidColorBrush x:Key="ButtonBackground" Color="#9ED4A8"/>
+                    <SolidColorBrush x:Key="ButtonHover" Color="#3A8B5C"/>
+                    <SolidColorBrush x:Key="AccentHover" Color="#2E7D50"/>
+                    <SolidColorBrush x:Key="PrimaryText" Color="#1B3A1B"/>
+                    <SolidColorBrush x:Key="SecondaryText" Color="#3D5C3D"/>
                     <!-- 卡片 -->
-                    <SolidColorBrush x:Key="CardBackground" Color="#B7E4C7"/>
-                    <SolidColorBrush x:Key="CardBorderBrush" Color="#40916C"/>
-                    <SolidColorBrush x:Key="MasteredBorderBrush" Color="#2D6A4F"/>
+                    <SolidColorBrush x:Key="CardBackground" Color="#A8D8B0"/>
+                    <SolidColorBrush x:Key="CardBorderBrush" Color="#3A8B5C"/>
+                    <SolidColorBrush x:Key="MasteredBorderBrush" Color="#1B5E30"/>
                     <!-- 强调色 -->
-                    <SolidColorBrush x:Key="AccentPurple" Color="#40916C"/>
-                    <SolidColorBrush x:Key="AccentOrange" Color="#D4A017"/>
+                    <SolidColorBrush x:Key="AccentPurple" Color="#2E7D50"/>
+                    <SolidColorBrush x:Key="AccentOrange" Color="#B8860B"/>
                     <!-- 文本层级 -->
-                    <SolidColorBrush x:Key="MutedText" Color="#5A6B5A"/>
-                    <SolidColorBrush x:Key="DimText" Color="#7A8B7A"/>
-                    <SolidColorBrush x:Key="HintText" Color="#8A9B8A"/>
-                    <SolidColorBrush x:Key="HighlightText" Color="#2D3E2D"/>
-                    <SolidColorBrush x:Key="ProgressText" Color="#6B7C6B"/>
+                    <SolidColorBrush x:Key="MutedText" Color="#4A6B4A"/>
+                    <SolidColorBrush x:Key="DimText" Color="#5C7D5C"/>
+                    <SolidColorBrush x:Key="HintText" Color="#6B8B6B"/>
+                    <SolidColorBrush x:Key="HighlightText" Color="#1B3A1B"/>
+                    <SolidColorBrush x:Key="ProgressText" Color="#4A6B4A"/>
                     <!-- 功能色 -->
-                    <SolidColorBrush x:Key="SubtleBackground" Color="#0A000000"/>
-                    <SolidColorBrush x:Key="StatusError" Color="#C0392B"/>
-                    <SolidColorBrush x:Key="SeparatorBrush" Color="#A8D5BA"/>
-                    <SolidColorBrush x:Key="KeyLabelBg" Color="#1A000000"/>
+                    <SolidColorBrush x:Key="SubtleBackground" Color="#18306030"/>
+                    <SolidColorBrush x:Key="StatusError" Color="#B03030"/>
+                    <SolidColorBrush x:Key="SeparatorBrush" Color="#8DC49A"/>
+                    <SolidColorBrush x:Key="KeyLabelBg" Color="#25306030"/>
                     <!-- 标签 -->
                     <SolidColorBrush x:Key="TagForeground" Color="White"/>
-                    <SolidColorBrush x:Key="TagBlueBg" Color="#6640916C"/>
-                    <SolidColorBrush x:Key="TagGreenBg" Color="#662D6A4F"/>
-                    <SolidColorBrush x:Key="TagOrangeBg" Color="#66D4A017"/>
-                    <SolidColorBrush x:Key="TagRedBg" Color="#66C0392B"/>
-                    <SolidColorBrush x:Key="TagPurpleBg" Color="#6652B788"/>
-                    <SolidColorBrush x:Key="DetailTagBg" Color="#B7E4C7"/>
-                    <SolidColorBrush x:Key="DetailTagFg" Color="#2D3E2D"/>
+                    <SolidColorBrush x:Key="TagBlueBg" Color="#883A8B5C"/>
+                    <SolidColorBrush x:Key="TagGreenBg" Color="#881B5E30"/>
+                    <SolidColorBrush x:Key="TagOrangeBg" Color="#88B8860B"/>
+                    <SolidColorBrush x:Key="TagRedBg" Color="#88B03030"/>
+                    <SolidColorBrush x:Key="TagPurpleBg" Color="#882E7D50"/>
+                    <SolidColorBrush x:Key="DetailTagBg" Color="#9ED4A8"/>
+                    <SolidColorBrush x:Key="DetailTagFg" Color="#1B3A1B"/>
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
         </ResourceDictionary>
     </Styles.Resources>
+
+    <!-- 显式覆盖 SemiTheme 控件的背景色，让护眼效果渗透到所有控件 -->
+    <Style Selector="Window">
+        <Setter Property="Background" Value="{DynamicResource PrimaryBackgroundGradient}"/>
+    </Style>
+
+    <Style Selector="TextBox">
+        <Setter Property="Background" Value="#D5F0DC"/>
+    </Style>
+
+    <Style Selector="ComboBox">
+        <Setter Property="Background" Value="#D5F0DC"/>
+    </Style>
+
+    <Style Selector="ListBox">
+        <Setter Property="Background" Value="#C8ECCE"/>
+    </Style>
+
+    <Style Selector="TabItem">
+        <Setter Property="Background" Value="#B8E0C0"/>
+    </Style>
+
+    <Style Selector="TabItem:selected">
+        <Setter Property="Background" Value="#3A8B5C"/>
+        <Setter Property="Foreground" Value="White"/>
+    </Style>
+
+    <Style Selector="Button">
+        <Setter Property="Background" Value="#B0D8B8"/>
+    </Style>
+
+    <Style Selector="Button:pointerover">
+        <Setter Property="Background" Value="#90C898"/>
+    </Style>
+
+    <Style Selector="Button.nav-button">
+        <Setter Property="Background" Value="Transparent"/>
+    </Style>
+
+    <Style Selector="Button.nav-button:pointerover">
+        <Setter Property="Background" Value="#9ED4A8"/>
+    </Style>
+
+    <Style Selector="Button.nav-button:pressed">
+        <Setter Property="Background" Value="#3A8B5C"/>
+        <Setter Property="Foreground" Value="White"/>
+    </Style>
+
+    <Style Selector="NumericUpDown">
+        <Setter Property="Background" Value="#D5F0DC"/>
+    </Style>
+
+    <Style Selector="CheckBox">
+        <Setter Property="Foreground" Value="#1B3A1B"/>
+    </Style>
 
 </Styles>

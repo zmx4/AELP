@@ -8,9 +8,12 @@
              x:Class="AELP.Views.SummaryPageView"
              x:DataType="vm:SummaryPageViewModel">
     <Grid RowDefinitions="Auto,*" ColumnDefinitions="*,*" Margin="20">
-        <TextBlock Text="测试总结" FontSize="24" FontWeight="Bold" Grid.ColumnSpan="2" />
+        <StackPanel Grid.ColumnSpan="2">
+            <TextBlock Text="测试总结" FontSize="26" FontWeight="Bold" />
+            <TextBlock Text="查看您的学习数据和趋势" FontSize="14" Foreground="{DynamicResource MutedText}" Margin="0,2,0,0"/>
+        </StackPanel>
 
-        <Border Grid.Row="1" Grid.Column="0" Background="{DynamicResource SubtleBackground}" CornerRadius="8" Padding="12" Margin="0,16,8,0">
+        <Border Grid.Row="1" Grid.Column="0" Classes="section-panel" Margin="0,16,8,0">
             <Grid RowDefinitions="Auto,*" MinHeight="280">
                 <TextBlock Text="单词耗时占比" FontSize="16" FontWeight="SemiBold" />
                 <lvc:PieChart Grid.Row="1" 
@@ -20,7 +23,7 @@
             </Grid>
         </Border>
 
-        <Border Grid.Row="1" Grid.Column="1" Background="{DynamicResource SubtleBackground}" CornerRadius="8" Padding="12" Margin="8,16,0,0">
+        <Border Grid.Row="1" Grid.Column="1" Classes="section-panel" Margin="8,16,0,0">
             <Grid RowDefinitions="Auto,*" MinHeight="280">
                 <TextBlock Text="历次测试准确度" FontSize="16" FontWeight="SemiBold" />
                 <lvc:CartesianChart Grid.Row="1" Series="{Binding AccuracyLineSeries}" XAxes="{Binding AccuracyXAxes}" YAxes="{Binding AccuracyYAxes}" Margin="0,8,0,0" />

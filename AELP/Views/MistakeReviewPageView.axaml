@@ -7,12 +7,12 @@
              x:Class="AELP.Views.MistakeReviewPageView"
              x:DataType="vm:MistakeReviewPageViewModel">
     <Grid RowDefinitions="Auto,*" Margin="20">
-        <StackPanel Orientation="Horizontal" Spacing="10">
-            <TextBlock Text="错题复习" FontSize="24" FontWeight="Bold" />
-            <TextBlock Text="根据翻译写出单词" VerticalAlignment="Center" Foreground="{DynamicResource MutedText}" />
+        <StackPanel Spacing="2">
+            <TextBlock Text="错题复习" FontSize="26" FontWeight="Bold" />
+            <TextBlock Text="根据翻译写出单词" FontSize="14" Foreground="{DynamicResource MutedText}" />
         </StackPanel>
 
-        <Border Grid.Row="1" Background="{DynamicResource SubtleBackground}" CornerRadius="8" Padding="16" Margin="0,16,0,0">
+        <Border Grid.Row="1" Classes="section-panel" Margin="0,16,0,0">
             <StackPanel Spacing="14">
                 <StackPanel IsVisible="{Binding IsNotReviewing}" Spacing="10">
                     <TextBlock Text="准备开始错题复习" FontSize="18" FontWeight="SemiBold" />
@@ -23,9 +23,9 @@
                     </StackPanel>
                 </StackPanel>
 
-                <StackPanel IsVisible="{Binding IsEmpty}" HorizontalAlignment="Center" Spacing="8">
-                    <TextBlock Text="👌" FontSize="40" HorizontalAlignment="Center" />
-                    <TextBlock Text="暂无可复习的错误单词" Foreground="{DynamicResource DimText}" HorizontalAlignment="Center" />
+                <StackPanel IsVisible="{Binding IsEmpty}" Classes="empty-state">
+                    <TextBlock Text="👌" FontSize="48" HorizontalAlignment="Center" />
+                    <TextBlock Text="暂无可复习的错误单词" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource DimText}" HorizontalAlignment="Center" />
                 </StackPanel>
 
                 <StackPanel IsVisible="{Binding IsReviewing}" Spacing="12">
