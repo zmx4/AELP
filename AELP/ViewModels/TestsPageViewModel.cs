@@ -15,7 +15,7 @@ using LiveChartsCore.SkiaSharpView;
 
 namespace AELP.ViewModels;
 
-public partial class TestsPageViewModel : PageViewModel
+public partial class TestsPageViewModel : PageViewModel, IDisposable
 {
     [ObservableProperty] private Axis[] _accuracyXAxes;
     [ObservableProperty] private Axis[] _accuracyYAxes;
@@ -184,5 +184,10 @@ public partial class TestsPageViewModel : PageViewModel
             mistake.Translation = StringNormalizeHelper.ShortenString(mistake.Translation);
         }
         Mistakes = new ObservableCollection<MistakeDataModel>(mistakes);
+    }
+
+    public void Dispose()
+    {
+        GC.SuppressFinalize(this);
     }
 }

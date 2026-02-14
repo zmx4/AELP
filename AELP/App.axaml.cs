@@ -95,6 +95,7 @@ public partial class App : Application
         var savedFont = themeService.GetSavedFontFamily();
         themeService.SetFontFamily(savedFont);
         
+        // 预加载数据，避免首次打开相关页面时的卡顿
         Task.Run(async () =>
         {
             try

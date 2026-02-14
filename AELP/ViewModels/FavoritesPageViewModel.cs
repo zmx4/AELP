@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using AELP.Data;
 using AELP.Messages;
@@ -10,28 +11,35 @@ using CommunityToolkit.Mvvm.Messaging;
 
 namespace AELP.ViewModels;
 
-public partial class FavoritesPageViewModel : PageViewModel
+public partial class FavoritesPageViewModel : PageViewModel, IDisposable
 {
-    [ObservableProperty]
-    private ObservableCollection<FavoritesDataModel> _favorites;
-    
+    [ObservableProperty] private ObservableCollection<FavoritesDataModel> _favorites;
+    [ObservableProperty] private bool _isLoading;
+
     private readonly IFavoritesDataStorageService _dataStorageService;
     private readonly IUserWordQueryService _wordQueryService;
-    public FavoritesPageViewModel(IFavoritesDataStorageService dataStorageService ,IUserWordQueryService wordQueryService)
+
+    public FavoritesPageViewModel(IFavoritesDataStorageService dataStorageService,
+        IUserWordQueryService wordQueryService)
     {
         PageNames = ApplicationPageNames.Favorites;
-        
+
         _dataStorageService = dataStorageService;
-        
+
         _wordQueryService = wordQueryService;
-        
+
         _favorites = new ObservableCollection<FavoritesDataModel>();
-        
-        LoadFavorites().ConfigureAwait(false);
+
+        // LoadFavorites().ConfigureAwait(false);
+        LoadFavoritesCommand.Execute(null);
+
+        // _ = LoadFavorites();
     }
 
+    [RelayCommand]
     private async Task LoadFavorites()
     {
+        IsLoading = true;
         var favoritesFromStorage = await _dataStorageService.LoadFavorites();
         // foreach (var item in favoritesFromStorage)
         // {
@@ -41,8 +49,9 @@ public partial class FavoritesPageViewModel : PageViewModel
         //     }
         // }
         Favorites = new ObservableCollection<FavoritesDataModel>(favoritesFromStorage);
+        IsLoading = false;
     }
-    
+
     [RelayCommand]
     private async Task ShowFavoriteDetails(FavoritesDataModel favorite)
     {
@@ -92,5 +101,10 @@ public partial class FavoritesPageViewModel : PageViewModel
     private async Task Refresh()
     {
         await LoadFavorites();
+    }
+
+    public void Dispose()
+    {
+        GC.SuppressFinalize(this);
     }
 }

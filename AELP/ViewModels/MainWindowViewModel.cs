@@ -44,7 +44,7 @@ public partial class MainWindowViewModel : ViewModelBase
         private set => SetProperty(ref _content, value);
     }
 
-    public double SidebarWidth => IsSidebarExpanded ? 220 : 60;
+    public double SidebarWidth => IsSidebarExpanded ? 120 : 70;
 
     private void PushContent(ViewModelBase page)
     {
