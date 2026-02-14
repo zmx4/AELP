@@ -1,0 +1,85 @@
+<mxfile host="65bd71144e">
+    <diagram id="aelp-runtime-flow" name="AELP Runtime Architecture">
+        <mxGraphModel dx="869" dy="661" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2000" pageHeight="1400" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="title" value="AELP 运行时流程架构图" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=24;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="40" y="20" width="400" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="grp_start" value="应用启动流程" style="swimlane;html=1;childLayout=stackLayout;startSize=30;horizontal=1;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="100" width="300" height="330" as="geometry"/>
+                </mxCell>
+                <mxCell id="start_1" value="Program.Main (Desktop)" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#6c8ebf;fillColor=#ffffff;align=left;spacingLeft=8" parent="grp_start" vertex="1">
+                    <mxGeometry y="30" width="300" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="start_2" value="BuildAvaloniaApp()" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#6c8ebf;fillColor=#ffffff;align=left;spacingLeft=8" parent="grp_start" vertex="1">
+                    <mxGeometry y="80" width="300" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="start_3" value="App.Initialize()" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#6c8ebf;fillColor=#ffffff;align=left;spacingLeft=8" parent="grp_start" vertex="1">
+                    <mxGeometry y="130" width="300" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="start_4" value="注册服务 (DI Container)&lt;div&gt;- Services, ViewModels" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;align=left;spacingLeft=8" parent="grp_start" vertex="1">
+                    <mxGeometry y="180" width="300" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="start_5" value="App.OnFrameworkInitializationCompleted&lt;div&gt;- 创建 MainWindow&lt;div&gt;- 设置 DataContext" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#6c8ebf;fillColor=#ffffff;align=left;spacingLeft=8" parent="grp_start" vertex="1">
+                    <mxGeometry y="250" width="300" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="grp_ui" value="UI 交互层 (MVVM)" style="swimlane;html=1;childLayout=stackLayout;startSize=30;horizontal=1;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+                    <mxGeometry x="450" y="100" width="400" height="390" as="geometry"/>
+                </mxCell>
+                <mxCell id="ui_1" value="MainWindow (Shell)" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#82b366;fillColor=#ffffff;align=center;spacingLeft=8;fontStyle=1" parent="grp_ui" vertex="1">
+                    <mxGeometry y="30" width="400" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="ui_2" value="导航/路由 (ViewLocator)&lt;div&gt;根据 ViewModel 解析 View&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#82b366;fillColor=#ffffff;align=center;spacingLeft=8" parent="grp_ui" vertex="1">
+                    <mxGeometry y="90" width="400" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="ui_3" value="页面 (Pages)&lt;div&gt;- DictionaryPage&lt;div&gt;- MistakePage&lt;div&gt;- SettingsPage...&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#82b366;fillColor=#ffffff;align=center;spacingLeft=8" parent="grp_ui" vertex="1">
+                    <mxGeometry y="150" width="400" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="ui_4" value="ViewModels&lt;div&gt;- 包含业务逻辑&lt;div&gt;- 命令 (ICommand)&lt;div&gt;- 属性通知 (ObservableProperty)&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;align=center;spacingLeft=8" parent="grp_ui" vertex="1">
+                    <mxGeometry y="270" width="400" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="svc_layer" value="服务层 (Business Logic)" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=2;strokeColor=#d79b00;fillColor=#ffe6cc;align=center;verticalAlign=top;spacingTop=10;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="1000" y="100" width="350" height="500" as="geometry"/>
+                </mxCell>
+                <mxCell id="svc_pref" value="用户偏好&lt;div&gt;IPreferenceStorage&lt;div&gt;IThemeService&lt;div&gt;IKeyboardPreferenceService&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffffff;align=center;spacingLeft=8" parent="svc_layer" vertex="1">
+                    <mxGeometry x="25" y="50" width="300" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="svc_word" value="查询逻辑&lt;div&gt;IWordQueryService&lt;div&gt;IUserWordQueryService&lt;div&gt;ITestWordGetter&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffffff;align=center;spacingLeft=8" parent="svc_layer" vertex="1">
+                    <mxGeometry x="25" y="160" width="300" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="svc_data" value="数据存储逻辑&lt;div&gt;IFavoritesDataStorageService&lt;/div&gt;&lt;div&gt;IMistakeDataStorageService&lt;/div&gt;&lt;div&gt;ITestDataStorageService&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffffff;align=center;spacingLeft=8" parent="svc_layer" vertex="1">
+                    <mxGeometry x="25" y="270" width="300" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="data_layer" value="数据持久层 (DAL)" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=2;strokeColor=#b85450;fillColor=#f8cecc;align=center;verticalAlign=top;spacingTop=10;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="1450" y="100" width="350" height="500" as="geometry"/>
+                </mxCell>
+                <mxCell id="db_user" value="UserDbContext (SQLite)&lt;div&gt;- Favorites&lt;div&gt;- Mistakes&lt;div&gt;- Test Records" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;strokeColor=#b85450;fillColor=#ffffff;align=center" parent="data_layer" vertex="1">
+                    <mxGeometry x="75" y="50" width="200" height="150" as="geometry"/>
+                </mxCell>
+                <mxCell id="db_app" value="AppDbContext (SQLite/Static)&lt;div&gt;- Dictionary Data&lt;div&gt;- CET4/6&lt;div&gt;- HighSchool/PrimarySchool" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;strokeColor=#b85450;fillColor=#ffffff;align=center" parent="data_layer" vertex="1">
+                    <mxGeometry x="75" y="250" width="200" height="150" as="geometry"/>
+                </mxCell>
+                <mxCell id="flow_start_ui" value="Init" style="endArrow=classic;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeWidth=2;strokeColor=#6c8ebf" parent="1" source="grp_start" target="grp_ui" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="flow_ui_svc" value="Calls" style="endArrow=classic;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeWidth=2;strokeColor=#d79b00" parent="1" source="grp_ui" target="svc_layer" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="flow_svc_data" value="R/W" style="endArrow=classic;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeWidth=2;strokeColor=#b85450" parent="1" source="svc_layer" target="data_layer" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="common" value="通用模块&lt;div&gt;Helper, Messages, Styles, Assets" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;fillColor=#e1d5e7;align=center;verticalAlign=middle;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="650" width="1760" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="arrow_common" value="Used By All Layers" style="endArrow=classic;html=1;dashed=1;entryX=0.5;entryY=1;exitX=0.5;exitY=0;strokeColor=#9673a6" parent="1" source="common" target="grp_ui" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="930" y="650" as="sourcePoint"/>
+                        <mxPoint x="930" y="550" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
