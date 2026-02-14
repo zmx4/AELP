@@ -9,6 +9,6 @@ public class WordDataModel
     
     public required string Word { get; set; } 
 
-    public required string Translation { get; set; }
+    public required string? Translation { get; set; }
     
 }

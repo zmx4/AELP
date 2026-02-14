@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using AELP.Data;
+using AELP.Helper;
 using AELP.Messages;
 using AELP.Models;
 using AELP.Services;
@@ -11,10 +12,10 @@ using CommunityToolkit.Mvvm.Messaging;
 
 namespace AELP.ViewModels;
 
-public partial class FavoritesPageViewModel : PageViewModel, IDisposable
+public partial class FavoritesPageViewModel : PageViewModel
 {
     [ObservableProperty] private ObservableCollection<FavoritesDataModel> _favorites;
-    [ObservableProperty] private bool _isLoading;
+    // [ObservableProperty] private bool _isLoading;
 
     private readonly IFavoritesDataStorageService _dataStorageService;
     private readonly IUserWordQueryService _wordQueryService;
@@ -39,17 +40,15 @@ public partial class FavoritesPageViewModel : PageViewModel, IDisposable
     [RelayCommand]
     private async Task LoadFavorites()
     {
-        IsLoading = true;
         var favoritesFromStorage = await _dataStorageService.LoadFavorites();
-        // foreach (var item in favoritesFromStorage)
-        // {
-        //     if (item.Word is { Translation: not null })
-        //     {
-        //         item.Word.Translation = item.Word.Translation.Replace("\n", "\\n");
-        //     }
-        // }
+
+        foreach (var favoritesDataModel in favoritesFromStorage)
+        {
+            favoritesDataModel.Word?.Translation =
+                StringNormalizeHelper.NormalizeTranslation(favoritesDataModel.Word?.Translation);
+        }
+
         Favorites = new ObservableCollection<FavoritesDataModel>(favoritesFromStorage);
-        IsLoading = false;
     }
 
     [RelayCommand]
@@ -101,10 +100,5 @@ public partial class FavoritesPageViewModel : PageViewModel, IDisposable
     private async Task Refresh()
     {
         await LoadFavorites();
-    }
-
-    public void Dispose()
-    {
-        GC.SuppressFinalize(this);
     }
 }
