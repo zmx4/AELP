@@ -12,12 +12,12 @@
         <TabItem Header="搜翻译">
             <Grid RowDefinitions="Auto,*">
                 <Grid ColumnDefinitions="*,Auto,Auto" Grid.Row="0" Margin="10">
-                    <TextBox Grid.Column="0" Text="{Binding SearchText}" Watermark="请输入单词" Margin="0,0,10,0">
+                    <TextBox Grid.Column="0" Text="{Binding SearchText}" Watermark="请输入单词" Margin="0,0,5,0">
                         <TextBox.KeyBindings>
                             <KeyBinding Gesture="Enter" Command="{Binding SearchTranslationCommand}" />
                         </TextBox.KeyBindings>
                     </TextBox>
-                    <Button Content="搜索" Grid.Column="1" Command="{Binding SearchTranslationCommand}" />
+                    <Button Content="搜索" Grid.Column="1" Command="{Binding SearchTranslationCommand}" Margin="0,0,5,0"/>
                     <Button Content="收藏" Grid.Column="2" Command="{Binding AddToFavoritesCommand}"></Button>
                 </Grid>
 

@@ -48,6 +48,7 @@ public partial class App : Application
         collection.AddDbContextFactory<UserDbContext>(options =>
             options.UseSqlite($"Data Source={PathHelper.GetLocalFilePath(UserDbContext.DbName)}"));
         collection.AddSingleton<IPreferenceStorage, JsonPreferenceStorage>();
+        collection.AddSingleton<INotifyService, NotifyService>();
         collection.AddSingleton<IThemeService, ThemeService>();
         collection.AddSingleton<IKeyboardPreferenceService, KeyboardPreferenceService>();
         collection.AddSingleton<IWordQueryService, WordQueryService>();

@@ -1,12 +1,16 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Avalonia.Controls.Notifications;
 
 namespace AELP.Services;
 
 public interface INotifyService
 {
+    public void Notify(
+        string title,
+        string message,
+        NotificationType type = NotificationType.Information,
+        TimeSpan? duration = null);
     
-    public Task Notify(string title, string message,NotificationType type = NotificationType.Information);
-    
-    public void Alert(string title, string message);
+    public Task Alert(string title, string message);
 }

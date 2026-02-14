@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text.Json;
+using System.Threading;
 using AELP.Helper;
 
 namespace AELP.Services;
@@ -10,7 +11,7 @@ namespace AELP.Services;
 public class JsonPreferenceStorage : IPreferenceStorage
 {
     private const string PreferencesFileName = "preferences.json";
-    private static readonly object FileLock = new();
+    private static readonly Lock FileLock = new();
 
     public string Get(string key, string defaultValue)
     {
