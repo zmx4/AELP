@@ -50,6 +50,13 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
+                    <Separator Margin="0,8" Opacity="0.2" Background="{DynamicResource SecondaryText}" />
+                    
+                    <!-- 设置通知时间 -->
+                    <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock Grid.Column="0" Text="通知时间(单位s)"></TextBlock>
+                        <TextBox Grid.Column="1" HorizontalAlignment="Right" Width="80" Text="{Binding NotificationDuration, UpdateSourceTrigger=LostFocus}" />
+                    </Grid>
                 </StackPanel>
             </Border>
         </TabItem>

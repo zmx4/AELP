@@ -186,8 +186,8 @@ public partial class TestsPageViewModel : PageViewModel, IDisposable
         Mistakes = new ObservableCollection<MistakeDataModel>(mistakes);
     }
 
-    public void Dispose()
-    {
-        GC.SuppressFinalize(this);
-    }
+    // public void Dispose()
+    // {
+    //     GC.SuppressFinalize(this);
+    // }
 }

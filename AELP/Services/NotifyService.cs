@@ -7,10 +7,10 @@ using Ursa.Controls;
 
 namespace AELP.Services;
 
-public class NotifyService : INotifyService
+public class NotifyService(IPreferenceStorage preferenceStorage) : INotifyService
 {
     private Ursa.Controls.WindowNotificationManager? _notificationManager;
-
+    private readonly TimeSpan _notifyDuration = TimeSpan.FromSeconds(preferenceStorage.Get("NotificationDuration", 3));
     public void Notify(
         string title,
         string message,
@@ -23,7 +23,10 @@ public class NotifyService : INotifyService
             return;
         }
 
-        manager.Show(new Avalonia.Controls.Notifications.Notification(title, message, type, duration, null, null));
+        var effectiveDuration = duration ?? _notifyDuration;
+        manager.Show(new Ursa.Controls.Notification(title, message, type, effectiveDuration, true, null, null),
+            type,
+            classes:["Light"]);
     }
 
     public async Task Alert(string title, string message)
