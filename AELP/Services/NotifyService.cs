@@ -10,7 +10,15 @@ namespace AELP.Services;
 public class NotifyService(IPreferenceStorage preferenceStorage) : INotifyService
 {
     private Ursa.Controls.WindowNotificationManager? _notificationManager;
-    private readonly TimeSpan _notifyDuration = TimeSpan.FromSeconds(preferenceStorage.Get("NotificationDuration", 3));
+    private TimeSpan _notifyDuration = TimeSpan.FromSeconds(preferenceStorage.Get("NotificationDuration", 3));
+
+
+    public void SetNotificationDuration(int seconds)
+    {
+        _notifyDuration = TimeSpan.FromSeconds(seconds);
+        preferenceStorage.Set("NotificationDuration", seconds);
+    }
+
     public void Notify(
         string title,
         string message,

@@ -6,6 +6,8 @@ namespace AELP.Services;
 
 public interface INotifyService
 {
+    public void SetNotificationDuration(int seconds);
+    
     public void Notify(
         string title,
         string message,

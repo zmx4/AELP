@@ -13,7 +13,6 @@ public partial class SettingsPageViewModel : PageViewModel
 {
     private readonly IThemeService _themeService;
     private readonly IKeyboardPreferenceService _keyboardPreferenceService;
-    private readonly IPreferenceStorage _preferenceStorage;
     private readonly INotifyService _notifyService;
     private bool _updatingChoiceKeys;
 
@@ -28,6 +27,7 @@ public partial class SettingsPageViewModel : PageViewModel
     public ObservableCollection<ThemeOptionViewModel> ThemeOptions { get; }
     public ObservableCollection<string> AvailableFonts { get; }
 
+    
     public SettingsPageViewModel(IThemeService themeService, 
         IKeyboardPreferenceService keyboardPreferenceService,
         IPreferenceStorage preferenceStorage,
@@ -36,7 +36,6 @@ public partial class SettingsPageViewModel : PageViewModel
         PageNames = Data.ApplicationPageNames.Settings;
         _themeService = themeService;
         _keyboardPreferenceService = keyboardPreferenceService;
-        _preferenceStorage = preferenceStorage;
         _notifyService = notifyService;
         
         ThemeOptions =
@@ -56,7 +55,6 @@ public partial class SettingsPageViewModel : PageViewModel
         const string defaultFont = "Microsoft YaHei, Segoe UI, Arial";
         AvailableFonts.Add(defaultFont);
 
-        if (FontManager.Current != null)
         {
             var systemFonts = FontManager.Current.SystemFonts.Select(x => x.Name).OrderBy(x => x);
             foreach (var font in systemFonts)
@@ -73,7 +71,7 @@ public partial class SettingsPageViewModel : PageViewModel
         }
 
         _choiceKeyMapping = _keyboardPreferenceService.GetChoiceOptionKeys();
-        _notificationDuration = _preferenceStorage.Get("NotificationDuration", 3);
+        _notificationDuration = preferenceStorage.Get("NotificationDuration", 3);
     }
 
     /// <summary>Executes the logic for when <see cref="P:AELP.ViewModels.SettingsPageViewModel.SelectedTheme">SelectedTheme</see> just changed.</summary>
@@ -117,7 +115,7 @@ public partial class SettingsPageViewModel : PageViewModel
     /// <remarks>This method is invoked right after the value of <see cref="P:AELP.ViewModels.SettingsPageViewModel.NotificationDuration">NotificationDuration</see> is changed.</remarks>
     partial void OnNotificationDurationChanged(int value)
     {
-        _preferenceStorage.Set("NotificationDuration", value);
+        _notifyService.SetNotificationDuration(value);
         _notifyService.Notify("通知时长已更新", $"当前通知时长为 {value} 秒");
     }
 
