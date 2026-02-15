@@ -8,11 +8,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AELP.Services;
 
+/// <summary>
+/// 收藏数据存储服务，基于用户数据库实现收藏数据读写。
+/// </summary>
 public class FavoritesDataStorageService(IDbContextFactory<UserDbContext> contextFactory) : IFavoritesDataStorageService
 {
     private static bool _dbChecked;
+
+    /// <inheritdoc />
     public event EventHandler? OnFavoritesChanged;
 
+    /// <inheritdoc />
     public async Task AddToFavorites(Dictionary favorite)
     {
         await using var context = await contextFactory.CreateDbContextAsync();
@@ -53,6 +59,7 @@ public class FavoritesDataStorageService(IDbContextFactory<UserDbContext> contex
         OnFavoritesChanged?.Invoke(this, EventArgs.Empty);
     }
 
+    /// <inheritdoc />
     public async Task RemoveFromFavorites(Dictionary favorite)
     {
         await using var context = await contextFactory.CreateDbContextAsync();
@@ -74,6 +81,7 @@ public class FavoritesDataStorageService(IDbContextFactory<UserDbContext> contex
         }
     }
 
+    /// <inheritdoc />
     public async Task SaveFavorites(Dictionary[] favorites)
     {
         await using var context = await contextFactory.CreateDbContextAsync();
@@ -168,6 +176,7 @@ public class FavoritesDataStorageService(IDbContextFactory<UserDbContext> contex
         OnFavoritesChanged?.Invoke(this, EventArgs.Empty);
     }
 
+    /// <inheritdoc />
     public async Task<FavoritesDataModel[]> LoadFavorites()
     {
         await using var context = await contextFactory.CreateDbContextAsync();

@@ -6,10 +6,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AELP.Services;
 
+/// <summary>
+/// 错题数据存储服务，负责错题读写与关联单词信息补全。
+/// </summary>
 public class MistakeDataStorageService(
     IWordQueryService wordQueryService,
     IDbContextFactory<UserDbContext> contextFactory) : IMistakeDataStorageService
 {
+    /// <inheritdoc />
     public async Task SaveMistakeData(MistakeDataModel[] mistakeData)
     {
         await using var context = await contextFactory.CreateDbContextAsync();
@@ -75,6 +79,7 @@ public class MistakeDataStorageService(
         await context.SaveChangesAsync();
     }
 
+    /// <inheritdoc />
     public async Task<MistakeDataModel[]> LoadMistakeData()
     {
         await using var context = await contextFactory.CreateDbContextAsync();
@@ -100,6 +105,7 @@ public class MistakeDataStorageService(
         return mistakeData;
     }
 
+    /// <inheritdoc />
     public async Task<MistakeDataModel[]> LoadMistakeData(int count)
     {
         await using var context = await contextFactory.CreateDbContextAsync();
@@ -126,6 +132,7 @@ public class MistakeDataStorageService(
     }
 
 
+    /// <inheritdoc />
     public async Task UpdateMistakeData(MistakeDataModel[] mistakeData)
     {
         await using var context = await contextFactory.CreateDbContextAsync();
@@ -134,6 +141,7 @@ public class MistakeDataStorageService(
         await context.SaveChangesAsync();
     }
 
+    /// <inheritdoc />
     public async Task<MistakeDataModel[]> LoadMistakeDataByWordIds(int[] wordIds)
     {
         var wordIdSet = wordIds.ToHashSet();

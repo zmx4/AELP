@@ -9,6 +9,9 @@ using LiveChartsCore.SkiaSharpView;
 
 namespace AELP.Services;
 
+/// <summary>
+/// 主题与字体服务实现，负责应用样式应用与偏好持久化。
+/// </summary>
 public class ThemeService : IThemeService
 {
     private const string ThemePreferenceKey = "AppTheme";
@@ -17,12 +20,22 @@ public class ThemeService : IThemeService
     private AppTheme _currentTheme;
     private string _currentFontFamily;
 
+    /// <inheritdoc />
     public event EventHandler<AppTheme>? ThemeChanged;
+
+    /// <inheritdoc />
     public event EventHandler<string>? FontFamilyChanged;
 
+    /// <inheritdoc />
     public AppTheme CurrentTheme => _currentTheme;
+
+    /// <inheritdoc />
     public string CurrentFontFamily => _currentFontFamily;
 
+    /// <summary>
+    /// 初始化 <see cref="ThemeService"/>。
+    /// </summary>
+    /// <param name="preferenceStorage">偏好设置存储。</param>
     public ThemeService(IPreferenceStorage preferenceStorage)
     {
         _preferenceStorage = preferenceStorage;
@@ -30,6 +43,7 @@ public class ThemeService : IThemeService
         _currentFontFamily = GetSavedFontFamily();
     }
 
+    /// <inheritdoc />
     public void SetTheme(AppTheme theme)
     {
         if (_currentTheme == theme) return;
@@ -40,6 +54,7 @@ public class ThemeService : IThemeService
         ThemeChanged?.Invoke(this, theme);
     }
 
+    /// <inheritdoc />
     public void SetFontFamily(string fontFamily)
     {
         if (_currentFontFamily == fontFamily) return;
@@ -50,6 +65,7 @@ public class ThemeService : IThemeService
         FontFamilyChanged?.Invoke(this, fontFamily);
     }
 
+    /// <inheritdoc />
     public AppTheme GetSavedTheme()
     {
         var themeValue = _preferenceStorage.Get(ThemePreferenceKey, "0");
@@ -61,6 +77,7 @@ public class ThemeService : IThemeService
         return AppTheme.Dark;
     }
 
+    /// <inheritdoc />
     public string GetSavedFontFamily()
     {
         return _preferenceStorage.Get(FontPreferenceKey, "Microsoft YaHei, Segoe UI, Arial");

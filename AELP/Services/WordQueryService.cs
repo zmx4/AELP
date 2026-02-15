@@ -6,20 +6,26 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AELP.Services;
 
+/// <summary>
+/// 词典查询服务，基于词典数据库提供单词检索。
+/// </summary>
 public class WordQueryService(IDbContextFactory<AppDbContext> contextFactory) : IWordQueryService
 {
+    /// <inheritdoc />
     public Dictionary? QueryWordInfo(string word)
     {
         using var context = contextFactory.CreateDbContext();
         return context.Dictionaries.FirstOrDefault(x => x.RawWord == word);
     }
 
+    /// <inheritdoc />
     public async Task<Dictionary?> QueryWordInfoAsync(string word)
     {
         await using var context = await contextFactory.CreateDbContextAsync();
         return await context.Dictionaries.FirstOrDefaultAsync(x => x.RawWord == word);
     }
 
+    /// <inheritdoc />
     public string QueryWordTranslation(string word)
     {
         using var context = contextFactory.CreateDbContext();
@@ -27,6 +33,7 @@ public class WordQueryService(IDbContextFactory<AppDbContext> contextFactory) : 
         return result?.Translation ?? string.Empty;
     }
 
+    /// <inheritdoc />
     public string QueryWord(string translation)
     {
         using var context = contextFactory.CreateDbContext();
@@ -34,6 +41,7 @@ public class WordQueryService(IDbContextFactory<AppDbContext> contextFactory) : 
         return result?.RawWord ?? string.Empty;
     }
 
+    /// <inheritdoc />
     public List<Dictionary> QueryWords(string translation)
     {
         using var context = contextFactory.CreateDbContext();
@@ -44,6 +52,7 @@ public class WordQueryService(IDbContextFactory<AppDbContext> contextFactory) : 
         return results;
     }
 
+    /// <inheritdoc />
     public async Task<Dictionary[]> QueryWordsAsync(string translation)
     {
         await using var context = await contextFactory.CreateDbContextAsync();
@@ -52,6 +61,7 @@ public class WordQueryService(IDbContextFactory<AppDbContext> contextFactory) : 
             .ToArrayAsync();
     }
 
+    /// <inheritdoc />
     public async Task<Dictionary[]> QueryWordsAsync(string translation, int skip, int take)
     {
         await using var context = await contextFactory.CreateDbContextAsync();

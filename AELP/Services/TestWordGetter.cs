@@ -8,10 +8,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AELP.Services;
 
+/// <summary>
+/// 测试单词获取服务，根据测试范围随机抽取单词。
+/// </summary>
 public class TestWordGetter(AppDbContext context) : ITestWordGetter
 {
     private readonly AppDbContext _dbContext = context;
 
+    /// <inheritdoc />
     public Task<List<Word>> GetTestWords(int count, TestRange testRange)
     {
         return testRange switch
