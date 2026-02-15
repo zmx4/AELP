@@ -12,6 +12,9 @@ using CommunityToolkit.Mvvm.Messaging;
 
 namespace AELP.ViewModels;
 
+/// <summary>
+/// 收藏页面视图模型，负责收藏加载、详情查看和移除。
+/// </summary>
 public partial class FavoritesPageViewModel : PageViewModel
 {
     [ObservableProperty] private ObservableCollection<FavoritesDataModel> _favorites;
@@ -20,6 +23,11 @@ public partial class FavoritesPageViewModel : PageViewModel
     private readonly IFavoritesDataStorageService _dataStorageService;
     private readonly IUserWordQueryService _wordQueryService;
 
+    /// <summary>
+    /// 初始化 <see cref="FavoritesPageViewModel"/>。
+    /// </summary>
+    /// <param name="dataStorageService">收藏存储服务。</param>
+    /// <param name="wordQueryService">用户单词查询服务。</param>
     public FavoritesPageViewModel(IFavoritesDataStorageService dataStorageService,
         IUserWordQueryService wordQueryService)
     {
@@ -37,6 +45,10 @@ public partial class FavoritesPageViewModel : PageViewModel
         // _ = LoadFavorites();
     }
 
+    /// <summary>
+    /// 加载收藏列表。
+    /// </summary>
+    /// <returns>表示加载完成的异步任务。</returns>
     [RelayCommand]
     private async Task LoadFavorites()
     {
@@ -51,6 +63,11 @@ public partial class FavoritesPageViewModel : PageViewModel
         Favorites = new ObservableCollection<FavoritesDataModel>(favoritesFromStorage);
     }
 
+    /// <summary>
+    /// 显示指定收藏项详情。
+    /// </summary>
+    /// <param name="favorite">收藏项。</param>
+    /// <returns>表示处理完成的异步任务。</returns>
     [RelayCommand]
     private async Task ShowFavoriteDetails(FavoritesDataModel favorite)
     {
@@ -73,6 +90,11 @@ public partial class FavoritesPageViewModel : PageViewModel
         }
     }
 
+    /// <summary>
+    /// 移除指定收藏项。
+    /// </summary>
+    /// <param name="favorite">收藏项。</param>
+    /// <returns>表示移除完成的异步任务。</returns>
     [RelayCommand]
     private async Task RemoveFromFavorites(FavoritesDataModel favorite)
     {
@@ -96,6 +118,10 @@ public partial class FavoritesPageViewModel : PageViewModel
         }
     }
 
+    /// <summary>
+    /// 刷新收藏列表。
+    /// </summary>
+    /// <returns>表示刷新完成的异步任务。</returns>
     [RelayCommand]
     private async Task Refresh()
     {

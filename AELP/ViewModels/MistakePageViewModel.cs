@@ -12,6 +12,9 @@ using CommunityToolkit.Mvvm.Messaging;
 
 namespace AELP.ViewModels;
 
+/// <summary>
+/// 错题页面视图模型，提供错题展示、筛选排序与复习入口。
+/// </summary>
 public partial class MistakePageViewModel : PageViewModel
 {
     [ObservableProperty]
@@ -29,12 +32,19 @@ public partial class MistakePageViewModel : PageViewModel
     private readonly IMistakeDataStorageService _mistakeDataStorageService;
     private readonly List<MistakeDataModel> _allMistakes = new();
 
+    /// <summary>
+    /// 排序选项列表。
+    /// </summary>
     public IReadOnlyList<SortOption> SortOptions { get; } =
     [
         new SortOption("按犯错时间（近到远）", MistakeSortOption.TimeDesc),
         new SortOption("按英文字母顺序", MistakeSortOption.WordAsc),
         new SortOption("按犯错次数（多到少）", MistakeSortOption.CountDesc)
     ];
+    /// <summary>
+    /// 初始化 <see cref="MistakePageViewModel"/>。
+    /// </summary>
+    /// <param name="mistakeDataStorageService">错题存储服务。</param>
     public MistakePageViewModel(IMistakeDataStorageService mistakeDataStorageService)
     {
         _items = [];
@@ -106,15 +116,27 @@ public partial class MistakePageViewModel : PageViewModel
             .Replace("\\n", "\n", StringComparison.Ordinal);
     }
 
+    /// <summary>
+    /// 错题排序项。
+    /// </summary>
     public sealed record SortOption(string Display, MistakeSortOption Value);
 
+    /// <summary>
+    /// 错题排序方式。
+    /// </summary>
     public enum MistakeSortOption
     {
+        /// <summary>按时间降序。</summary>
         TimeDesc,
+        /// <summary>按单词字母升序。</summary>
         WordAsc,
+        /// <summary>按错误次数降序。</summary>
         CountDesc
     }
 
+    /// <summary>
+    /// 进入错题复习流程。
+    /// </summary>
     [RelayCommand]
     private void GoToReview()
     {

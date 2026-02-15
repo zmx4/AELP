@@ -8,6 +8,9 @@ using CommunityToolkit.Mvvm.Messaging;
 
 namespace AELP.ViewModels;
 
+/// <summary>
+/// 主窗口视图模型，负责页面导航与侧边栏状态管理。
+/// </summary>
 public partial class MainWindowViewModel : ViewModelBase
 {
     private readonly PageFactory _pageFactory;
@@ -22,6 +25,10 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty]
     private bool _isSidebarExpanded = true;
 
+    /// <summary>
+    /// 初始化 <see cref="MainWindowViewModel"/>。
+    /// </summary>
+    /// <param name="pageFactory">页面工厂。</param>
     public MainWindowViewModel(PageFactory pageFactory)
     {
         _pageFactory = pageFactory;
@@ -58,12 +65,18 @@ public partial class MainWindowViewModel : ViewModelBase
         OnPropertyChanged(nameof(SidebarWidth));
     }
 
+    /// <summary>
+    /// 切换侧边栏展开状态。
+    /// </summary>
     [RelayCommand]
     private void ToggleSidebar()
     {
         IsSidebarExpanded = !IsSidebarExpanded;
     }
 
+    /// <summary>
+    /// 导航到词典页。
+    /// </summary>
     [RelayCommand]
     private void GoToDictionaryPage()
     {
@@ -72,6 +85,9 @@ public partial class MainWindowViewModel : ViewModelBase
         IsBackButtonVisible = false;
     }
 
+    /// <summary>
+    /// 导航到收藏页。
+    /// </summary>
     [RelayCommand]
     private void GoToFavoritesPage()
     {
@@ -80,6 +96,9 @@ public partial class MainWindowViewModel : ViewModelBase
         IsBackButtonVisible = false;
     }
 
+    /// <summary>
+    /// 导航到测试页。
+    /// </summary>
     [RelayCommand]
     private void GoToTestsPage()
     {
@@ -88,6 +107,9 @@ public partial class MainWindowViewModel : ViewModelBase
         IsBackButtonVisible = false;
     }
 
+    /// <summary>
+    /// 导航到错题页。
+    /// </summary>
     [RelayCommand]
     private void GoToMistakePage()
     {
@@ -96,6 +118,9 @@ public partial class MainWindowViewModel : ViewModelBase
         IsBackButtonVisible = false;
     }
 
+    /// <summary>
+    /// 导航到设置页。
+    /// </summary>
     [RelayCommand]
     private void GoToSettingsPage()
     {
@@ -104,6 +129,9 @@ public partial class MainWindowViewModel : ViewModelBase
         IsBackButtonVisible = false;
     }
     
+    /// <summary>
+    /// 返回上一页。
+    /// </summary>
     [RelayCommand]
     private void GoBack()
     {

@@ -9,6 +9,9 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace AELP.ViewModels;
 
+/// <summary>
+/// 错题复习页面视图模型，负责复习流程与结果提交。
+/// </summary>
 public partial class MistakeReviewPageViewModel : PageViewModel
 {
     private readonly List<MistakeDataModel> _mistakes = new();
@@ -30,6 +33,10 @@ public partial class MistakeReviewPageViewModel : PageViewModel
     public bool IsNotReviewing => !IsReviewing;
     public bool IsEmpty => !HasMistakes;
 
+    /// <summary>
+    /// 初始化 <see cref="MistakeReviewPageViewModel"/>。
+    /// </summary>
+    /// <param name="mistakeDataStorageService">错题存储服务。</param>
     public MistakeReviewPageViewModel(IMistakeDataStorageService mistakeDataStorageService)
     {
         PageNames = ApplicationPageNames.MistakeReview;
@@ -46,6 +53,10 @@ public partial class MistakeReviewPageViewModel : PageViewModel
         OnPropertyChanged(nameof(IsEmpty));
     }
 
+    /// <summary>
+    /// 设置复习数据参数。
+    /// </summary>
+    /// <param name="parameter">页面参数，期望为错题数组。</param>
     public override void SetParameter(object parameter)
     {
         if (parameter is not MistakeDataModel[] mistakeDataModels) return;
@@ -68,6 +79,9 @@ public partial class MistakeReviewPageViewModel : PageViewModel
         }
     }
 
+    /// <summary>
+    /// 开始错题复习。
+    /// </summary>
     [RelayCommand]
     private void StartReview()
     {
@@ -84,6 +98,10 @@ public partial class MistakeReviewPageViewModel : PageViewModel
         SetupQuestion();
     }
 
+    /// <summary>
+    /// 提交当前答案。
+    /// </summary>
+    /// <returns>表示提交流程完成的异步任务。</returns>
     [RelayCommand]
     private async Task SubmitAnswer()
     {

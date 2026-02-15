@@ -9,11 +9,18 @@ using LiveChartsCore.SkiaSharpView;
 
 namespace AELP.ViewModels;
 
+/// <summary>
+/// 测试总结页面视图模型，展示耗时分布与准确率趋势。
+/// </summary>
 public partial class SummaryPageViewModel : PageViewModel
 {
     private readonly ITestDataStorageService _testDataStorageService;
     private List<ProblemData> _problems = new();
 
+    /// <summary>
+    /// 初始化 <see cref="SummaryPageViewModel"/>。
+    /// </summary>
+    /// <param name="testDataStorageService">测试数据存储服务。</param>
     public SummaryPageViewModel(ITestDataStorageService testDataStorageService)
     {
         _testDataStorageService = testDataStorageService;
@@ -39,6 +46,10 @@ public partial class SummaryPageViewModel : PageViewModel
     [ObservableProperty] private Axis[] _accuracyXAxes;
     [ObservableProperty] private Axis[] _accuracyYAxes;
 
+    /// <summary>
+    /// 设置总结页面参数。
+    /// </summary>
+    /// <param name="parameter">页面参数，期望为题目统计列表。</param>
     public override void SetParameter(object parameter)
     {
         if (parameter is List<ProblemData> problems)

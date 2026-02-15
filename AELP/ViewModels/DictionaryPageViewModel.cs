@@ -10,6 +10,9 @@ using AELP.Models;
 
 namespace AELP.ViewModels;
 
+/// <summary>
+/// 词典页面视图模型，负责单词查询、候选列表与收藏操作。
+/// </summary>
 public partial class DictionaryPageViewModel : PageViewModel
 {
     private readonly IWordQueryService _wordQueryService;
@@ -30,6 +33,11 @@ public partial class DictionaryPageViewModel : PageViewModel
 
     private Dictionary _word;
 
+    /// <summary>
+    /// 初始化 <see cref="DictionaryPageViewModel"/>。
+    /// </summary>
+    /// <param name="wordQueryService">单词查询服务。</param>
+    /// <param name="favoritesDataStorageService">收藏存储服务。</param>
     public DictionaryPageViewModel(IWordQueryService wordQueryService,
         IFavoritesDataStorageService favoritesDataStorageService)
     {
@@ -45,6 +53,10 @@ public partial class DictionaryPageViewModel : PageViewModel
         // _word = new dictionary();
     }
 
+    /// <summary>
+    /// 根据输入单词查询译文。
+    /// </summary>
+    /// <returns>表示查询完成的异步任务。</returns>
     [RelayCommand]
     private async Task SearchTranslationAsync()
     {
@@ -89,6 +101,10 @@ public partial class DictionaryPageViewModel : PageViewModel
         }
     }
 
+    /// <summary>
+    /// 根据关键字查询单词候选列表。
+    /// </summary>
+    /// <returns>表示查询完成的异步任务。</returns>
     [RelayCommand]
     private async Task SearchWordsAsync()
     {
@@ -106,6 +122,10 @@ public partial class DictionaryPageViewModel : PageViewModel
         }
     }
 
+    /// <summary>
+    /// 打开指定单词的详情页。
+    /// </summary>
+    /// <param name="word">单词文本。</param>
     [RelayCommand]
     private void OpenDetail(string word)
     {
@@ -119,6 +139,10 @@ public partial class DictionaryPageViewModel : PageViewModel
         }
     }
 
+    /// <summary>
+    /// 将当前单词添加到收藏。
+    /// </summary>
+    /// <returns>表示添加完成的异步任务。</returns>
     [RelayCommand]
     private async Task AddToFavoritesAsync()
     {

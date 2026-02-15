@@ -9,6 +9,9 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace AELP.ViewModels;
 
+/// <summary>
+/// 设置页面视图模型，负责主题、字体、按键与通知配置。
+/// </summary>
 public partial class SettingsPageViewModel : PageViewModel
 {
     private readonly IThemeService _themeService;
@@ -27,7 +30,13 @@ public partial class SettingsPageViewModel : PageViewModel
     public ObservableCollection<ThemeOptionViewModel> ThemeOptions { get; }
     public ObservableCollection<string> AvailableFonts { get; }
 
-    
+    /// <summary>
+    /// 初始化 <see cref="SettingsPageViewModel"/>。
+    /// </summary>
+    /// <param name="themeService">主题服务。</param>
+    /// <param name="keyboardPreferenceService">按键偏好服务。</param>
+    /// <param name="preferenceStorage">偏好存储服务。</param>
+    /// <param name="notifyService">通知服务。</param>
     public SettingsPageViewModel(IThemeService themeService, 
         IKeyboardPreferenceService keyboardPreferenceService,
         IPreferenceStorage preferenceStorage,
@@ -119,6 +128,9 @@ public partial class SettingsPageViewModel : PageViewModel
         _notifyService.Notify("通知时长已更新", $"当前通知时长为 {value} 秒");
     }
 
+    /// <summary>
+    /// 打开用户数据目录。
+    /// </summary>
     [RelayCommand]
     private static void OpenUserDataFolder()
     {
@@ -126,6 +138,9 @@ public partial class SettingsPageViewModel : PageViewModel
         System.Diagnostics.Process.Start("explorer.exe", userDataPath);
     }
 
+    /// <summary>
+    /// 打开应用目录。
+    /// </summary>
     [RelayCommand]
     private static void OpenAppFolder()
     {
@@ -133,6 +148,10 @@ public partial class SettingsPageViewModel : PageViewModel
         System.Diagnostics.Process.Start("explorer.exe", appPath);
     }
 
+    /// <summary>
+    /// 删除用户数据文件。
+    /// </summary>
+    /// <returns>表示删除流程完成的异步任务。</returns>
     [RelayCommand]
     private static async Task DeleteUserDataAsync()
     {
@@ -146,9 +165,23 @@ public partial class SettingsPageViewModel : PageViewModel
     }
 }
 
+/// <summary>
+/// 主题选项展示模型。
+/// </summary>
 public class ThemeOptionViewModel
 {
+    /// <summary>
+    /// 主题显示名称。
+    /// </summary>
     public string Name { get; set; } = string.Empty;
+
+    /// <summary>
+    /// 主题图标。
+    /// </summary>
     public string Icon { get; set; } = string.Empty;
+
+    /// <summary>
+    /// 对应主题值。
+    /// </summary>
     public AppTheme Theme { get; init; }
 }

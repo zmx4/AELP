@@ -14,6 +14,9 @@ using CommunityToolkit.Mvvm.Messaging;
 
 namespace AELP.ViewModels;
 
+/// <summary>
+/// 测试会话页面视图模型，负责出题、答题与结果持久化。
+/// </summary>
 public partial class TestSessionPageViewModel : PageViewModel
 {
     private List<Word> _testWords = new();
@@ -29,6 +32,13 @@ public partial class TestSessionPageViewModel : PageViewModel
     private readonly ITestWordGetter _testWordGetter;
     private readonly IKeyboardPreferenceService _keyboardPreferenceService;
 
+    /// <summary>
+    /// 初始化 <see cref="TestSessionPageViewModel"/>。
+    /// </summary>
+    /// <param name="testWordGetter">测试单词获取服务。</param>
+    /// <param name="testDataStorageService">测试数据存储服务。</param>
+    /// <param name="mistakeDataStorageService">错题数据存储服务。</param>
+    /// <param name="keyboardPreferenceService">按键偏好服务。</param>
     public TestSessionPageViewModel(ITestWordGetter testWordGetter,
         ITestDataStorageService testDataStorageService,
         IMistakeDataStorageService mistakeDataStorageService,
@@ -67,6 +77,10 @@ public partial class TestSessionPageViewModel : PageViewModel
     public bool IsNotTesting => !IsTesting;
     public bool IsFillQuestion => IsTesting && !IsChoiceQuestion;
 
+    /// <summary>
+    /// 设置测试会话参数并启动测试。
+    /// </summary>
+    /// <param name="parameter">页面参数，期望为 <see cref="TestSessionParameter"/>。</param>
     public override void SetParameter(object parameter)
     {
         if (parameter is TestSessionParameter data)
@@ -88,6 +102,10 @@ public partial class TestSessionPageViewModel : PageViewModel
         OnPropertyChanged(nameof(IsFillQuestion));
     }
 
+    /// <summary>
+    /// 启动测试流程。
+    /// </summary>
+    /// <returns>表示启动流程完成的异步任务。</returns>
     [RelayCommand]
     private async Task StartTestAsync()
     {
@@ -115,6 +133,11 @@ public partial class TestSessionPageViewModel : PageViewModel
         SetupQuestion();
     }
 
+    /// <summary>
+    /// 提交选择题答案。
+    /// </summary>
+    /// <param name="option">用户选择的选项文本。</param>
+    /// <returns>表示提交完成的异步任务。</returns>
     [RelayCommand]
     private async Task ChooseOptionAsync(string option)
     {
@@ -126,6 +149,10 @@ public partial class TestSessionPageViewModel : PageViewModel
         await AdvanceToNextQuestionAsync();
     }
 
+    /// <summary>
+    /// 提交填空题答案。
+    /// </summary>
+    /// <returns>表示提交完成的异步任务。</returns>
     [RelayCommand]
     private async Task SubmitFillAsync()
     {
@@ -282,6 +309,11 @@ public partial class TestSessionPageViewModel : PageViewModel
         WeakReferenceMessenger.Default.Send(new NavigationMessage(ApplicationPageNames.Summary, _problemData));
     }
 
+    /// <summary>
+    /// 尝试处理选择题快捷键输入。
+    /// </summary>
+    /// <param name="keyChar">输入字符。</param>
+    /// <returns>若成功处理返回 <see langword="true"/>；否则返回 <see langword="false"/>。</returns>
     public async Task<bool> TryHandleChoiceKeyAsync(char keyChar)
     {
         if (!IsTesting || !IsChoiceQuestion)
@@ -313,14 +345,31 @@ public partial class TestSessionPageViewModel : PageViewModel
     }
 }
 
+/// <summary>
+/// 测试会话参数。
+/// </summary>
+/// <param name="Range">测试范围。</param>
+/// <param name="QuestionCount">题目数量。</param>
 public record TestSessionParameter(TestRange Range, int QuestionCount);
 
+/// <summary>
+/// 单题作答统计数据。
+/// </summary>
 public record ProblemData
 {
+    /// <summary>单词文本。</summary>
     public string Word { get; init; } = string.Empty;
+    /// <summary>单词译文。</summary>
     public string Translation { get; init; } = string.Empty;
+    /// <summary>耗时（毫秒）。</summary>
     public long CostTimeMs { get; init; }
+    /// <summary>是否答对。</summary>
     public bool IsRight { get; init; }
 }
 
+/// <summary>
+/// 选择题选项数据。
+/// </summary>
+/// <param name="KeyLabel">按键标签。</param>
+/// <param name="Text">选项文本。</param>
 public record OptionItem(string KeyLabel, string Text);

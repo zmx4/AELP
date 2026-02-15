@@ -15,6 +15,9 @@ using LiveChartsCore.SkiaSharpView;
 
 namespace AELP.ViewModels;
 
+/// <summary>
+/// 测试主页视图模型，负责测试入口与统计信息展示。
+/// </summary>
 public partial class TestsPageViewModel : PageViewModel, IDisposable
 {
     [ObservableProperty] private Axis[] _accuracyXAxes;
@@ -23,6 +26,11 @@ public partial class TestsPageViewModel : PageViewModel, IDisposable
     [ObservableProperty] private ObservableCollection<MistakeDataModel> _mistakes;
     private readonly ITestDataStorageService _testDataStorageService;
     private readonly IMistakeDataStorageService _mistakeDataStorageService;
+    /// <summary>
+    /// 初始化 <see cref="TestsPageViewModel"/>。
+    /// </summary>
+    /// <param name="testDataStorageService">测试数据存储服务。</param>
+    /// <param name="mistakeDataStorageService">错题数据存储服务。</param>
     public TestsPageViewModel(ITestDataStorageService testDataStorageService,IMistakeDataStorageService mistakeDataStorageService)
     {
         _testDataStorageService = testDataStorageService;
@@ -74,6 +82,9 @@ public partial class TestsPageViewModel : PageViewModel, IDisposable
         OnPropertyChanged(nameof(HasNoPreviousTest));
     }
 
+    /// <summary>
+    /// 开始一次测试。
+    /// </summary>
     [RelayCommand]
     private void StartTest()
     {
