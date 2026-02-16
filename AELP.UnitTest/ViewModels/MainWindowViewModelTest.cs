@@ -5,7 +5,7 @@ using AELP.ViewModels;
 using CommunityToolkit.Mvvm.Messaging;
 using Moq;
 
-namespace AELP.UnitTest.Viewmodels;
+namespace AELP.UnitTest.ViewModels;
 
 public class TestPageViewModel : PageViewModel
 {
