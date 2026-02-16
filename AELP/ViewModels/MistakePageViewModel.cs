@@ -68,10 +68,7 @@ public partial class MistakePageViewModel : PageViewModel
         ApplySort();
     }
 
-    partial void OnSelectedSortOptionChanged(SortOption? value)
-    {
-        ApplySort();
-    }
+    partial void OnSelectedSortOptionChanged(SortOption? value) => ApplySort();
 
     partial void OnShowMasteredWordsChanged(bool value)
     {
