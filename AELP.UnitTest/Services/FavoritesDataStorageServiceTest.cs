@@ -3,6 +3,7 @@ using AELP.Data;
 using AELP.Helper;
 using AELP.Models;
 using AELP.Services;
+using AELP.UnitTest.Factories;
 using AELP.UnitTest.Helper;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
@@ -13,9 +14,12 @@ namespace AELP.UnitTest.Services;
 [TestSubject(typeof(FavoritesDataStorageService))]
 public class FavoritesDataStorageServiceTest : IDisposable
 {
+	private static IDbContextFactory<UserDbContext> _contextFactory = TestUserDbContext.CreateContextFactory();
+	
 	public FavoritesDataStorageServiceTest()
 	{
 		ResetDatabase();
+		_contextFactory = TestUserDbContext.CreateContextFactory();
 	}
 
 	public void Dispose()
@@ -26,7 +30,7 @@ public class FavoritesDataStorageServiceTest : IDisposable
 	[Fact]
 	public async Task AddToFavorites_CreatesWordAndFavoriteAndRaisesEvent()
 	{
-		var service = new FavoritesDataStorageService(CreateContextFactory());
+		var service = new FavoritesDataStorageService(_contextFactory);
 		var eventCount = 0;
 		service.OnFavoritesChanged += (_, _) => eventCount++;
 
@@ -58,7 +62,7 @@ public class FavoritesDataStorageServiceTest : IDisposable
 	[Fact]
 	public async Task AddToFavorites_UpdatesExistingFavoriteFlags()
 	{
-		var service = new FavoritesDataStorageService(CreateContextFactory());
+		var service = new FavoritesDataStorageService(_contextFactory);
 
 		await service.AddToFavorites(new Dictionary
 		{
@@ -87,7 +91,7 @@ public class FavoritesDataStorageServiceTest : IDisposable
 	[Fact]
 	public async Task RemoveFromFavorites_UnfavoritesAndRaisesEvent()
 	{
-		var service = new FavoritesDataStorageService(CreateContextFactory());
+		var service = new FavoritesDataStorageService(_contextFactory);
 		var eventCount = 0;
 		service.OnFavoritesChanged += (_, _) => eventCount++;
 
@@ -111,7 +115,7 @@ public class FavoritesDataStorageServiceTest : IDisposable
 	[Fact]
 	public async Task SaveFavorites_ReplacesAndUpdatesFlags()
 	{
-		var service = new FavoritesDataStorageService(CreateContextFactory());
+		var service = new FavoritesDataStorageService(_contextFactory);
 		var eventCount = 0;
 		service.OnFavoritesChanged += (_, _) => eventCount++;
 
@@ -159,11 +163,5 @@ public class FavoritesDataStorageServiceTest : IDisposable
 		field?.SetValue(null, false);
 	}
 
-	private static IDbContextFactory<UserDbContext> CreateContextFactory()
-	{
-		var options = new DbContextOptionsBuilder<UserDbContext>()
-			.UseSqlite($"Data Source={PathHelper.GetLocalFilePath(UserDbContext.DbName)}")
-			.Options;
-		return new TestDbContextFactory<UserDbContext>(options);
-	}
+	
 }

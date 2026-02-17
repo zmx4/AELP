@@ -163,20 +163,6 @@ public class DictionaryPageViewModelTest
     [Fact]
     public async Task AddToFavoritesAsync_NoWordSelected_DoesNotCallService()
     {
-        // By default _word is a new Dictionary() which might be interpreted as valid or invalid based on implementation.
-        // In the Constructor: _word = new Dictionary();
-        // The AddToFavoritesAsync checks: if (_word is null) return;
-        // Since _word is initialized to new Dictionary(), it is NOT null.
-        // So it WILL call AddToFavorites with an empty dictionary.
-        
-        // Wait, looking at the code:
-        // private Dictionary _word;
-        // Constructor: _word = new Dictionary();
-        // AddToFavoritesAsync: if (_word is null) return;
-        // So technically it calls it. 
-        // IF the intention was to prevent adding empty words, the check should be stricter in ViewModel.
-        // However, based on provided code, Mock verification should expect a call with the empty dictionary.
-        
         await _viewModel.AddToFavoritesCommand.ExecuteAsync(null);
         
         _mockFavoritesService.Verify(s => s.AddToFavorites(It.IsAny<Dictionary>()), Times.Once);
