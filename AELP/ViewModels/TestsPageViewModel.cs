@@ -18,7 +18,7 @@ namespace AELP.ViewModels;
 /// <summary>
 /// 测试主页视图模型，负责测试入口与统计信息展示。
 /// </summary>
-public partial class TestsPageViewModel : PageViewModel, IDisposable
+public partial class TestsPageViewModel : PageViewModel
 {
     [ObservableProperty] private Axis[] _accuracyXAxes;
     [ObservableProperty] private Axis[] _accuracyYAxes;
@@ -201,4 +201,13 @@ public partial class TestsPageViewModel : PageViewModel, IDisposable
     // {
     //     GC.SuppressFinalize(this);
     // }
+
+    public override void SetParameter(object parameter)
+    {
+        if (parameter is string parameterString)
+        {
+            QuestionCount = int.TryParse(parameterString, out var count) ? count : 10;
+        }
+        StartTestCommand.Execute(null);
+    }
 }

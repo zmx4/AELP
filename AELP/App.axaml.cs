@@ -32,8 +32,6 @@ public partial class App : Application
                 .AddDarkTheme() 
         );
     }
-
-    // public static ServiceProvider ServiceProvider { get; private set; }
     
     public override void OnFrameworkInitializationCompleted()
     {
@@ -161,20 +159,34 @@ public partial class App : Application
     private static AppOptions ParseArgs(string[] args)
     {
         ApplicationPageNames? startPage = null;
-
+        string? parameter = null;
         for (int i = 0; i < args.Length; i++)
         {
-            if (args[i] == "--page" && i + 1 < args.Length)
+            if (args[i] == "page" && i + 1 < args.Length)
             {
                 if (Enum.TryParse<ApplicationPageNames>(args[i + 1], true, out var page))
                 {
                     startPage = page;
-                    i++;
+                    if (args.Length > i + 1)
+                    {
+                        parameter = args[i + 1];
+                    }
+                    break;
                 }
             }
+
+            if (args[i] == "test")
+            {
+                startPage = ApplicationPageNames.Tests;
+                if (args.Length > i + 1)
+                {
+                    parameter = args[i + 1];
+                }
+                break;
+            }
         }
-        return new AppOptions(args, startPage);
+        return new AppOptions(args, startPage, parameter);
     }
 }
 
-public record AppOptions(string[] Args, ApplicationPageNames? StartPage = null);
+public record AppOptions(string[] Args, ApplicationPageNames? StartPage = null, string? parameter = null);

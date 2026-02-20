@@ -47,9 +47,10 @@ public partial class MainWindowViewModel : ViewModelBase
     /// 跳转至指定页面
     /// </summary>
     /// <param name="pageName">页面名称</param>
-    public void GoTo(ApplicationPageNames pageName)
+    /// <param name="parameter">额外参数</param>
+    public void GoTo(ApplicationPageNames pageName,string? parameter = null)
     {
-        Content = _pageFactory.GetPageViewModel(pageName);
+        Content = _pageFactory.GetPageViewModel(pageName, parameter);
         _pages.Clear();
         IsBackButtonVisible = false;
     }
