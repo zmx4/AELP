@@ -37,6 +37,7 @@ public partial class App : Application
     
     public override void OnFrameworkInitializationCompleted()
     {
+        
         var collection = new ServiceCollection();
         var dbPath = System.IO.Path.Combine(AppContext.BaseDirectory, "Assets", "Database", "stardict.db");
         collection.AddDbContext<AppDbContext>(options =>
@@ -128,9 +129,16 @@ public partial class App : Application
             // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
             // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
             DisableAvaloniaDataAnnotationValidation();
+            var args = desktop.Args ?? [];
+            var options = ParseArgs(args);
+            var vm = serviceProvider.GetRequiredService<MainWindowViewModel>();
+            if (options.StartPage.HasValue)
+            {
+                vm.GoTo(options.StartPage.Value);
+            }
             desktop.MainWindow = new MainWindow
             {
-                DataContext = serviceProvider.GetRequiredService<MainWindowViewModel>(),
+                DataContext = vm,
             };
         }
 
@@ -149,4 +157,24 @@ public partial class App : Application
             BindingPlugins.DataValidators.Remove(plugin);
         }
     }
+
+    private static AppOptions ParseArgs(string[] args)
+    {
+        ApplicationPageNames? startPage = null;
+
+        for (int i = 0; i < args.Length; i++)
+        {
+            if (args[i] == "--page" && i + 1 < args.Length)
+            {
+                if (Enum.TryParse<ApplicationPageNames>(args[i + 1], true, out var page))
+                {
+                    startPage = page;
+                    i++;
+                }
+            }
+        }
+        return new AppOptions(args, startPage);
+    }
 }
+
+public record AppOptions(string[] Args, ApplicationPageNames? StartPage = null);

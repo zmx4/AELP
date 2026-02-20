@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "QuickToAELP (Package)": {
+      "commandName": "MsixPackage",
+      "doNotLaunchApp": true
+    },
+    "QuickToAELP (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

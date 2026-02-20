@@ -43,7 +43,16 @@ public partial class MainWindowViewModel : ViewModelBase
         });
     }
 
-    
+    /// <summary>
+    /// 跳转至指定页面
+    /// </summary>
+    /// <param name="pageName">页面名称</param>
+    public void GoTo(ApplicationPageNames pageName)
+    {
+        Content = _pageFactory.GetPageViewModel(pageName);
+        _pages.Clear();
+        IsBackButtonVisible = false;
+    }
     
     public ViewModelBase Content
     {
