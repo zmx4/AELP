@@ -16,7 +16,7 @@ public sealed partial class QuickToAELPCommandsProvider : CommandProvider
         DisplayName = "AELP";
         //Icon = IconHelpers.FromRelativePath("Assets\\StoreLogo.png");
 
-        Icon = new("\ud83d\udcd6");
+        Icon = new IconInfo("\ud83d\udcd6");
 
         _commands = [
             new CommandItem(new QuickToAELPPage()) { Title = DisplayName },

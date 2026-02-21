@@ -95,6 +95,10 @@ public partial class App : Application
         var savedFont = themeService.GetSavedFontFamily();
         themeService.SetFontFamily(savedFont);
         
+        var preferenceStorage = serviceProvider.GetRequiredService<IPreferenceStorage>();
+        preferenceStorage.Set("app_location",PathHelper.GetAppFilePath("AELP.Desktop.exe"));
+        
+        
         // 预加载数据，避免首次打开相关页面时的卡顿
         Task.Run(async () =>
         {

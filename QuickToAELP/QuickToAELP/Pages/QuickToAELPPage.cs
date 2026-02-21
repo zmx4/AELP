@@ -4,58 +4,38 @@
 
 using Microsoft.CommandPalette.Extensions;
 using Microsoft.CommandPalette.Extensions.Toolkit;
-using System.Diagnostics;
+using QuickToAELP.Helper;
 
 namespace QuickToAELP;
 
 internal sealed partial class QuickToAELPPage : ListPage
 {
+    private readonly string _programPath;
+    
     public QuickToAELPPage()
     {
         // Icon = IconHelpers.FromRelativePath("Assets\\StoreLogo.png");
         Icon = new("\ud83d\udcd6");
         Title = "AELP";
         Name = "Open";
+        _programPath = PathHelper.GetAppFolderPath();
     }
 
     public override IListItem[] GetItems()
     {
         // var command = new OpenUrlCommand("https://learn.microsoft.com");
-        var command = new StartAppCommand(@"D:\Dev\Project\AELP\AELP.Desktop\bin\Debug\net10.0\win-x64\AELP.Desktop.exe");
+        var command = new StartAppCommand(_programPath);
         return [
             new ListItem(command)
             {
+                Icon =  new IconInfo("\ud83d\ude80"), // 🚀 图标
                 Title = "Start AELP",
+            },
+            new ListItem(new StartAppCommand(_programPath,"test"))
+            {
+                Icon = new IconInfo("📝"), // 📝 图标
+                Title = "Start AELP with test",
             }
         ];
-    }
-}
-
-internal sealed class StartAppCommand : InvokableCommand
-{
-    private readonly string _path;
-
-    public StartAppCommand(string path)
-    {
-        _path = path;
-        Name = "Start AELP";
-        Icon = new("\ud83d\ude80"); // 🚀 图标
-    }
-
-    public override CommandResult Invoke()
-    {
-        try
-        {
-            Process.Start(new ProcessStartInfo(_path)
-            {
-                UseShellExecute = true
-            });
-        }
-        catch
-        {
-            // 忽略启动失败的异常或在此处记录日志
-        }
-
-        return CommandResult.Dismiss();
     }
 }

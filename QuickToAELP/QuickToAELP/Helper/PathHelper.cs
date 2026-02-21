@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace QuickToAELP.Helper;
 
@@ -58,5 +62,29 @@ public static class PathHelper {
     /// <returns>完整文件路径。</returns>
     public static string GetAppFilePath(string fileName) {
         return Path.Combine(AppFolder, fileName);
+    }
+
+    public static string GetAppFolderPath()
+    {
+        var userPreferenceJson = GetLocalFilePath("preferences.json");
+
+        if (!File.Exists(userPreferenceJson))
+        {
+            return string.Empty;
+        }
+        
+        try
+        {
+            var json = File.ReadAllText(userPreferenceJson);
+            using var doc = JsonDocument.Parse(json);
+            if (doc.RootElement.TryGetProperty("app_location", out var appFolderElement))
+                return appFolderElement.GetString() ?? string.Empty;
+            
+        }
+        catch
+        {
+            // 忽略读取或解析失败的异常
+        }
+        return string.Empty;
     }
 }
