@@ -7,7 +7,7 @@ using Microsoft.CommandPalette.Extensions.Toolkit;
 
 namespace QuickToAELP;
 
-public partial class QuickToAELPCommandsProvider : CommandProvider
+public sealed partial class QuickToAELPCommandsProvider : CommandProvider
 {
     private readonly ICommandItem[] _commands;
 
