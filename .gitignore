@@ -17,7 +17,8 @@ AELP.sln.DotSettings.user
 .vs/
 QuickToAELP/.idea
 
-
+**/Properties/launchSettings.json
+*.pubxml
 
 .vs/AELP/copilot-chat/011dbedf/sessions/a3f59613-28f6-4fbe-a217-1fc365cf42ae
 .vs/AELP/CopilotIndices/18.0.988.22099/CodeChunks.db
