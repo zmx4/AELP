@@ -132,7 +132,7 @@ public partial class App : Application
             var vm = serviceProvider.GetRequiredService<MainWindowViewModel>();
             if (options.StartPage.HasValue)
             {
-                vm.GoTo(options.StartPage.Value);
+                vm.GoTo(options.StartPage.Value, options.Parameter);
             }
             desktop.MainWindow = new MainWindow
             {
@@ -178,10 +178,7 @@ public partial class App : Application
             if (args[i] == "test")
             {
                 startPage = ApplicationPageNames.Tests;
-                if (args.Length > i + 1)
-                {
-                    parameter = args[i + 1];
-                }
+                parameter = args.Length > i + 1 ? args[i + 1] : "10";
                 break;
             }
         }
@@ -189,4 +186,4 @@ public partial class App : Application
     }
 }
 
-public record AppOptions(string[] Args, ApplicationPageNames? StartPage = null, string? parameter = null);
+public record AppOptions(string[] Args, ApplicationPageNames? StartPage = null, string? Parameter = null);

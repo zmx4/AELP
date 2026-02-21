@@ -207,7 +207,7 @@ public partial class TestsPageViewModel : PageViewModel
         if (parameter is string parameterString)
         {
             QuestionCount = int.TryParse(parameterString, out var count) ? count : 10;
+            StartTestCommand.Execute(null);
         }
-        StartTestCommand.Execute(null);
     }
 }
