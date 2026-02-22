@@ -11,6 +11,7 @@ internal sealed partial class StartAppCommand : InvokableCommand
     public StartAppCommand(string path, string parameter = "")
     {
         _path = path;
+        _parameter = parameter;
         Name = "Start AELP";
         Icon = new("\ud83d\ude80"); // 🚀 图标
     }

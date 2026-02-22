@@ -24,9 +24,9 @@ internal sealed partial class QuickToAELPPage : ListPage
     public override IListItem[] GetItems()
     {
         // var command = new OpenUrlCommand("https://learn.microsoft.com");
-        var command = new StartAppCommand(_programPath);
+        // var command = ;
         return [
-            new ListItem(command)
+            new ListItem(new StartAppCommand(_programPath))
             {
                 Icon =  new IconInfo("\ud83d\ude80"), // 🚀 图标
                 Title = "Start AELP",
