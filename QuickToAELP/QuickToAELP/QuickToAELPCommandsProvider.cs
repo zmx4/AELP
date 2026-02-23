@@ -19,7 +19,7 @@ public sealed partial class QuickToAELPCommandsProvider : CommandProvider
         Icon = new IconInfo("\ud83d\udcd6");
 
         _commands = [
-            new CommandItem(new QuickToAELPPage()) { Title = DisplayName },
+            new CommandItem(new Pages.QuickToAELPPage()) { Title = DisplayName },
         ];
     }
 

@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using Microsoft.CommandPalette.Extensions.Toolkit;
 
-namespace QuickToAELP;
+namespace QuickToAELP.Command;
 
 internal sealed partial class StartAppCommand : InvokableCommand
 {

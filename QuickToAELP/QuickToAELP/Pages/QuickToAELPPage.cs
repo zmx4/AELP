@@ -6,7 +6,7 @@ using Microsoft.CommandPalette.Extensions;
 using Microsoft.CommandPalette.Extensions.Toolkit;
 using QuickToAELP.Helper;
 
-namespace QuickToAELP;
+namespace QuickToAELP.Pages;
 
 internal sealed partial class QuickToAELPPage : ListPage
 {
@@ -26,12 +26,12 @@ internal sealed partial class QuickToAELPPage : ListPage
         // var command = new OpenUrlCommand("https://learn.microsoft.com");
         // var command = ;
         return [
-            new ListItem(new StartAppCommand(_programPath))
+            new ListItem(new Command.StartAppCommand(_programPath))
             {
                 Icon =  new IconInfo("\ud83d\ude80"), // 🚀 图标
                 Title = "Start AELP",
             },
-            new ListItem(new StartAppCommand(_programPath,"test"))
+            new ListItem(new Command.StartAppCommand(_programPath,"test"))
             {
                 Icon = new IconInfo("📝"), // 📝 图标
                 Title = "Start AELP with test",
