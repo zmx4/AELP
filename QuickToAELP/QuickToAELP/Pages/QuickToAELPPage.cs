@@ -26,6 +26,12 @@ internal sealed partial class QuickToAELPPage : ListPage
         // var command = new OpenUrlCommand("https://learn.microsoft.com");
         // var command = ;
         return [
+            new ListItem(new SearchPage())
+            {
+                Icon = new IconInfo("\ud83d\udd0e"), // 🔎 图标
+                Title = "Search word",
+                Subtitle = "Search word in AELP",
+            },
             new ListItem(new Command.StartAppCommand(_programPath))
             {
                 Icon =  new IconInfo("\ud83d\ude80"), // 🚀 图标
@@ -35,6 +41,25 @@ internal sealed partial class QuickToAELPPage : ListPage
             {
                 Icon = new IconInfo("📝"), // 📝 图标
                 Title = "Start AELP with test",
+                Subtitle = "Start a test",
+            },
+            new ListItem(new Command.StartAppCommand(_programPath, "favorites"))
+            {
+                Icon = new IconInfo("⭐"), // ⭐ 图标
+                Title = "My favorites",
+                Subtitle = "View your favorite words",
+            },
+            new ListItem(new Command.StartAppCommand(_programPath, "mistakes"))
+            {
+                Icon = new IconInfo("❌"), // ❌ 图标
+                Title = "My mistakes",
+                Subtitle = "Review your mistakes",
+            },
+            new ListItem(new Command.StartAppCommand(_programPath, "dictionary"))
+            {
+                Icon = new IconInfo("📖"), // 📖 图标
+                Title = "Dictionary",
+                Subtitle = "Browse the dictionary",
             }
         ];
     }

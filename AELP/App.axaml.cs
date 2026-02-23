@@ -179,6 +179,13 @@ public partial class App : Application
                 }
             }
 
+            if(args[i] == "search" && i + 1 < args.Length)
+            {
+                startPage = ApplicationPageNames.Dictionary;
+                parameter = args[i + 1];
+                break;
+            }
+
             if (args[i] == "test")
             {
                 startPage = ApplicationPageNames.Tests;
