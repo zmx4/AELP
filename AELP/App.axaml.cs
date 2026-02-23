@@ -185,6 +185,26 @@ public partial class App : Application
                 parameter = args.Length > i + 1 ? args[i + 1] : "10";
                 break;
             }
+
+            if(args[i] == "favorites")
+            {
+                startPage = ApplicationPageNames.Favorites;
+                break;
+            }
+
+            if(args[i] == "mistakes")
+            {
+                startPage = ApplicationPageNames.Mistakes;
+                break;
+            }
+
+            if (args[i] != "dictionary") continue;
+            startPage = ApplicationPageNames.Dictionary;
+            if (args.Length > i + 1)
+            {
+                parameter = args[i + 1];
+            }
+            break;
         }
         return new AppOptions(args, startPage, parameter);
     }

@@ -44,6 +44,8 @@ public partial class TestSessionPageViewModel : PageViewModel
         IMistakeDataStorageService mistakeDataStorageService,
         IKeyboardPreferenceService keyboardPreferenceService)
     {
+        _distractors = [];
+        
         _testWordGetter = testWordGetter;
         _testDataStorageService = testDataStorageService;
         _mistakeDataStorageService = mistakeDataStorageService;
@@ -56,6 +58,7 @@ public partial class TestSessionPageViewModel : PageViewModel
         QuestionCount = 10;
         StatusText = string.Empty;
         ChoiceKeyMapping = _keyboardPreferenceService.GetChoiceOptionKeys();
+        
     }
 
     [ObservableProperty] private ObservableCollection<TestRange> _testRanges = new();
@@ -73,6 +76,8 @@ public partial class TestSessionPageViewModel : PageViewModel
     [ObservableProperty] private string _progressText = string.Empty;
     [ObservableProperty] private string _statusText = string.Empty;
     [ObservableProperty] private string _choiceKeyMapping = string.Empty;
+
+    private List<string> _distractors;
 
     public bool IsNotTesting => !IsTesting;
     public bool IsFillQuestion => IsTesting && !IsChoiceQuestion;
@@ -118,6 +123,8 @@ public partial class TestSessionPageViewModel : PageViewModel
         }
 
         _testWords = await _testWordGetter.GetTestWords(QuestionCount, SelectedTestRange);
+        var distractors = await _testWordGetter.GetTestWords(QuestionCount * 4, SelectedTestRange);
+        _distractors = distractors.Select(w => w.Translation).Where(t => !string.IsNullOrWhiteSpace(t)).Select(t => t!).ToList();
         if (_testWords.Count == 0)
         {
             StatusText = "未获取到测试单词";
@@ -197,19 +204,30 @@ public partial class TestSessionPageViewModel : PageViewModel
     private void BuildOptions()
     {
         Options.Clear();
+        
+        // 正确答案
         var correct = CurrentTranslation;
-        var translations = _testWords
-            .Select(w => w.Translation)
-            .Where(t => !string.IsNullOrWhiteSpace(t))
-            .Select(t => t!)
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .ToList();
-
-        var distractors = translations
+        
+        // var translations = _testWords
+        //     .Select(w => w.Translation)
+        //     .Where(t => !string.IsNullOrWhiteSpace(t))
+        //     .Select(t => t!)
+        //     .Distinct(StringComparer.OrdinalIgnoreCase)
+        //     .ToList();
+        //
+        // var distractors = translations
+        //     .Where(t => !string.Equals(t, correct, StringComparison.OrdinalIgnoreCase))
+        //     .OrderBy(_ => _random.Next())
+        //     .Take(3)
+        //     .ToList();
+        
+        var distractors = _distractors
             .Where(t => !string.Equals(t, correct, StringComparison.OrdinalIgnoreCase))
             .OrderBy(_ => _random.Next())
             .Take(3)
             .ToList();
+        
+        _distractors.RemoveAll(t => distractors.Contains(t, StringComparer.OrdinalIgnoreCase));
 
         var options = new List<string> { correct };
         options.AddRange(distractors);

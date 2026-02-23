@@ -146,8 +146,19 @@ public partial class DictionaryPageViewModel : PageViewModel
     [RelayCommand]
     private async Task AddToFavoritesAsync()
     {
-        if (_word is null) return;
-
         await _favoritesDataStorageService.AddToFavorites(_word);
+    }
+
+    /// <summary>
+    /// 设置页面参数，触发单词查询。
+    /// </summary>
+    /// <param name="parameter">单词</param>
+    public override void SetParameter(object parameter)
+    {
+        if (parameter is string parameterString)
+        {
+            SearchText = parameterString;
+            _ = SearchTranslationAsync();
+        }
     }
 }
