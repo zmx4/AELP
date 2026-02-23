@@ -23,6 +23,8 @@ public partial class TestSessionPageViewModel : PageViewModel
     private readonly List<ProblemData> _problemData = new();
     private readonly List<MistakeDataModel> _mistakeData = new();
     private readonly Stopwatch _stopwatch = new();
+    private readonly Stopwatch _totalStopwatch = new();
+    private Avalonia.Threading.DispatcherTimer? _timer;
     private readonly Random _random = new();
     private Word? _currentWord;
     private string _missingPart = string.Empty;
@@ -76,6 +78,8 @@ public partial class TestSessionPageViewModel : PageViewModel
     [ObservableProperty] private string _progressText = string.Empty;
     [ObservableProperty] private string _statusText = string.Empty;
     [ObservableProperty] private string _choiceKeyMapping = string.Empty;
+    [ObservableProperty] private string _totalTimeText = "00:00";
+    [ObservableProperty] private string _currentTimeText = "00:00";
 
     private List<string> _distractors;
 
@@ -136,6 +140,19 @@ public partial class TestSessionPageViewModel : PageViewModel
         CurrentIndex = 0;
         IsTesting = true;
         IsChoiceQuestion = true;
+
+        _totalStopwatch.Restart();
+        _timer?.Stop();
+        _timer = new Avalonia.Threading.DispatcherTimer
+        {
+            Interval = TimeSpan.FromMilliseconds(100)
+        };
+        _timer.Tick += (s, e) =>
+        {
+            TotalTimeText = $"{(int)_totalStopwatch.Elapsed.TotalMinutes:D2}:{_totalStopwatch.Elapsed.Seconds:D2}";
+            CurrentTimeText = $"{(int)_stopwatch.Elapsed.TotalMinutes:D2}:{_stopwatch.Elapsed.Seconds:D2}";
+        };
+        _timer.Start();
 
         SetupQuestion();
     }
@@ -303,6 +320,10 @@ public partial class TestSessionPageViewModel : PageViewModel
 
     private async Task EndTestAsync()
     {
+        _timer?.Stop();
+        _totalStopwatch.Stop();
+        _stopwatch.Stop();
+
         IsTesting = false;
         ProgressText = string.Empty;
 

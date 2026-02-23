@@ -16,6 +16,11 @@ public class MistakeDataStorageService(
     /// <inheritdoc />
     public async Task SaveMistakeData(MistakeDataModel[] mistakeData)
     {
+        if (mistakeData.Length == 0)
+        {
+            return;
+        }
+
         await using var context = await contextFactory.CreateDbContextAsync();
         await context.Database.EnsureCreatedAsync();
 
@@ -65,17 +70,48 @@ public class MistakeDataStorageService(
             }
         }
         
-        foreach (var item in mistakeData)
+        var mergedByWordId = mistakeData
+            .Where(item => item.WordId > 0)
+            .GroupBy(item => item.WordId)
+            .Select(group => new
+            {
+                WordId = group.Key,
+                Count = group.Sum(item => item.Count),
+                Time = group.Max(item => item.Time)
+            })
+            .ToArray();
+
+        if (mergedByWordId.Length == 0)
         {
-            if (item.Id == 0)
+            return;
+        }
+
+        var wordIds = mergedByWordId.Select(item => item.WordId).ToHashSet();
+        var existingMistakes = await context.Mistakes
+            .Where(item => wordIds.Contains(item.WordId))
+            .ToListAsync();
+
+        foreach (var incoming in mergedByWordId)
+        {
+            var existed = existingMistakes.FirstOrDefault(item => item.WordId == incoming.WordId);
+            if (existed is null)
             {
-                await context.Mistakes.AddAsync(item);
+                await context.Mistakes.AddAsync(new MistakeDataModel
+                {
+                    WordId = incoming.WordId,
+                    Time = incoming.Time,
+                    Count = incoming.Count
+                });
+                continue;
             }
-            else
+
+            existed.Count += incoming.Count;
+            if (incoming.Time > existed.Time)
             {
-                context.Mistakes.Update(item);
+                existed.Time = incoming.Time;
             }
         }
+
         await context.SaveChangesAsync();
     }
 

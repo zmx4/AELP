@@ -23,7 +23,11 @@
 
         <Border Grid.Row="1" Classes="section-panel" Margin="0,16,0,0" IsVisible="{Binding IsTesting}">
             <StackPanel Spacing="16">
-                <TextBlock Text="{Binding ProgressText}" HorizontalAlignment="Right" Foreground="{DynamicResource ProgressText}" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="16">
+                    <TextBlock Text="{Binding TotalTimeText, StringFormat='总用时: {0}'}" Foreground="{DynamicResource ProgressText}" />
+                    <TextBlock Text="{Binding CurrentTimeText, StringFormat='本题用时: {0}'}" Foreground="{DynamicResource ProgressText}" />
+                    <TextBlock Text="{Binding ProgressText}" Foreground="{DynamicResource ProgressText}" />
+                </StackPanel>
 
                 <StackPanel IsVisible="{Binding IsChoiceQuestion}" Spacing="10">
                     <TextBlock Text="选择正确翻译" FontSize="18" FontWeight="SemiBold" />
