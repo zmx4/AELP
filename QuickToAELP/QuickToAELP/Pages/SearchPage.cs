@@ -47,6 +47,7 @@ internal sealed partial class SearchContentPage : FormContent
                 "actions": [
                     {
                         "type": "Action.Submit",
+                        "horizontalAlignment": "Left",
                         "title": "Search"
                     }
                 ]
