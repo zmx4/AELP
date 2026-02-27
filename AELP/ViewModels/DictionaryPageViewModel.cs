@@ -29,9 +29,15 @@ public partial class DictionaryPageViewModel : PageViewModel
 
     [ObservableProperty] private ObservableCollection<string> _searchResults = new();
 
+    [ObservableProperty] private bool _isLoadingMoreWords = false;
+    
     private List<Dictionary> _rawSearchResults = new();
 
     private Dictionary _word;
+    
+    private const int PageSize = 20;
+    
+    private bool _isSearching = false;
 
     /// <summary>
     /// 初始化 <see cref="DictionaryPageViewModel"/>。
@@ -108,18 +114,40 @@ public partial class DictionaryPageViewModel : PageViewModel
     [RelayCommand]
     private async Task SearchWordsAsync()
     {
+        IsLoadingMoreWords = true;
+        _isSearching = true;
         if (string.IsNullOrWhiteSpace(SearchText))
         {
             return;
         }
-
         _rawSearchResults.Clear();
-        _rawSearchResults = new List<Dictionary>(await _wordQueryService.QueryWordsAsync(SearchText));
+        _rawSearchResults = new List<Dictionary>(await _wordQueryService.QueryWordsAsync(SearchText, 0,PageSize));
         SearchResults.Clear();
         foreach (var word in _rawSearchResults)
         {
             SearchResults.Add(word.RawWord);
         }
+        IsLoadingMoreWords = false;
+    }
+
+    /// <summary>
+    /// 加载更多单词候选列表。
+    /// </summary>
+    /// <returns>表示异步加载更多单词完成的任务</returns>
+    [RelayCommand]
+    private async Task LoadMoreWordsAsync()
+    {
+        if(IsLoadingMoreWords||! _isSearching)return;
+        IsLoadingMoreWords = true;
+        var currentCount = SearchResults.Count;
+        var moreWords = await _wordQueryService.QueryWordsAsync(SearchText, currentCount, PageSize);
+        foreach (var word in moreWords)
+        {
+            _rawSearchResults.Add(word);
+            SearchResults.Add(word.RawWord);
+        }
+        IsLoadingMoreWords = false;
+        
     }
 
     /// <summary>

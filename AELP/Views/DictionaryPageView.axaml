@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:AELP.ViewModels"
              xmlns:data="clr-namespace:AELP.Data"
+             xmlns:behaviors="clr-namespace:AELP.Behaviors"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:DataType="vm:DictionaryPageViewModel"
              x:Class="AELP.Views.DictionaryPageView">
@@ -52,7 +53,7 @@
         </TabItem>
         <!-- 搜单词 -->
         <TabItem Header="搜单词">
-            <Grid RowDefinitions="Auto,*" Margin="10">
+            <Grid RowDefinitions="Auto,*,Auto" Margin="10">
                 <Grid ColumnDefinitions="*,Auto" Grid.Row="0">
                     <TextBox Grid.Column="0" Text="{Binding SearchText}" Watermark="请输入" Margin="0,0,10,0">
                         <TextBox.KeyBindings>
@@ -61,16 +62,26 @@
                     </TextBox>
                     <Button Content="搜索" Grid.Column="1" Command="{Binding SearchWordsCommand}"></Button>
                 </Grid>
-                <ListBox Grid.Row="1" ItemsSource="{Binding SearchResults}" Margin="0,10,0,0" Background="Transparent"
+                <ListBox Grid.Row="1" 
+                         ItemsSource="{Binding SearchResults}" 
+                         behaviors:InfiniteScrollBehavior.LoadMoreCommand="{Binding LoadMoreWordsCommand}"
+                         Margin="0,10,0,0" 
+                         Background="Transparent"
                          BorderThickness="0">
                     <ListBox.ItemTemplate>
                         <DataTemplate DataType="data:MistakeDataModel">
-                            <Border BorderBrush="{DynamicResource SeparatorBrush}" BorderThickness="0,0,0,1" Padding="10" Background="Transparent" DoubleTapped="OnItemDoubleTapped">
+                            <Border BorderBrush="{DynamicResource SeparatorBrush}" 
+                                    BorderThickness="0,0,0,1" Padding="10" 
+                                    Background="Transparent" >
                                 <TextBlock Text="{Binding Word}" FontSize="16" />
                             </Border>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
+                <ProgressBar Grid.Row="2" IsIndeterminate="True" 
+                             IsVisible="{Binding IsLoadingMoreWords}" 
+                             VerticalAlignment="Bottom"
+                             Height="4" />
             </Grid>
         </TabItem>
     </TabControl>

@@ -34,6 +34,9 @@ public class WordQueryServiceTest
         var service = new WordQueryService(factory);
 
         var translation = await service.QueryWordsAsync("人");
+        
+        // Console.Write(translation);
+        
 
         Assert.NotNull(translation);
         Assert.NotEmpty(translation);

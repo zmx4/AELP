@@ -45,5 +45,7 @@
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite"/>
         <PackageReference Include="Microsoft.Extensions.DependencyInjection"/>
         <PackageReference Include="Semi.Avalonia" />
+        <PackageReference Include="Xaml.Behaviors.Avalonia" />
+        <PackageReference Include="Xaml.Behaviors.Interactions" />
     </ItemGroup>
 </Project>
