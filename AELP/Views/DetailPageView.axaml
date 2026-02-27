@@ -32,7 +32,10 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Border Background="{DynamicResource DetailTagBg}" CornerRadius="6" Margin="0,0,10,10" Padding="12,6">
+                    <Border Background="{DynamicResource DetailTagBg}" 
+                            CornerRadius="6" 
+                            Margin="0,0,10,10" 
+                            Padding="12,6">
                         <TextBlock Text="{Binding}" FontSize="14" Foreground="{DynamicResource DetailTagFg}"/>
                     </Border>
                 </DataTemplate>

@@ -58,6 +58,7 @@ public class WordQueryService(IDbContextFactory<AppDbContext> contextFactory) : 
         await using var context = await contextFactory.CreateDbContextAsync();
         return await context.Dictionaries
             .Where(x => x.Translation != null && x.Translation.Contains(translation))
+            .OrderByDescending(x => x.Hs + x.Cet4 +x.Cet6 + x.Tf + x.Hs + x.Ph)
             .ToArrayAsync();
     }
 
@@ -67,6 +68,7 @@ public class WordQueryService(IDbContextFactory<AppDbContext> contextFactory) : 
         await using var context = await contextFactory.CreateDbContextAsync();
         return await context.Dictionaries
             .Where(x => x.Translation != null && x.Translation.Contains(translation))
+            .OrderByDescending(x => x.Hs + x.Cet4 +x.Cet6 + x.Tf + x.Hs + x.Ph)
             .Skip(skip)
             .Take(take)
             .ToArrayAsync();

@@ -10,15 +10,4 @@ public partial class DictionaryPageView : UserControl
     {
         InitializeComponent();
     }
-
-    private void OnItemDoubleTapped(object? sender, TappedEventArgs e)
-    {
-        if (sender is Control control && control.DataContext is string word)
-        {
-            if (DataContext is DictionaryPageViewModel vm)
-            {
-                vm.OpenDetailCommand.Execute(word);
-            }
-        }
-    }
 }

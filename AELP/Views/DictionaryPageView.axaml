@@ -69,11 +69,16 @@
                          Background="Transparent"
                          BorderThickness="0">
                     <ListBox.ItemTemplate>
-                        <DataTemplate DataType="data:MistakeDataModel">
+                        <DataTemplate DataType="x:String">
                             <Border BorderBrush="{DynamicResource SeparatorBrush}" 
                                     BorderThickness="0,0,0,1" Padding="10" 
                                     Background="Transparent" >
-                                <TextBlock Text="{Binding Word}" FontSize="16" />
+                                <Interaction.Behaviors>
+                                    <EventTriggerBehavior EventName="DoubleTapped">
+                                        <InvokeCommandAction Command="{Binding $parent[UserControl].((vm:DictionaryPageViewModel)DataContext).OpenDetailCommand}" CommandParameter="{Binding}" />
+                                    </EventTriggerBehavior>
+                                </Interaction.Behaviors>
+                                <TextBlock Text="{Binding}" FontSize="16" />
                             </Border>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
