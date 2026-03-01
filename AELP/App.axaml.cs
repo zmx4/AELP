@@ -5,15 +5,12 @@ using Avalonia.Data.Core.Plugins;
 using System.Linq;
 using System.Threading.Tasks;
 using AELP.Data;
-using AELP.Factories;
 using AELP.Helper;
 using Avalonia.Markup.Xaml;
 using AELP.ViewModels;
 using AELP.Views;
 using Microsoft.Extensions.DependencyInjection;
 using AELP.Services;
-using AELP.Models;
-using Microsoft.EntityFrameworkCore;
 using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
 
@@ -24,81 +21,38 @@ public partial class App : Application
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
-        
-        LiveCharts.Configure(config => 
-            config 
-                .AddSkiaSharp() 
-                .AddDefaultMappers() 
-                .AddDarkTheme() 
+
+        LiveCharts.Configure(config =>
+            config
+                .AddSkiaSharp()
+                .AddDefaultMappers()
+                .AddDarkTheme()
         );
     }
-    
+
     public override void OnFrameworkInitializationCompleted()
     {
-        
         var collection = new ServiceCollection();
-        var dbPath = System.IO.Path.Combine(AppContext.BaseDirectory, "Assets", "Database", "stardict.db");
-        collection.AddDbContext<AppDbContext>(options =>
-            options.UseSqlite($"Data Source={dbPath}"));
-        collection.AddDbContextFactory<AppDbContext>(options =>
-            options.UseSqlite($"Data Source={dbPath}"));
-        collection.AddDbContext<UserDbContext>(options => 
-            options.UseSqlite($"Data Source={PathHelper.GetLocalFilePath(UserDbContext.DbName)}"));
-        collection.AddDbContextFactory<UserDbContext>(options =>
-            options.UseSqlite($"Data Source={PathHelper.GetLocalFilePath(UserDbContext.DbName)}"));
-        collection.AddSingleton<IPreferenceStorage, JsonPreferenceStorage>();
-        collection.AddSingleton<INotifyService, NotifyService>();
-        collection.AddSingleton<IThemeService, ThemeService>();
-        collection.AddSingleton<IKeyboardPreferenceService, KeyboardPreferenceService>();
-        collection.AddSingleton<IWordQueryService, WordQueryService>();
-        collection.AddSingleton<IFavoritesDataStorageService, FavoritesDataStorageService>();
-        collection.AddSingleton<IMistakeDataStorageService, MistakeDataStorageService>();
-        collection.AddSingleton<ITestDataStorageService, TestDataStorageService>();
-        collection.AddSingleton<IUserWordQueryService, UserWordQueryService>();
-        collection.AddSingleton<ITestWordGetter, TestWordGetter>();
-        collection.AddSingleton<PageFactory>();
-        collection.AddSingleton<MainWindowViewModel>();
-        collection.AddTransient<DictionaryPageViewModel>();
-        collection.AddTransient<FavoritesPageViewModel>();
-        collection.AddTransient<TestsPageViewModel>();
-        collection.AddTransient<TestSessionPageViewModel>();
-        collection.AddTransient<MistakePageViewModel>();
-        collection.AddTransient<MistakeReviewPageViewModel>();
-        collection.AddTransient<SummaryPageViewModel>(sp => new SummaryPageViewModel(
-            sp.GetRequiredService<ITestDataStorageService>()));
-        collection.AddTransient<DetailPageViewModel>();
-        collection.AddTransient<SettingsPageViewModel>();
+        collection.AddAelpDbContexts();
+        collection.AddAelpServices();
+        collection.AddAelpViewModels();
+        collection.AddAelpFactories();
 
-        collection.AddSingleton<Func<ApplicationPageNames, PageViewModel>>(x => name => name switch
-        {
-            ApplicationPageNames.Dictionary    => x.GetRequiredService<DictionaryPageViewModel   >(),
-            ApplicationPageNames.Favorites     => x.GetRequiredService<FavoritesPageViewModel    >(),
-            ApplicationPageNames.Tests         => x.GetRequiredService<TestsPageViewModel        >(),
-            ApplicationPageNames.TestSession   => x.GetRequiredService<TestSessionPageViewModel  >(),
-            ApplicationPageNames.Mistakes      => x.GetRequiredService<MistakePageViewModel      >(),
-            ApplicationPageNames.MistakeReview => x.GetRequiredService<MistakeReviewPageViewModel>(),
-            ApplicationPageNames.Summary       => x.GetRequiredService<SummaryPageViewModel      >(),
-            ApplicationPageNames.Detail        => x.GetRequiredService<DetailPageViewModel       >(),
-            ApplicationPageNames.Settings      => x.GetRequiredService<SettingsPageViewModel     >(),
-
-            _ => throw new NotImplementedException($"No ViewModel implemented for page {name}")
-        });
-        
         var serviceProvider = collection.BuildServiceProvider();
-        
+
         // 初始化主题
         var themeService = serviceProvider.GetRequiredService<IThemeService>();
         var savedTheme = themeService.GetSavedTheme();
         themeService.SetTheme(savedTheme);
-        
+
         // 初始化字体
         var savedFont = themeService.GetSavedFontFamily();
         themeService.SetFontFamily(savedFont);
-        
+
         var preferenceStorage = serviceProvider.GetRequiredService<IPreferenceStorage>();
-        preferenceStorage.Set("app_location",PathHelper.GetAppFilePath("AELP.Desktop.exe"));
-        
-        
+        preferenceStorage.Set("app_location", PathHelper.GetAppFilePath("AELP.Desktop.exe"));
+
+
         // 预加载数据，避免首次打开相关页面时的卡顿
         Task.Run(async () =>
         {
@@ -107,16 +61,16 @@ public partial class App : Application
                 using var scope = serviceProvider.CreateScope();
                 var db = scope.ServiceProvider.GetRequiredService<UserDbContext>();
                 await db.Database.EnsureCreatedAsync();
-                using var favoritesFromStorage =  scope.ServiceProvider
+                using var favoritesFromStorage = scope.ServiceProvider
                     .GetRequiredKeyedService<IFavoritesDataStorageService>(null)
                     .LoadFavorites();
-                using var mistakesFromStorage =  scope.ServiceProvider
+                using var mistakesFromStorage = scope.ServiceProvider
                     .GetRequiredKeyedService<IMistakeDataStorageService>(null)
                     .LoadMistakeData();
-                using var testRecordsFromStorage =  scope.ServiceProvider
+                using var testRecordsFromStorage = scope.ServiceProvider
                     .GetRequiredKeyedService<ITestDataStorageService>(null)
                     .LoadTestData();
-                using var favoritesFromStorage2 =  scope.ServiceProvider
+                using var favoritesFromStorage2 = scope.ServiceProvider
                     .GetRequiredKeyedService<IFavoritesDataStorageService>(null)
                     .LoadFavorites();
             }
@@ -125,7 +79,7 @@ public partial class App : Application
                 // ignore
             }
         });
-        
+
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
@@ -138,6 +92,7 @@ public partial class App : Application
             {
                 vm.GoTo(options.StartPage.Value, options.Parameter);
             }
+
             desktop.MainWindow = new MainWindow
             {
                 DataContext = vm,
@@ -175,11 +130,12 @@ public partial class App : Application
                     {
                         parameter = args[i + 1];
                     }
+
                     break;
                 }
             }
 
-            if(args[i] == "search" && i + 1 < args.Length)
+            if (args[i] == "search" && i + 1 < args.Length)
             {
                 startPage = ApplicationPageNames.Dictionary;
                 parameter = args[i + 1];
@@ -193,13 +149,13 @@ public partial class App : Application
                 break;
             }
 
-            if(args[i] == "favorites")
+            if (args[i] == "favorites")
             {
                 startPage = ApplicationPageNames.Favorites;
                 break;
             }
 
-            if(args[i] == "mistakes")
+            if (args[i] == "mistakes")
             {
                 startPage = ApplicationPageNames.Mistakes;
                 break;
@@ -211,8 +167,10 @@ public partial class App : Application
             {
                 parameter = args[i + 1];
             }
+
             break;
         }
+
         return new AppOptions(args, startPage, parameter);
     }
 }
