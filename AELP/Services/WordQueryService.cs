@@ -66,6 +66,7 @@ public class WordQueryService(IDbContextFactory<AppDbContext> contextFactory) : 
     public async Task<Dictionary[]> QueryWordsAsync(string translation, int skip, int take)
     {
         await using var context = await contextFactory.CreateDbContextAsync();
+        // await Task.Delay(1000);
         return await context.Dictionaries
             .Where(x => x.Translation != null && x.Translation.Contains(translation))
             .OrderByDescending(x => x.Hs + x.Cet4 +x.Cet6 + x.Tf + x.Hs + x.Ph)
